@@ -1,8 +1,8 @@
 package com.performance.services.impl;
 
-import com.google.gson.Gson;
 import com.performance.pojo.AppDO;
 import com.performance.services.IAppService;
+import com.performance.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -26,20 +26,28 @@ public class AppServiceImplTest {
         appDO.setVersion("5.8.5");
         appDO.setPackageName("com.zmsoft.eatery.cashdesk.activity");
         appDO.setIsValid((byte) 1);
-        appDO.setSysType("1");
+        appDO.setType("1");
         appDO.setUploader("鲢鱼");
         appDO.setRemarks("测试数据");
         appDO.setCreateTime(System.currentTimeMillis() + "");
         appDO.setModifyTime(System.currentTimeMillis() + "");
 
-        int count = appService.insert(appDO);
+        Result result = appService.addApp(appDO);
 
-        Assert.assertTrue(count > 0, "添加App失败！");
+        Assert.assertTrue(result.getCode().equals("1000"), "添加App失败！");
     }
 
     @Test
     public void testSelectByPrimaryKey() {
-        AppDO appDO = appService.selectByPrimaryKey(1L);
-        System.out.println(new Gson().toJson(appDO));
+        AppDO appDO = new AppDO();
+        appDO.setName("CashDesk");
+        appDO.setVersion("5.8.5");
+        appDO.setPackageName("com.zmsoft.eatery.cashdesk.activity");
+        appDO.setType("1");
+        appDO.setUploader("鲢鱼");
+        appDO.setRemarks("测试数据");
+
+        Result result = appService.queryAppList(appDO);
+        Assert.assertNotNull(result.getData(), "查询失败，结果为空！");
     }
 }

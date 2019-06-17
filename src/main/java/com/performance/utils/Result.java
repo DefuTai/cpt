@@ -8,7 +8,7 @@ package com.performance.utils;
  */
 public class Result<T> {
 
-    private Integer code;
+    private String code;
     private String msg;
     private T data;
 
@@ -16,7 +16,7 @@ public class Result<T> {
         super();
     }
 
-    public Result(Integer code, String msg, T data) {
+    public Result(String code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -31,11 +31,11 @@ public class Result<T> {
                 "}";
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

@@ -1,6 +1,9 @@
 package com.performance.services;
 
 import com.performance.pojo.AppDO;
+import com.performance.utils.Result;
+
+import java.util.List;
 
 /**
  * 创建时间: 2019/6/17 上午10:49
@@ -10,8 +13,10 @@ import com.performance.pojo.AppDO;
  */
 public interface IAppService {
 
-    int insert(AppDO record);
+    Result<List<AppDO>> queryAppList(AppDO appDO);
 
-    AppDO selectByPrimaryKey(Long id);
+    Result addApp(AppDO record);
+
+    Result removeApp(Long id);
 
 }

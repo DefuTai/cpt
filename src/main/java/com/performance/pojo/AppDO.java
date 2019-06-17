@@ -9,13 +9,13 @@ public class AppDO {
 
     private String packageName;
 
-    private Byte isValid;
-
-    private String sysType;
+    private String type;
 
     private String uploader;
 
     private String remarks;
+
+    private Byte isValid;
 
     private String createTime;
 
@@ -53,20 +53,12 @@ public class AppDO {
         this.packageName = packageName == null ? null : packageName.trim();
     }
 
-    public Byte getIsValid() {
-        return isValid;
+    public String getType() {
+        return type;
     }
 
-    public void setIsValid(Byte isValid) {
-        this.isValid = isValid;
-    }
-
-    public String getSysType() {
-        return sysType;
-    }
-
-    public void setSysType(String sysType) {
-        this.sysType = sysType == null ? null : sysType.trim();
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getUploader() {
@@ -83,6 +75,14 @@ public class AppDO {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks == null ? null : remarks.trim();
+    }
+
+    public Byte getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(Byte isValid) {
+        this.isValid = isValid;
     }
 
     public String getCreateTime() {

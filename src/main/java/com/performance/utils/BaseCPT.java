@@ -6,8 +6,10 @@ package com.performance.utils;
  *
  * @author lianyu
  */
-public class BaseController {
+public class BaseCPT {
 
     protected ResultUtil resultUtil = new ResultUtil();
+
+    protected Result result = new Result();
 
 }
