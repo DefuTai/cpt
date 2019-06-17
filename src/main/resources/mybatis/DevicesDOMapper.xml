@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.performance.dao.DevicesDOMapper">
+  <resultMap id="BaseResultMap" type="com.performance.pojo.DevicesDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="system_type" jdbcType="BIT" property="systemType" />
+    <result column="system_version" jdbcType="VARCHAR" property="systemVersion" />
+    <result column="processor" jdbcType="VARCHAR" property="processor" />
+    <result column="core" jdbcType="VARCHAR" property="core" />
+    <result column="ram" jdbcType="VARCHAR" property="ram" />
+    <result column="network" jdbcType="VARCHAR" property="network" />
+    <result column="mac_address" jdbcType="VARCHAR" property="macAddress" />
+    <result column="is_valid" jdbcType="TINYINT" property="isValid" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="resolution" jdbcType="VARCHAR" property="resolution" />
+    <result column="connect_status" jdbcType="VARCHAR" property="connectStatus" />
+    <result column="use_status" jdbcType="VARCHAR" property="useStatus" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="modify_time" jdbcType="VARCHAR" property="modifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, device_name, system_type, system_version, processor, core, ram, network, mac_address, 
+    is_valid, brand, resolution, connect_status, use_status, create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from devices
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from devices
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.performance.pojo.DevicesDO">
+    insert into devices (id, device_name, system_type, 
+      system_version, processor, core, 
+      ram, network, mac_address, 
+      is_valid, brand, resolution, 
+      connect_status, use_status, create_time, 
+      modify_time)
+    values (#{id,jdbcType=BIGINT}, #{deviceName,jdbcType=VARCHAR}, #{systemType,jdbcType=BIT}, 
+      #{systemVersion,jdbcType=VARCHAR}, #{processor,jdbcType=VARCHAR}, #{core,jdbcType=VARCHAR}, 
+      #{ram,jdbcType=VARCHAR}, #{network,jdbcType=VARCHAR}, #{macAddress,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=TINYINT}, #{brand,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, 
+      #{connectStatus,jdbcType=VARCHAR}, #{useStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{modifyTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.performance.pojo.DevicesDO">
+    insert into devices
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="deviceName != null">
+        device_name,
+      </if>
+      <if test="systemType != null">
+        system_type,
+      </if>
+      <if test="systemVersion != null">
+        system_version,
+      </if>
+      <if test="processor != null">
+        processor,
+      </if>
+      <if test="core != null">
+        core,
+      </if>
+      <if test="ram != null">
+        ram,
+      </if>
+      <if test="network != null">
+        network,
+      </if>
+      <if test="macAddress != null">
+        mac_address,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="resolution != null">
+        resolution,
+      </if>
+      <if test="connectStatus != null">
+        connect_status,
+      </if>
+      <if test="useStatus != null">
+        use_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="deviceName != null">
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="systemType != null">
+        #{systemType,jdbcType=BIT},
+      </if>
+      <if test="systemVersion != null">
+        #{systemVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="processor != null">
+        #{processor,jdbcType=VARCHAR},
+      </if>
+      <if test="core != null">
+        #{core,jdbcType=VARCHAR},
+      </if>
+      <if test="ram != null">
+        #{ram,jdbcType=VARCHAR},
+      </if>
+      <if test="network != null">
+        #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="macAddress != null">
+        #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=TINYINT},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null">
+        #{resolution,jdbcType=VARCHAR},
+      </if>
+      <if test="connectStatus != null">
+        #{connectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="useStatus != null">
+        #{useStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.DevicesDO">
+    update devices
+    <set>
+      <if test="deviceName != null">
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="systemType != null">
+        system_type = #{systemType,jdbcType=BIT},
+      </if>
+      <if test="systemVersion != null">
+        system_version = #{systemVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="processor != null">
+        processor = #{processor,jdbcType=VARCHAR},
+      </if>
+      <if test="core != null">
+        core = #{core,jdbcType=VARCHAR},
+      </if>
+      <if test="ram != null">
+        ram = #{ram,jdbcType=VARCHAR},
+      </if>
+      <if test="network != null">
+        network = #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="macAddress != null">
+        mac_address = #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=TINYINT},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null">
+        resolution = #{resolution,jdbcType=VARCHAR},
+      </if>
+      <if test="connectStatus != null">
+        connect_status = #{connectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="useStatus != null">
+        use_status = #{useStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.performance.pojo.DevicesDO">
+    update devices
+    set device_name = #{deviceName,jdbcType=VARCHAR},
+      system_type = #{systemType,jdbcType=BIT},
+      system_version = #{systemVersion,jdbcType=VARCHAR},
+      processor = #{processor,jdbcType=VARCHAR},
+      core = #{core,jdbcType=VARCHAR},
+      ram = #{ram,jdbcType=VARCHAR},
+      network = #{network,jdbcType=VARCHAR},
+      mac_address = #{macAddress,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=TINYINT},
+      brand = #{brand,jdbcType=VARCHAR},
+      resolution = #{resolution,jdbcType=VARCHAR},
+      connect_status = #{connectStatus,jdbcType=VARCHAR},
+      use_status = #{useStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
