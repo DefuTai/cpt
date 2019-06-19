@@ -19,12 +19,20 @@ public interface AppDOMapper {
     AppDO selectByPrimaryKey(Long id);
 
     /**
-     * 根据条件查询APP信息
+     * APP列表查询
      *
      * @param appDO
      * @return
      */
     List<AppDO> selectApp(AppDO appDO);
+
+    /**
+     * APP列表总数量
+     *
+     * @param appDO
+     * @return
+     */
+    int selectAppCount(AppDO appDO);
 
     /**
      * 添加APP

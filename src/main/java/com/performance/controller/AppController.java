@@ -4,7 +4,9 @@ import com.performance.pojo.AppDO;
 import com.performance.services.IAppService;
 import com.performance.utils.BaseCPT;
 import com.performance.utils.Result;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +32,16 @@ public class AppController extends BaseCPT {
     @PostMapping("/add")
     public Result addApp(AppDO appDO) {
         return appService.addApp(appDO);
+    }
+
+    @GetMapping("/remove")
+    public Result removeApp(@Param("id") Long id) {
+        return appService.removeApp(id);
+    }
+
+    @PostMapping("/modify")
+    public Result modifyApp(AppDO appDO) {
+        return appService.modifyApp(appDO);
     }
 
 }

@@ -29,28 +29,48 @@
         select
         <include refid="Base_Column_List"/>
         from app
-        <where>
-            <choose>
-                <when test="id != null">
-                    and id = #{id,jdbcType=BIGINT}
-                </when>
-                <when test="name != null">
-                    and name like concat('%',concat(#{name,jdbcType=VARCHAR},'%'))
-                </when>
-                <when test="version != null">
-                    and version like concat('%',concat(#{version,jdbcType=VARCHAR},'%'))
-                </when>
-                <when test="packageName != null">
-                    and package_name = #{packageName,jdbcType=VARCHAR}
-                </when>
-                <when test="type != null">
-                    and type = #{type,jdbcType=VARCHAR}
-                </when>
-                <otherwise>
-                    and is_valid = 1
-                </otherwise>
-            </choose>
-        </where>
+        where
+        is_valid = 1
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="name != null">
+            and name like concat('%',concat(#{name,jdbcType=VARCHAR},'%'))
+        </if>
+        <if test="version != null">
+            and version like concat('%',concat(#{version,jdbcType=VARCHAR},'%'))
+        </if>
+        <if test="packageName != null">
+            and package_name = #{packageName,jdbcType=VARCHAR}
+        </if>
+        <if test="type != null">
+            and type = #{type,jdbcType=VARCHAR}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="selectAppCount" parameterType="com.performance.pojo.AppDO" resultType="int">
+        select
+        count(1)
+        from app
+        where
+        is_valid = 1
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="name != null">
+            and name like concat('%',concat(#{name,jdbcType=VARCHAR},'%'))
+        </if>
+        <if test="version != null">
+            and version like concat('%',concat(#{version,jdbcType=VARCHAR},'%'))
+        </if>
+        <if test="packageName != null">
+            and package_name = #{packageName,jdbcType=VARCHAR}
+        </if>
+        <if test="type != null">
+            and type = #{type,jdbcType=VARCHAR}
+        </if>
+        order by create_time desc
     </select>
 
     <insert id="insert" parameterType="com.performance.pojo.AppDO">
