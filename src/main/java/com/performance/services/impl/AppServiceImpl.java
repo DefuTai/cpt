@@ -21,7 +21,7 @@ import java.util.List;
  * @author lianyu
  */
 @Service
-public class AppCPTImpl extends BaseCPT implements IAppService {
+public class AppServiceImpl extends BaseCPT implements IAppService {
 
     @Autowired
     private AppDOMapper appDOMapper;
@@ -31,7 +31,7 @@ public class AppCPTImpl extends BaseCPT implements IAppService {
     public Result<PageBean<AppDO>> queryAppList(AppDO appDO) {
         try {
             //获取列表数据
-            List<AppDO> appList = appList = appDOMapper.selectApp(appDO);
+            List<AppDO> appList = appDOMapper.selectApp(appDO);
             //获取列表总记录数
             int count = appDOMapper.selectAppCount(appDO);
             //分页
@@ -78,6 +78,13 @@ public class AppCPTImpl extends BaseCPT implements IAppService {
     @Override
     public Result removeApp(Long id) {
         try {
+            if (id != null) {
+                AppDO app = appDOMapper.selectByPrimaryKey(id);
+                if (app == null) {
+                    return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "当前记录不存在或已被删除，请刷新后重试！");
+                }
+            }
+
             int num = appDOMapper.deleteByPrimaryKey(id);
 
             if (num > 0) {
@@ -101,24 +108,9 @@ public class AppCPTImpl extends BaseCPT implements IAppService {
                     return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "当前记录不存在或已被删除，请刷新后重试！");
                 }
             }
-            if (StringUtils.isBlank(appDO.getName())) {
-                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg() + "[name]");
-            }
-            if (StringUtils.isBlank(appDO.getPackageName())) {
-                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg() + "[packageName]");
-            }
-            if (StringUtils.isBlank(appDO.getType())) {
-                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg() + "[type]");
-            }
-            if (StringUtils.isBlank(appDO.getVersion())) {
-                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg() + "[version]");
-            }
 
-            AppDO app = new AppDO();
-            app.setPackageName(appDO.getPackageName());
-            app.setType(appDO.getType());
-            app.setVersion(appDO.getVersion());
-            List<AppDO> appList = appDOMapper.selectApp(app);
+            List<AppDO> appList = appDOMapper.checkRepeat(appDO);
+
             if (appList.size() > 0) {
                 return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "相同类型和版本的APP已存在，请修改部分信息后重试！");
             }

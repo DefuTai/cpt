@@ -17,6 +17,8 @@ public class AppDO {
 
     private Byte isValid;
 
+    private String packageAddress;
+
     private String createTime;
 
     private String modifyTime;
@@ -75,6 +77,14 @@ public class AppDO {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks == null ? null : remarks.trim();
+    }
+
+    public String getPackageAddress() {
+        return packageAddress;
+    }
+
+    public void setPackageAddress(String packageAddress) {
+        this.packageAddress = packageAddress;
     }
 
     public Byte getIsValid() {

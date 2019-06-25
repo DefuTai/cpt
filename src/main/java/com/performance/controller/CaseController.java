@@ -1,8 +1,7 @@
 package com.performance.controller;
 
-import com.performance.pojo.AppDO;
-import com.performance.services.IAppService;
-import com.performance.utils.BaseCPT;
+import com.performance.pojo.CaseDO;
+import com.performance.services.ICaseService;
 import com.performance.utils.Result;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,36 +11,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 创建时间: 2019/6/17 上午11:23
+ * 创建时间: 2019/6/24 下午10:37
  * 类描述:
  *
  * @author lianyu
  */
 @RestController
-@RequestMapping("/cpt/app")
-public class AppController extends BaseCPT {
+@RequestMapping("/cpt/case")
+public class CaseController {
 
     @Autowired
-    IAppService appService;
+    ICaseService caseService;
 
     @PostMapping("/list")
-    public Result queryAppList(AppDO appDO) {
-        return appService.queryAppList(appDO);
+    public Result queryAppList(CaseDO caseDO) {
+        return caseService.queryCaseList(caseDO);
     }
 
     @PostMapping("/add")
-    public Result addApp(AppDO appDO) {
-        return appService.addApp(appDO);
+    public Result addApp(CaseDO caseDO) {
+        return caseService.addCase(caseDO);
     }
 
     @GetMapping("/remove")
     public Result removeApp(@Param("id") Long id) {
-        return appService.removeApp(id);
+        return caseService.removeCase(id);
     }
 
     @PostMapping("/modify")
-    public Result modifyApp(AppDO appDO) {
-        return appService.modifyApp(appDO);
+    public Result modifyApp(CaseDO caseDO) {
+        return caseService.modifyCase(caseDO);
     }
 
 }

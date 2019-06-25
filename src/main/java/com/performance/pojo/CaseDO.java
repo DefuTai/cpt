@@ -15,6 +15,10 @@ public class CaseDO {
 
     private String desiredResult;
 
+    private String creator;
+
+    private String updater;
+
     private String remarks;
 
     private Byte isValid;
@@ -77,6 +81,22 @@ public class CaseDO {
 
     public void setDesiredResult(String desiredResult) {
         this.desiredResult = desiredResult == null ? null : desiredResult.trim();
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
     }
 
     public String getRemarks() {

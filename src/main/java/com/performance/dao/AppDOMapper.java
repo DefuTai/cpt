@@ -35,6 +35,14 @@ public interface AppDOMapper {
     int selectAppCount(AppDO appDO);
 
     /**
+     * 校验是否存在重复记录
+     *
+     * @param appDO
+     * @return
+     */
+    List<AppDO> checkRepeat(AppDO appDO);
+
+    /**
      * 添加APP
      *
      * @param record
