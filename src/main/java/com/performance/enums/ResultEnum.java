@@ -11,7 +11,7 @@ public enum ResultEnum {
     SUCCESS("1000", "成功"),
 
     ERROR_UNKNOWN("0000", "系统异常"),
-    ERROR_LACK_BUSINESS_PARAMETERS("2001", "缺少业务参数"),
+    ERROR_LACK_BUSINESS_PARAMETERS("2001", "不能为空"),
 
     ERROR_CUSTOM("6666", "自定义异常");
 

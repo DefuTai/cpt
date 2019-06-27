@@ -49,16 +49,16 @@ public class AppServiceImpl extends BaseCPT implements IAppService {
     public Result addApp(AppDO appDO) {
         try {
             if (StringUtils.isBlank(appDO.getName())) {
-                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg() + "[name]");
+                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "[name]" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
             }
             if (StringUtils.isBlank(appDO.getPackageName())) {
-                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg() + "[packageName]");
+                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "[packageName]" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
             }
             if (StringUtils.isBlank(appDO.getType())) {
-                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg() + "[type]");
+                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "[type]" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
             }
             if (StringUtils.isBlank(appDO.getVersion())) {
-                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg() + "[version]");
+                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "[version]" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
             }
 
             appDO.setId(Long.valueOf(UuidUtil.getUuid()));

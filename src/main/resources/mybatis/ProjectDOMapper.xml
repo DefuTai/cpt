@@ -1,141 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.performance.dao.ProjectDOMapper">
-  <resultMap id="BaseResultMap" type="com.performance.pojo.ProjectDO">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="tester" jdbcType="VARCHAR" property="tester" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
-    <result column="end_time" jdbcType="VARCHAR" property="endTime" />
-    <result column="is_valid" jdbcType="TINYINT" property="isValid" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="modify_time" jdbcType="VARCHAR" property="modifyTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
+
+    <resultMap id="BaseResultMap" type="com.performance.pojo.ProjectDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="tester" jdbcType="VARCHAR" property="tester"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="start_time" jdbcType="VARCHAR" property="startTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+        <result column="is_valid" jdbcType="TINYINT" property="isValid"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="modify_time" jdbcType="VARCHAR" property="modifyTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
     id, name, tester, status, start_time, end_time, is_valid, create_time, modify_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from project
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from project
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.performance.pojo.ProjectDO">
-    insert into project (id, name, tester, 
-      status, start_time, end_time, 
-      is_valid, create_time, modify_time
-      )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{tester,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, 
-      #{isValid,jdbcType=TINYINT}, #{createTime,jdbcType=VARCHAR}, #{modifyTime,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.performance.pojo.ProjectDO">
-    insert into project
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="tester != null">
-        tester,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="startTime != null">
-        start_time,
-      </if>
-      <if test="endTime != null">
-        end_time,
-      </if>
-      <if test="isValid != null">
-        is_valid,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="tester != null">
-        #{tester,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="startTime != null">
-        #{startTime,jdbcType=VARCHAR},
-      </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=VARCHAR},
-      </if>
-      <if test="isValid != null">
-        #{isValid,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.ProjectDO">
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from project
+        where id = #{id,jdbcType=BIGINT}
+        and is_valid = 1
+    </select>
+
+    <select id="selectProject" parameterType="com.performance.vo.ProjectVO" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from project
+        where is_valid = 1
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="name != null">
+            and name like concat('%',concat(#{name,jdbcType=VARCHAR},'%'))
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="startTime != null">
+            and start_time &gt;= #{startTime,jdbcType=VARCHAR}
+        </if>
+        <if test="endTime != null">
+            and end_time &lt;= #{endTime,jdbcType=VARCHAR}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="selectProjectCount" parameterType="com.performance.vo.ProjectVO" resultType="int">
+        select
+        COUNT (1)
+        from project
+        where is_valid = 1
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="name != null">
+            and name like concat('%',concat(#{name,jdbcType=VARCHAR},'%'))
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="startTime != null">
+            and start_time &gt;= #{startTime,jdbcType=VARCHAR}
+        </if>
+        <if test="endTime != null">
+            and end_time &lt;= #{endTime,jdbcType=VARCHAR}
+        </if>
+        order by create_time desc
+    </select>
+
+    <insert id="insertSelective" parameterType="com.performance.pojo.ProjectDO">
+        insert into project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="tester != null">
+                tester,
+            </if>
+            <if test="status == null">
+                status,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="isValid == null">
+                is_valid,
+            </if>
+            <if test="createTime == null">
+                create_time,
+            </if>
+            <if test="modifyTime == null">
+                modify_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="tester != null">
+                #{tester,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                0,
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                1,
+            </if>
+            <if test="createTime != null">
+                NOW(),
+            </if>
+            <if test="modifyTime != null">
+                NOW(),
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.ProjectDO">
+        update project
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="tester != null">
+                tester = #{tester,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = NOW(),
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
     update project
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="tester != null">
-        tester = #{tester,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="startTime != null">
-        start_time = #{startTime,jdbcType=VARCHAR},
-      </if>
-      <if test="endTime != null">
-        end_time = #{endTime,jdbcType=VARCHAR},
-      </if>
-      <if test="isValid != null">
-        is_valid = #{isValid,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=VARCHAR},
-      </if>
-    </set>
+    set is_valid = 0,
+    modify_time = NOW()
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.performance.pojo.ProjectDO">
-    update project
-    set name = #{name,jdbcType=VARCHAR},
-      tester = #{tester,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
-      start_time = #{startTime,jdbcType=VARCHAR},
-      end_time = #{endTime,jdbcType=VARCHAR},
-      is_valid = #{isValid,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      modify_time = #{modifyTime,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
 </mapper>
