@@ -5,7 +5,7 @@ public class DevicesDO {
 
     private String deviceName;
 
-    private byte[] systemType;
+    private int systemType;
 
     private String systemVersion;
 
@@ -51,11 +51,11 @@ public class DevicesDO {
         this.deviceName = deviceName == null ? null : deviceName.trim();
     }
 
-    public byte[] getSystemType() {
+    public int getSystemType() {
         return systemType;
     }
 
-    public void setSystemType(byte[] systemType) {
+    public void setSystemType(int systemType) {
         this.systemType = systemType;
     }
 

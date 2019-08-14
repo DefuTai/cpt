@@ -50,7 +50,7 @@ public class ConstAdb {
     //获取设备mac地址
     private static final String MAC_ADDRESS = getAdbPath() + "shell cat /sys/class/net/wlan0/address";
     //获取设备内存信息
-    private static final String DEVICES_MEMINFO = getAdbPath() + "shell cat /proc/meminfo";
+    private static final String MEMINFO = getAdbPath() + "shell cat /proc/meminfo";
     //获取设备分辨率
     private static final String RESOLUTION = getAdbPath() + "shell dumpsys window | grep mUnrestrictedScreen";
 
@@ -94,11 +94,11 @@ public class ConstAdb {
         return String.format(MAC_ADDRESS, getDesignatedDevice(ip));
     }
 
-    public static String getDevicesMeminfo(String ip) {
-        return String.format(DEVICES_MEMINFO, getDesignatedDevice(ip));
+    public static String getMeminfo(String ip) {
+        return String.format(MEMINFO, getDesignatedDevice(ip));
     }
 
-    public static String getRESOLUTION(String ip) {
+    public static String getResolution(String ip) {
         return String.format(RESOLUTION, getDesignatedDevice(ip));
     }
 

@@ -2,6 +2,7 @@ package com.performance.controller;
 
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.DevicesDO;
+import com.performance.services.IDevicesService;
 import com.performance.utils.BaseCPT;
 import com.performance.utils.ConstAdb;
 import com.performance.utils.Result;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +32,9 @@ public class DevicesController extends BaseCPT {
 
     private static final Logger logger = LoggerFactory.getLogger(DevicesController.class);
 
+    @Autowired
+    IDevicesService devicesService;
+
     @PostMapping("/add")
     public Result addDevices(@Param("deviceName") String deviceName, @Param("ip") String ip) {
         if (StringUtils.isEmpty(deviceName) || StringUtils.isEmpty(ip)) {
@@ -41,30 +46,52 @@ public class DevicesController extends BaseCPT {
 
         DevicesDO devices = new DevicesDO();
         devices.setDeviceName(deviceName);
+        devices.setSystemType(1);
+        devices.setIp(ip);
 
         Process process;
         BufferedReader br;
-        String Result;
+        String content;
         try {
             process = Runtime.getRuntime().exec(ConstAdb.getConnect(ip));
             br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((Result = br.readLine()) != null) {
-                if (Result.contains("connected to")) {
+            while ((content = br.readLine()) != null) {
+                if (content.contains("connected to")) {
                     logger.info("ADB CONNECT连接成功！");
                 }
             }
             process = Runtime.getRuntime().exec(ConstAdb.getDevices());
             br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((Result = br.readLine()) != null) {
-                if (Result.contains(ip) && Result.contains("device")) {
+            while ((content = br.readLine()) != null) {
+                if (content.contains(ip) && content.contains("device")) {
                     logger.info("设备[" + ip + "]连接成功！");
                 }
             }
-
+            process = Runtime.getRuntime().exec(ConstAdb.getProductSystemVersion(ip));
+            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+            while ((content = br.readLine()) != null) {
+                devices.setSystemVersion(content);
+            }
+            process = Runtime.getRuntime().exec(ConstAdb.getMacAddress(ip));
+            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+            while ((content = br.readLine()) != null) {
+                devices.setMacAddress(content);
+            }
+            process = Runtime.getRuntime().exec(ConstAdb.getResolution(ip));
+            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+            while ((content = br.readLine()) != null) {
+                devices.setResolution(content);
+            }
+            process = Runtime.getRuntime().exec(ConstAdb.getMeminfo(ip));
+            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+            while ((content = br.readLine()) != null) {
+                devices.setRam(content.split("\\s+")[1]);
+            }
+            result = devicesService.addDevices(devices);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
     private static boolean ipCheck(String str) {

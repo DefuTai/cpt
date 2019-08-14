@@ -1,7 +1,11 @@
 package com.performance.dao;
 
 import com.performance.pojo.DevicesDO;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+@Mapper
+@Repository
 public interface DevicesDOMapper {
     int deleteByPrimaryKey(Long id);
 
