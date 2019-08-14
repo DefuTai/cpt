@@ -17,6 +17,8 @@ public class DevicesDO {
 
     private String network;
 
+    private String ip;
+
     private String macAddress;
 
     private Byte isValid;
@@ -95,6 +97,14 @@ public class DevicesDO {
 
     public void setNetwork(String network) {
         this.network = network == null ? null : network.trim();
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public String getMacAddress() {
