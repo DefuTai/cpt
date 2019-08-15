@@ -6,6 +6,7 @@ import com.performance.pojo.DevicesDO;
 import com.performance.services.IDevicesService;
 import com.performance.utils.BaseCPT;
 import com.performance.utils.Result;
+import com.performance.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,10 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     public Result addDevices(DevicesDO devicesDO) {
         //TODO 添加属性校验
         try {
-            //TODO 底层SQL待修改
+            devicesDO.setId(Long.valueOf(UuidUtil.getUuid()));
+
             int num = devicesDOMapper.insert(devicesDO);
+
             if (num > 0) {
                 result = resultUtil.success();
             }

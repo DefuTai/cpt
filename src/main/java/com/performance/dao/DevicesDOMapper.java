@@ -9,6 +9,12 @@ import org.springframework.stereotype.Repository;
 public interface DevicesDOMapper {
     int deleteByPrimaryKey(Long id);
 
+    /**
+     * 添加设备
+     *
+     * @param record
+     * @return
+     */
     int insert(DevicesDO record);
 
     int insertSelective(DevicesDO record);

@@ -4,6 +4,7 @@ import com.performance.enums.ResultEnum;
 import com.performance.pojo.DevicesDO;
 import com.performance.services.IDevicesService;
 import com.performance.utils.BaseCPT;
+import com.performance.utils.CheckUtils;
 import com.performance.utils.ConstAdb;
 import com.performance.utils.Result;
 import org.apache.commons.lang3.StringUtils;
@@ -40,84 +41,47 @@ public class DevicesController extends BaseCPT {
         if (StringUtils.isEmpty(deviceName) || StringUtils.isEmpty(ip)) {
             return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "设备名称或IP" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
         }
-        if (!ipCheck(ip)) {
+        if (!CheckUtils.ipCheck(ip)) {
             return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "IP地址不合法");
         }
+
+        //通过adb connect ip连接设备
+        ConstAdb.getConnect(ip);
 
         DevicesDO devices = new DevicesDO();
         devices.setDeviceName(deviceName);
         devices.setSystemType(1);
         devices.setIp(ip);
+        devices.setConnectStatus(ConstAdb.getSTATE(ip));
+        devices.setSystemVersion(ConstAdb.getProductSystemVersion(ip));
+        devices.setMacAddress(ConstAdb.getMacAddress(ip));
+        devices.setBrand(ConstAdb.getProductBrand(ip));
+        devices.setResolution(ConstAdb.getResolution(ip).split(": ")[1].split("\n")[0]);
+        devices.setRam(ConstAdb.getMeminfo(ip).split("\n")[0].split("        ")[1].split(" ")[0]);
+        //TODO 信息待完善
+        devices.setProcessor("");
+        devices.setCore("");
+        devices.setNetwork("");
 
-        Process process;
-        BufferedReader br;
-        String content;
-        try {
-            process = Runtime.getRuntime().exec(ConstAdb.getConnect(ip));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((content = br.readLine()) != null) {
-                if (content.contains("connected to")) {
-                    logger.info("ADB CONNECT连接成功！");
-                }
-            }
-            process = Runtime.getRuntime().exec(ConstAdb.getDevices());
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((content = br.readLine()) != null) {
-                if (content.contains(ip) && content.contains("device")) {
-                    logger.info("设备[" + ip + "]连接成功！");
-                }
-            }
-            process = Runtime.getRuntime().exec(ConstAdb.getProductSystemVersion(ip));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((content = br.readLine()) != null) {
-                devices.setSystemVersion(content);
-            }
-            process = Runtime.getRuntime().exec(ConstAdb.getMacAddress(ip));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((content = br.readLine()) != null) {
-                devices.setMacAddress(content);
-            }
-            process = Runtime.getRuntime().exec(ConstAdb.getResolution(ip));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((content = br.readLine()) != null) {
-                devices.setResolution(content);
-            }
-            process = Runtime.getRuntime().exec(ConstAdb.getMeminfo(ip));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((content = br.readLine()) != null) {
-                devices.setRam(content.split("\\s+")[1]);
-            }
-            result = devicesService.addDevices(devices);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    private static boolean ipCheck(String str) {
-        if (str != null && !str.isEmpty()) {
-            // 定义正则表达式
-            String regex = "^([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}$";
-            if (str.matches(regex)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
+        return devicesService.addDevices(devices);
     }
 
     public static void main(String[] args) {
-        System.out.println(ipCheck("10.1.130.59"));
-        System.out.println(ipCheck("192.68.0.1"));
-        System.out.println(ipCheck("255.255.255.255"));
-        System.out.println(ipCheck("256.255.255.255"));
-        System.out.println(ipCheck("255.256.255.255"));
-        System.out.println(ipCheck("255.255.256.255"));
-        System.out.println(ipCheck("255.255.255.256"));
-        System.out.println(ipCheck("0.0.0.0"));
-        System.out.println(ipCheck("0.68.0.1"));
-        System.out.println(ipCheck("test"));
+        Process process;
+        BufferedReader br;
+        String content;
+
+        try {
+            process = Runtime.getRuntime().exec(ConstAdb.getResolution(""));
+            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+            while ((content = br.readLine()) != null) {
+                logger.info("xxx" + content);
+                logger.info(content.split("x")[1]);
+                break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

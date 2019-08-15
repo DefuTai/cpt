@@ -38,15 +38,14 @@
     insert into devices (id, device_name, system_type, 
       system_version, processor, core, 
       ram, network, ip, mac_address,
-      is_valid, brand, resolution, 
-      connect_status, use_status, create_time, 
+      brand, resolution, connect_status,
+      use_status, is_valid, create_time,
       modify_time)
     values (#{id,jdbcType=BIGINT}, #{deviceName,jdbcType=VARCHAR}, #{systemType,jdbcType=BIT}, 
       #{systemVersion,jdbcType=VARCHAR}, #{processor,jdbcType=VARCHAR}, #{core,jdbcType=VARCHAR}, 
       #{ram,jdbcType=VARCHAR}, #{network,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{macAddress,jdbcType=VARCHAR},
-      #{isValid,jdbcType=TINYINT}, #{brand,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, 
-      #{connectStatus,jdbcType=VARCHAR}, #{useStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
-      #{modifyTime,jdbcType=VARCHAR})
+      #{brand,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, #{connectStatus,jdbcType=VARCHAR},
+      #{useStatus,jdbcType=VARCHAR}, 1, NOW(), NOW())
   </insert>
     <insert id="insertSelective" parameterType="com.performance.pojo.DevicesDO">
         insert into devices
