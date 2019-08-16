@@ -7,6 +7,7 @@ import com.performance.utils.BaseCPT;
 import com.performance.utils.CheckUtils;
 import com.performance.utils.ConstAdb;
 import com.performance.utils.Result;
+import com.performance.utils.adbtools.DeviceInfomation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -46,21 +47,24 @@ public class DevicesController extends BaseCPT {
         }
 
         //通过adb connect ip连接设备
-        ConstAdb.getConnect(ip);
+        String adbConn = ConstAdb.getConnect(ip);
+        if (!adbConn.isEmpty() && adbConn.contains("connected to " + ip + ":5555")) {
+            return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "ADB连接失败，请检查IP地址是否正确");
+        }
 
         DevicesDO devices = new DevicesDO();
         devices.setDeviceName(deviceName);
         devices.setSystemType(1);
         devices.setIp(ip);
-        devices.setConnectStatus(ConstAdb.getSTATE(ip));
-        devices.setSystemVersion(ConstAdb.getProductSystemVersion(ip));
-        devices.setMacAddress(ConstAdb.getMacAddress(ip));
-        devices.setBrand(ConstAdb.getProductBrand(ip));
-        devices.setResolution(ConstAdb.getResolution(ip).split(": ")[1].split("\n")[0]);
-        devices.setRam(ConstAdb.getMeminfo(ip).split("\n")[0].split("        ")[1].split(" ")[0]);
+        devices.setConnectStatus(DeviceInfomation.getSTATE(ip));
+        devices.setSystemVersion(DeviceInfomation.getProductSystemVersion(ip));
+        devices.setMacAddress(DeviceInfomation.getMacAddress(ip));
+        devices.setBrand(DeviceInfomation.getProductBrand(ip));
+        devices.setResolution(DeviceInfomation.getResolution(ip).split(": ")[1].split("\n")[0]);
+        devices.setRam(DeviceInfomation.getMeminfo(ip).split("\n")[0].split("        ")[1].split(" ")[0]);
+        devices.setCore(String.valueOf(DeviceInfomation.getCpuCore(ip)));
         //TODO 信息待完善
         devices.setProcessor("");
-        devices.setCore("");
         devices.setNetwork("");
 
         return devicesService.addDevices(devices);

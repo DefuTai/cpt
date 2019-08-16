@@ -17,6 +17,7 @@ import java.util.Map;
  * @Data 2019-08-12 12:11
  * @Version 1.0
  **/
+@Deprecated
 public class ConstAdb {
 
     private static final Logger logger = LoggerFactory.getLogger(ConstAdb.class);
@@ -25,9 +26,9 @@ public class ConstAdb {
     private static BufferedReader br;
     private static String Result;
 
-    private static final String ADB_PATH_FOR_MAC = "./src/main/resources/adb/Mac/adb ";
-    private static final String ADB_PATH_FOR_UNIX = "./src/main/resources/adb/Unix/adb ";
-    private static final String ADB_PATH_FOR_WIN = "./src/main/resources/adb/Win/adb.exe ";
+    private static final String ADB_PATH_FOR_MAC = "./src/main/resources/adbtools/Mac/adbtools ";
+    private static final String ADB_PATH_FOR_UNIX = "./src/main/resources/adbtools/Unix/adbtools ";
+    private static final String ADB_PATH_FOR_WIN = "./src/main/resources/adbtools/Win/adbtools.exe ";
 
     private static String getAdbPath() {
         switch (OSInfo.getOSName()) {
@@ -74,7 +75,7 @@ public class ConstAdb {
     private static final String IP = getAdbPath() + "shell getprop dhcp.wlan0.ipaddress";
 
     //获取设备分辨率
-//    private static final String RESOLUTION = getAdbPath() + "shell dumpsys window | grep mUnrestrictedScreen";
+    //private static final String RESOLUTION = getAdbPath() + "shell dumpsys window | grep mUnrestrictedScreen";
     private static final String RESOLUTION = getAdbPath() + "shell wm size";
     //获取设备内存信息
     private static final String MEMINFO = getAdbPath() + "shell cat /proc/meminfo";
@@ -83,31 +84,19 @@ public class ConstAdb {
     //获取设备CPU最大频率
     private static final String CPUINFO_MAX_FREQ = getAdbPath() + "shell cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq";
 
-/************************************************* GET **************************************************/
+    //列出目录下的文件和文件夹
+    private static final String LS_FOLDER_LIST = getAdbPath() + "shell ls /sys/devices/system/cpu";
 
-    /**
-     * 拼接指定设备参数
-     *
-     * @param identity
-     * @return
-     */
-    public static String getDesignatedDevice(String identity) {
-        if (identity.isEmpty()) {
-            return "";
-        } else if (CheckUtils.ipCheck(identity)) {
-            return String.format("-s %s:5555 ", identity);
-        } else {
-            return String.format("-s %s ", identity);
-        }
-//        return StringUtils.isNotEmpty(identity) ? String.format(DESIGNATED_DEVICE, identity) : "";
-    }
+    /******************************************************************************************************************/
+    /*************************************************** PUBLIC方法 ****************************************************/
+    /******************************************************************************************************************/
 
     /**
      * 重启adb服务
      */
     public static void getStartServer() {
         try {
-            process = Runtime.getRuntime().exec(String.format(REBOOT, getDesignatedDevice(START_SERVER)));
+            process = Runtime.getRuntime().exec(String.format(REBOOT, splitSerialNumber(START_SERVER)));
         } catch (IOException e) {
             logger.error("重启adb服务异常：", e);
             e.printStackTrace();
@@ -119,7 +108,7 @@ public class ConstAdb {
      */
     public static void getKillServer() {
         try {
-            process = Runtime.getRuntime().exec(String.format(REBOOT, getDesignatedDevice(KILL_SERVER)));
+            process = Runtime.getRuntime().exec(String.format(REBOOT, splitSerialNumber(KILL_SERVER)));
         } catch (IOException e) {
             logger.error("终止adb服务异常：", e);
             e.printStackTrace();
@@ -129,11 +118,11 @@ public class ConstAdb {
     /**
      * 重启设备
      *
-     * @param identity 设备标识（ip和序列号都行）
+     * @param sn 设备标识（ip和序列号都行）
      */
-    public static void getReboot(String identity) {
+    public static void getReboot(String sn) {
         try {
-            process = Runtime.getRuntime().exec(String.format(REBOOT, getDesignatedDevice(identity)));
+            process = Runtime.getRuntime().exec(String.format(REBOOT, splitSerialNumber(sn)));
         } catch (IOException e) {
             logger.error("重启设备异常：", e);
             e.printStackTrace();
@@ -155,7 +144,7 @@ public class ConstAdb {
                 sb.append(Result + "\n");
             }
         } catch (IOException e) {
-            logger.error("adb connect命令执行异常：", e);
+            logger.error("adbtools connect命令执行异常：", e);
         }
         return sb.toString();
     }
@@ -193,230 +182,168 @@ public class ConstAdb {
      *
      * @return
      */
-    public static String getSTATE(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(STATE, identity));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getSTATE(String sn) {
+        return getDeviceInfo(STATE, sn);
     }
 
     /**
      * 获取设备信息
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getProductInfo(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(PRODUCT_INFO, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getProductInfo(String sn) {
+        return getDeviceInfo(PRODUCT_INFO, sn);
     }
 
     /**
      * 获取设备系统版本
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getProductSystemVersion(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(PRODUCT_SYSTEM_VERSION, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getProductSystemVersion(String sn) {
+        return getDeviceInfo(PRODUCT_SYSTEM_VERSION, sn);
     }
 
     /**
      * 获取设备系统api版本
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getProductSystemApiVersion(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(PRODUCT_SYSTEM_API_VERSION, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getProductSystemApiVersion(String sn) {
+        return getDeviceInfo(PRODUCT_SYSTEM_API_VERSION, sn);
     }
 
     /**
      * 获取设备型号
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getProductModel(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(PRODUCT_MODEL, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getProductModel(String sn) {
+        return getDeviceInfo(PRODUCT_MODEL, sn);
     }
 
     /**
      * 获取设备厂商
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getProductBrand(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(PRODUCT_BRAND, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getProductBrand(String sn) {
+        return getDeviceInfo(PRODUCT_BRAND, sn);
     }
 
     /**
      * 获取设备序列号
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getSERIALNO(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(SERIALNO, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getSERIALNO(String sn) {
+        return getDeviceInfo(SERIALNO, sn);
     }
 
     /**
      * 获取设备mac地址
      *
-     * @param serialno
+     * @param sn
      * @return
      */
-    public static String getMacAddress(String serialno) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(MAC_ADDRESS, getDesignatedDevice(serialno)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getMacAddress(String sn) {
+        return getDeviceInfo(MAC_ADDRESS, sn);
     }
 
     /**
      * 获取IP地址
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getIp(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(IP, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getIp(String sn) {
+        return getDeviceInfo(IP, sn);
     }
 
     /**
      * 获取设备内存信息
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getMeminfo(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(MEMINFO, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getMeminfo(String sn) {
+        return getDeviceInfo(MEMINFO, sn);
     }
 
     /**
      * 获取设备分辨率
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getResolution(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(RESOLUTION, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
-        }
-        return sb.toString();
+    public static String getResolution(String sn) {
+        return getDeviceInfo(RESOLUTION, sn);
     }
 
     /**
      * 获取设备CPU最小频率
      *
-     * @param identity
+     * @param sn
      * @return
      */
-    public static String getCpuinfoMinFreq(String identity) {
+    public static String getCpuinfoMinFreq(String sn) {
+        return getDeviceInfo(CPUINFO_MIN_FREQ, sn);
+    }
+
+    /**
+     * 获取设备CPU最大频率
+     *
+     * @param sn
+     * @return
+     */
+    public static String getCpuinfoMaxFreq(String sn) {
+        return getDeviceInfo(CPUINFO_MAX_FREQ, sn);
+    }
+
+    /**
+     * 获取CPU核数
+     *
+     * @param sn
+     * @return
+     */
+    public static int getCpuCore(String sn) {
+        int core = 0;
+        try {
+            process = Runtime.getRuntime().exec(String.format(LS_FOLDER_LIST, splitSerialNumber(sn)));
+            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
+            String regex = "^cpu\\d{1,2}$";
+            while (StringUtils.isNotEmpty(Result = br.readLine())) {
+                if (Result.matches(regex)) {
+                    core++;
+                }
+            }
+        } catch (IOException e) {
+            logger.error("adb命令执行异常：", e);
+        }
+        return core;
+    }
+
+    /******************************************************************************************************************/
+    /************************************************** PRIVATE方法 ***************************************************/
+    /******************************************************************************************************************/
+
+    /**
+     * 执行adb命令，并返回执行结果
+     *
+     * @param adbCommand adb命令
+     * @param sn   设备标识（ip、序列号均可）
+     * @return
+     */
+    private static String getDeviceInfo(String adbCommand, String sn) {
         StringBuilder sb = new StringBuilder();
         try {
-            process = Runtime.getRuntime().exec(String.format(CPUINFO_MIN_FREQ, getDesignatedDevice(identity)));
+            process = Runtime.getRuntime().exec(String.format(adbCommand, splitSerialNumber(sn)));
             br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
             while (StringUtils.isNotEmpty(Result = br.readLine())) {
                 sb.append(Result + "\n");
@@ -428,32 +355,24 @@ public class ConstAdb {
     }
 
     /**
-     * 获取设备CPU最大频率
+     * 指定目标设备（"-s ip:port" or "-s 序列号"）
      *
-     * @param identity
+     * @param sn serialNumber
      * @return
      */
-    public static String getCpuinfoMaxFreq(String identity) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            process = Runtime.getRuntime().exec(String.format(CPUINFO_MAX_FREQ, getDesignatedDevice(identity)));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
-            while (StringUtils.isNotEmpty(Result = br.readLine())) {
-                sb.append(Result + "\n");
-            }
-        } catch (IOException e) {
-            logger.error("adb命令执行异常：", e);
+    private static String splitSerialNumber(String sn) {
+        if (sn.isEmpty()) {
+            return "";
+        } else if (CheckUtils.ipCheck(sn)) {
+            return String.format("-s %s:5555 ", sn);
+        } else {
+            return String.format("-s %s ", sn);
         }
-        return sb.toString();
     }
 
     public static void main(String[] args) {
-        String ip = "92d2f6b1";
-        System.out.println("STATE -> " + getSTATE(ip));
-        System.out.println("SYSTEM_VERSION -> " + getProductSystemVersion(ip));
-        System.out.println("MAC_ADDRESS -> " + getMacAddress(ip));
-        System.out.println("RESOLUTION -> " + getResolution(ip).split(": ")[1].split("\n")[0]);
-        System.out.println("MEMINFO -> " + getMeminfo(ip).split("\n")[0].split("        ")[1].split(" ")[0]);
+        System.out.println(getSTATE("10.1.130.59"));
+        System.out.println(getSTATE("CNDFP616120500002895"));
     }
 
 }
