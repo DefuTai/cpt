@@ -5,8 +5,8 @@ import com.performance.pojo.DevicesDO;
 import com.performance.services.IDevicesService;
 import com.performance.utils.BaseCPT;
 import com.performance.utils.CheckUtils;
-import com.performance.utils.ConstAdb;
 import com.performance.utils.Result;
+import com.performance.utils.adbtools.DeviceConnectManage;
 import com.performance.utils.adbtools.DeviceInfomation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -16,10 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * 描述：
@@ -47,8 +43,8 @@ public class DevicesController extends BaseCPT {
         }
 
         //通过adb connect ip连接设备
-        String adbConn = ConstAdb.getConnect(ip);
-        if (!adbConn.isEmpty() && adbConn.contains("connected to " + ip + ":5555")) {
+        String adbConn = DeviceConnectManage.getConnect(ip);
+        if (adbConn.isEmpty() || !adbConn.contains("connected to " + ip + ":5555")) {
             return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "ADB连接失败，请检查IP地址是否正确");
         }
 
@@ -62,30 +58,10 @@ public class DevicesController extends BaseCPT {
         devices.setBrand(DeviceInfomation.getProductBrand(ip));
         devices.setResolution(DeviceInfomation.getResolution(ip).split(": ")[1].split("\n")[0]);
         devices.setRam(DeviceInfomation.getMeminfo(ip).split("\n")[0].split("        ")[1].split(" ")[0]);
-        devices.setCore(String.valueOf(DeviceInfomation.getCpuCore(ip)));
-        //TODO 信息待完善
-        devices.setProcessor("");
-        devices.setNetwork("");
+        devices.setCore(Integer.valueOf(String.valueOf(DeviceInfomation.getCpuCore(ip))));
+        devices.setModel(DeviceInfomation.getProductModel(ip));
 
         return devicesService.addDevices(devices);
-    }
-
-    public static void main(String[] args) {
-        Process process;
-        BufferedReader br;
-        String content;
-
-        try {
-            process = Runtime.getRuntime().exec(ConstAdb.getResolution(""));
-            br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-            while ((content = br.readLine()) != null) {
-                logger.info("xxx" + content);
-                logger.info(content.split("x")[1]);
-                break;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }

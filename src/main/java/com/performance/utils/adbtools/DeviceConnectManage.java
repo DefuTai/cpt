@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 描述：设备连接管理
@@ -68,7 +70,7 @@ public class DeviceConnectManage extends Adb {
                 sb.append(Result + "\n");
             }
         } catch (IOException e) {
-            logger.error("adbtools connect命令执行异常：", e);
+            logger.error("adb connect命令执行异常：", e);
         }
         return sb.toString();
     }

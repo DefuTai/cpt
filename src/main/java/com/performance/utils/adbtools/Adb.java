@@ -1,7 +1,6 @@
 package com.performance.utils.adbtools;
 
 import com.performance.utils.CheckUtils;
-import com.performance.utils.ConstAdb;
 import com.performance.utils.OSInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ import java.io.InputStreamReader;
  **/
 public class Adb {
 
-    protected static final Logger logger = LoggerFactory.getLogger(ConstAdb.class);
+    protected static final Logger logger = LoggerFactory.getLogger(Adb.class);
 
     protected static Process process;
     protected static BufferedReader br;

@@ -4,25 +4,25 @@
     <resultMap id="BaseResultMap" type="com.performance.pojo.DevicesDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
-        <result column="system_type" jdbcType="BIT" property="systemType"/>
+        <result column="system_type" jdbcType="TINYINT" property="systemType"/>
         <result column="system_version" jdbcType="VARCHAR" property="systemVersion"/>
-        <result column="processor" jdbcType="VARCHAR" property="processor"/>
-        <result column="core" jdbcType="VARCHAR" property="core"/>
+        <result column="core" jdbcType="TINYINT" property="core"/>
         <result column="ram" jdbcType="VARCHAR" property="ram"/>
-        <result column="network" jdbcType="VARCHAR" property="network"/>
+        <result column="network" jdbcType="TINYINT" property="network"/>
         <result column="ip" jdbcType="VARCHAR" property="ip"/>
         <result column="mac_address" jdbcType="VARCHAR" property="macAddress"/>
-        <result column="is_valid" jdbcType="TINYINT" property="isValid"/>
         <result column="brand" jdbcType="VARCHAR" property="brand"/>
+        <result column="model" jdbcType="VARCHAR" property="model"/>
         <result column="resolution" jdbcType="VARCHAR" property="resolution"/>
-        <result column="connect_status" jdbcType="VARCHAR" property="connectStatus"/>
-        <result column="use_status" jdbcType="VARCHAR" property="useStatus"/>
+        <result column="connect_status" jdbcType="TINYINT" property="connectStatus"/>
+        <result column="use_status" jdbcType="TINYINT" property="useStatus"/>
+        <result column="is_valid" jdbcType="TINYINT" property="isValid"/>
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
         <result column="modify_time" jdbcType="VARCHAR" property="modifyTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, device_name, system_type, system_version, processor, core, ram, network, ip, mac_address,
-    is_valid, brand, resolution, connect_status, use_status, create_time, modify_time
+    id, device_name, system_type, system_version, core, ram, network, ip, mac_address,
+    is_valid, brand, model, resolution, connect_status, use_status, create_time, modify_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -36,16 +36,15 @@
   </delete>
     <insert id="insert" parameterType="com.performance.pojo.DevicesDO">
     insert into devices (id, device_name, system_type, 
-      system_version, processor, core, 
+      system_version, core,
       ram, network, ip, mac_address,
-      brand, resolution, connect_status,
+      brand, model, resolution, connect_status,
       use_status, is_valid, create_time,
       modify_time)
-    values (#{id,jdbcType=BIGINT}, #{deviceName,jdbcType=VARCHAR}, #{systemType,jdbcType=BIT}, 
-      #{systemVersion,jdbcType=VARCHAR}, #{processor,jdbcType=VARCHAR}, #{core,jdbcType=VARCHAR}, 
-      #{ram,jdbcType=VARCHAR}, #{network,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{macAddress,jdbcType=VARCHAR},
-      #{brand,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, #{connectStatus,jdbcType=VARCHAR},
-      #{useStatus,jdbcType=VARCHAR}, 1, NOW(), NOW())
+    values (#{id,jdbcType=BIGINT}, #{deviceName,jdbcType=VARCHAR}, #{systemType,jdbcType=TINYINT},
+      #{systemVersion,jdbcType=VARCHAR}, #{core,jdbcType=TINYINT}, #{ram,jdbcType=VARCHAR}, #{network,jdbcType=TINYINT},
+      #{ip,jdbcType=VARCHAR}, #{macAddress,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
+      #{resolution,jdbcType=VARCHAR}, #{connectStatus,jdbcType=TINYINT},#{useStatus,jdbcType=TINYINT}, 1, NOW(), NOW())
   </insert>
     <insert id="insertSelective" parameterType="com.performance.pojo.DevicesDO">
         insert into devices
@@ -61,9 +60,6 @@
             </if>
             <if test="systemVersion != null">
                 system_version,
-            </if>
-            <if test="processor != null">
-                processor,
             </if>
             <if test="core != null">
                 core,
@@ -85,6 +81,9 @@
             </if>
             <if test="brand != null">
                 brand,
+            </if>
+            <if test="model != null">
+                model,
             </if>
             <if test="resolution != null">
                 resolution,
@@ -110,22 +109,19 @@
                 #{deviceName,jdbcType=VARCHAR},
             </if>
             <if test="systemType != null">
-                #{systemType,jdbcType=BIT},
+                #{systemType,jdbcType=TINYINT},
             </if>
             <if test="systemVersion != null">
                 #{systemVersion,jdbcType=VARCHAR},
             </if>
-            <if test="processor != null">
-                #{processor,jdbcType=VARCHAR},
-            </if>
             <if test="core != null">
-                #{core,jdbcType=VARCHAR},
+                #{core,jdbcType=TINYINT},
             </if>
             <if test="ram != null">
                 #{ram,jdbcType=VARCHAR},
             </if>
             <if test="network != null">
-                #{network,jdbcType=VARCHAR},
+                #{network,jdbcType=TINYINT},
             </if>
             <if test="ip != null">
                 #{ip,jdbcType=VARCHAR},
@@ -139,14 +135,17 @@
             <if test="brand != null">
                 #{brand,jdbcType=VARCHAR},
             </if>
+            <if test="model != null">
+                #{model,jdbcType=VARCHAR},
+            </if>
             <if test="resolution != null">
                 #{resolution,jdbcType=VARCHAR},
             </if>
             <if test="connectStatus != null">
-                #{connectStatus,jdbcType=VARCHAR},
+                #{connectStatus,jdbcType=TINYINT},
             </if>
             <if test="useStatus != null">
-                #{useStatus,jdbcType=VARCHAR},
+                #{useStatus,jdbcType=TINYINT},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=VARCHAR},
@@ -163,22 +162,19 @@
                 device_name = #{deviceName,jdbcType=VARCHAR},
             </if>
             <if test="systemType != null">
-                system_type = #{systemType,jdbcType=BIT},
+                system_type = #{systemType,jdbcType=TINYINT},
             </if>
             <if test="systemVersion != null">
                 system_version = #{systemVersion,jdbcType=VARCHAR},
             </if>
-            <if test="processor != null">
-                processor = #{processor,jdbcType=VARCHAR},
-            </if>
             <if test="core != null">
-                core = #{core,jdbcType=VARCHAR},
+                core = #{core,jdbcType=TINYINT},
             </if>
             <if test="ram != null">
                 ram = #{ram,jdbcType=VARCHAR},
             </if>
             <if test="network != null">
-                network = #{network,jdbcType=VARCHAR},
+                network = #{network,jdbcType=TINYINT},
             </if>
             <if test="ip != null">
                 ip = #{network,jdbcType=VARCHAR},
@@ -192,14 +188,17 @@
             <if test="brand != null">
                 brand = #{brand,jdbcType=VARCHAR},
             </if>
+            <if test="model != null">
+                model = #{model,jdbcType=VARCHAR},
+            </if>
             <if test="resolution != null">
                 resolution = #{resolution,jdbcType=VARCHAR},
             </if>
             <if test="connectStatus != null">
-                connect_status = #{connectStatus,jdbcType=VARCHAR},
+                connect_status = #{connectStatus,jdbcType=TINYINT},
             </if>
             <if test="useStatus != null">
-                use_status = #{useStatus,jdbcType=VARCHAR},
+                use_status = #{useStatus,jdbcType=TINYINT},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=VARCHAR},
@@ -213,19 +212,19 @@
     <update id="updateByPrimaryKey" parameterType="com.performance.pojo.DevicesDO">
     update devices
     set device_name = #{deviceName,jdbcType=VARCHAR},
-      system_type = #{systemType,jdbcType=BIT},
+      system_type = #{systemType,jdbcType=TINYINT},
       system_version = #{systemVersion,jdbcType=VARCHAR},
-      processor = #{processor,jdbcType=VARCHAR},
-      core = #{core,jdbcType=VARCHAR},
+      core = #{core,jdbcType=TINYINT},
       ram = #{ram,jdbcType=VARCHAR},
-      network = #{network,jdbcType=VARCHAR},
+      network = #{network,jdbcType=TINYINT},
       ip = #{ip,jdbcType=VARCHAR},
       mac_address = #{macAddress,jdbcType=VARCHAR},
       is_valid = #{isValid,jdbcType=TINYINT},
       brand = #{brand,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
       resolution = #{resolution,jdbcType=VARCHAR},
-      connect_status = #{connectStatus,jdbcType=VARCHAR},
-      use_status = #{useStatus,jdbcType=VARCHAR},
+      connect_status = #{connectStatus,jdbcType=TINYINT},
+      use_status = #{useStatus,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=VARCHAR},
       modify_time = #{modifyTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}

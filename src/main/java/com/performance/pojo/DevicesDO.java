@@ -9,27 +9,27 @@ public class DevicesDO {
 
     private String systemVersion;
 
-    private String processor;
-
-    private String core;
+    private int core;
 
     private String ram;
 
-    private String network;
+    private int network;
 
     private String ip;
 
     private String macAddress;
 
-    private Byte isValid;
+    private int isValid;
 
     private String brand;
 
+    private String model;
+
     private String resolution;
 
-    private String connectStatus;
+    private int connectStatus;
 
-    private String useStatus;
+    private int useStatus;
 
     private String createTime;
 
@@ -67,20 +67,12 @@ public class DevicesDO {
         this.systemVersion = systemVersion == null ? null : systemVersion.trim();
     }
 
-    public String getProcessor() {
-        return processor;
-    }
-
-    public void setProcessor(String processor) {
-        this.processor = processor == null ? null : processor.trim();
-    }
-
-    public String getCore() {
+    public int getCore() {
         return core;
     }
 
-    public void setCore(String core) {
-        this.core = core == null ? null : core.trim();
+    public void setCore(int core) {
+        this.core = core;
     }
 
     public String getRam() {
@@ -91,12 +83,12 @@ public class DevicesDO {
         this.ram = ram == null ? null : ram.trim();
     }
 
-    public String getNetwork() {
+    public int getNetwork() {
         return network;
     }
 
-    public void setNetwork(String network) {
-        this.network = network == null ? null : network.trim();
+    public void setNetwork(int network) {
+        this.network = network;
     }
 
     public String getIp() {
@@ -115,11 +107,11 @@ public class DevicesDO {
         this.macAddress = macAddress == null ? null : macAddress.trim();
     }
 
-    public Byte getIsValid() {
+    public int getIsValid() {
         return isValid;
     }
 
-    public void setIsValid(Byte isValid) {
+    public void setIsValid(int isValid) {
         this.isValid = isValid;
     }
 
@@ -131,6 +123,14 @@ public class DevicesDO {
         this.brand = brand == null ? null : brand.trim();
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
     public String getResolution() {
         return resolution;
     }
@@ -139,20 +139,20 @@ public class DevicesDO {
         this.resolution = resolution == null ? null : resolution.trim();
     }
 
-    public String getConnectStatus() {
+    public int getConnectStatus() {
         return connectStatus;
     }
 
-    public void setConnectStatus(String connectStatus) {
-        this.connectStatus = connectStatus == null ? null : connectStatus.trim();
+    public void setConnectStatus(int connectStatus) {
+        this.connectStatus = connectStatus;
     }
 
-    public String getUseStatus() {
+    public int getUseStatus() {
         return useStatus;
     }
 
-    public void setUseStatus(String useStatus) {
-        this.useStatus = useStatus == null ? null : useStatus.trim();
+    public void setUseStatus(int useStatus) {
+        this.useStatus = useStatus;
     }
 
     public String getCreateTime() {

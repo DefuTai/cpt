@@ -48,10 +48,17 @@ public class DeviceInfomation extends Adb {
     /**
      * 判断设备状态
      *
-     * @return
+     * @return 1.device    0.offline   -1.no device
      */
-    public static String getSTATE(String sn) {
-        return execCommand(STATE, sn);
+    public static int getSTATE(String sn) {
+        String output = execCommand(STATE, sn);
+        if ("device".contains(output)) {
+            return 1;
+        } else if ("offline".contains(output)) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 
     /**
