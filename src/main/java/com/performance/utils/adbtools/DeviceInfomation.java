@@ -52,9 +52,9 @@ public class DeviceInfomation extends Adb {
      */
     public static int getSTATE(String sn) {
         String output = execCommand(STATE, sn);
-        if ("device".contains(output)) {
+        if (output != null && output.contains("device")) {
             return 1;
-        } else if ("offline".contains(output)) {
+        } else if (output != null && output.contains("offline")) {
             return 0;
         } else {
             return -1;

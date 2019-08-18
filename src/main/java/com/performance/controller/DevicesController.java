@@ -1,9 +1,10 @@
 package com.performance.controller;
 
+import com.performance.BaseCPT;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.DevicesDO;
+import com.performance.query.DeviceQuery;
 import com.performance.services.IDevicesService;
-import com.performance.utils.BaseCPT;
 import com.performance.utils.CheckUtils;
 import com.performance.utils.Result;
 import com.performance.utils.adbtools.DeviceConnectManage;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 描述：
@@ -61,7 +64,27 @@ public class DevicesController extends BaseCPT {
         devices.setCore(Integer.valueOf(String.valueOf(DeviceInfomation.getCpuCore(ip))));
         devices.setModel(DeviceInfomation.getProductModel(ip));
 
-        return devicesService.addDevices(devices);
+        return devicesService.addDevice(devices);
+    }
+
+    @PostMapping("/query")
+    public Result queryDeviceInfo(@Param("id") long id) {
+        return devicesService.queryDeviceInfo(id);
+    }
+
+    @PostMapping("/list")
+    public Result queryDeviceList(DeviceQuery query) {
+        return devicesService.queryDeviceList(query);
+    }
+
+    @PostMapping("/modify")
+    public Result modifyDevice(DevicesDO devicesDO) {
+        return devicesService.modifyDevice(devicesDO);
+    }
+
+    @PostMapping("/remove")
+    public Result removeDevices(@Param("deviceIds") List<Long> deviceIds) {
+        return devicesService.removeDevice(deviceIds);
     }
 
 }

@@ -4,7 +4,7 @@ import com.performance.dao.CaseDOMapper;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.CaseDO;
 import com.performance.services.ICaseService;
-import com.performance.utils.BaseCPT;
+import com.performance.BaseCPT;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;

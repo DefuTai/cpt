@@ -1,5 +1,6 @@
 package com.performance.controller;
 
+import com.performance.BaseCPT;
 import com.performance.pojo.CaseDO;
 import com.performance.services.ICaseService;
 import com.performance.utils.Result;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/cpt/case")
-public class CaseController {
+public class CaseController extends BaseCPT {
 
     @Autowired
     ICaseService caseService;

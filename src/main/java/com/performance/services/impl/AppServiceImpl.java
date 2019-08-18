@@ -1,10 +1,10 @@
 package com.performance.services.impl;
 
+import com.performance.BaseCPT;
 import com.performance.dao.AppDOMapper;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.AppDO;
 import com.performance.services.IAppService;
-import com.performance.utils.BaseCPT;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;
 import com.performance.utils.UuidUtil;
@@ -29,20 +29,19 @@ public class AppServiceImpl extends BaseCPT implements IAppService {
 
     @Override
     public Result<PageBean<AppDO>> queryAppList(AppDO appDO) {
+        PageBean<AppDO> page = null;
         try {
             //获取列表数据
             List<AppDO> appList = appDOMapper.selectApp(appDO);
             //获取列表总记录数
             int count = appDOMapper.selectAppCount(appDO);
             //分页
-            PageBean<AppDO> pageBean = new PageBean<>(appList, count);
-
-            result.setData(pageBean);
+            page = new PageBean<>(appList, count);
         } catch (Exception e) {
             e.printStackTrace();
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
-        return result;
+        return resultUtil.success(page);
     }
 
     @Override

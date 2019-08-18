@@ -26,7 +26,7 @@
         and is_valid = 1
     </select>
 
-    <select id="selectProject" parameterType="com.performance.vo.ProjectVO" resultMap="BaseResultMap">
+    <select id="selectProject" parameterType="com.performance.query.ProjectQuery" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from project
@@ -49,7 +49,7 @@
         order by create_time desc
     </select>
 
-    <select id="selectProjectCount" parameterType="com.performance.vo.ProjectVO" resultType="int">
+    <select id="selectProjectCount" parameterType="com.performance.query.ProjectQuery" resultType="int">
         select
         COUNT (1)
         from project

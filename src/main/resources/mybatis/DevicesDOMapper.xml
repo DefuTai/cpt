@@ -20,20 +20,78 @@
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
         <result column="modify_time" jdbcType="VARCHAR" property="modifyTime"/>
     </resultMap>
-    <sql id="Base_Column_List">
+
+    <sql id="column_list">
     id, device_name, system_type, system_version, core, ram, network, ip, mac_address,
-    is_valid, brand, model, resolution, connect_status, use_status, create_time, modify_time
+    brand, model, resolution, connect_status, use_status, create_time, is_valid, modify_time
   </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="column_list"/>
         from devices
         where id = #{id,jdbcType=BIGINT}
+        and is_valid = 1
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from devices
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+
+    <select id="selectDeviceList" parameterType="com.performance.pojo.DevicesDO" resultMap="BaseResultMap">
+        select
+        <include refid="column_list"/>
+        from devices
+        when is_valid = 1
+        <if test="deviceName != null">
+            and device_name = #{deviceName,jdbcType=VARCHAR}
+        </if>
+        <if test="systemType != null">
+            and system_type = #{systemType,jdbcType=TINYINT}
+        </if>
+        <if test="systemVersion != null">
+            and system_version = #{systemVersion,jdbcType=VARCHAR}
+        </if>
+        <if test="resolution != null">
+            and resolution = #{resolution,jdbcType=VARCHAR}
+        </if>
+        <if test="connectStatus != null">
+            and connect_status = #{connectStatus,jdbcType=TINYINT}
+        </if>
+        <if test="useStatus != null">
+            and use_status = #{useStatus,jdbcType=TINYINT}
+        </if>
+        <if test="brand != null">
+            and brand = #{brand,jdbcType=VARCHAR}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="selectDeviceListCount" parameterType="com.performance.pojo.DevicesDO" resultMap="BaseResultMap">
+        select
+        count(1)
+        from devices
+        when is_valid = 1
+        <if test="deviceName != null">
+            and device_name = #{deviceName,jdbcType=VARCHAR}
+        </if>
+        <if test="systemType != null">
+            and system_type = #{systemType,jdbcType=TINYINT}
+        </if>
+        <if test="systemVersion != null">
+            and system_version = #{systemVersion,jdbcType=VARCHAR}
+        </if>
+        <if test="resolution != null">
+            and resolution = #{resolution,jdbcType=VARCHAR}
+        </if>
+        <if test="connectStatus != null">
+            and connect_status = #{connectStatus,jdbcType=TINYINT}
+        </if>
+        <if test="useStatus != null">
+            and use_status = #{useStatus,jdbcType=TINYINT}
+        </if>
+        <if test="brand != null">
+            and brand = #{brand,jdbcType=VARCHAR}
+        </if>
+        order by create_time desc
+    </select>
+
     <insert id="insert" parameterType="com.performance.pojo.DevicesDO">
     insert into devices (id, device_name, system_type, 
       system_version, core,
@@ -46,115 +104,7 @@
       #{ip,jdbcType=VARCHAR}, #{macAddress,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
       #{resolution,jdbcType=VARCHAR}, #{connectStatus,jdbcType=TINYINT},#{useStatus,jdbcType=TINYINT}, 1, NOW(), NOW())
   </insert>
-    <insert id="insertSelective" parameterType="com.performance.pojo.DevicesDO">
-        insert into devices
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="deviceName != null">
-                device_name,
-            </if>
-            <if test="systemType != null">
-                system_type,
-            </if>
-            <if test="systemVersion != null">
-                system_version,
-            </if>
-            <if test="core != null">
-                core,
-            </if>
-            <if test="ram != null">
-                ram,
-            </if>
-            <if test="network != null">
-                network,
-            </if>
-            <if test="ip != null">
-                ip,
-            </if>
-            <if test="macAddress != null">
-                mac_address,
-            </if>
-            <if test="isValid != null">
-                is_valid,
-            </if>
-            <if test="brand != null">
-                brand,
-            </if>
-            <if test="model != null">
-                model,
-            </if>
-            <if test="resolution != null">
-                resolution,
-            </if>
-            <if test="connectStatus != null">
-                connect_status,
-            </if>
-            <if test="useStatus != null">
-                use_status,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="modifyTime != null">
-                modify_time,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=BIGINT},
-            </if>
-            <if test="deviceName != null">
-                #{deviceName,jdbcType=VARCHAR},
-            </if>
-            <if test="systemType != null">
-                #{systemType,jdbcType=TINYINT},
-            </if>
-            <if test="systemVersion != null">
-                #{systemVersion,jdbcType=VARCHAR},
-            </if>
-            <if test="core != null">
-                #{core,jdbcType=TINYINT},
-            </if>
-            <if test="ram != null">
-                #{ram,jdbcType=VARCHAR},
-            </if>
-            <if test="network != null">
-                #{network,jdbcType=TINYINT},
-            </if>
-            <if test="ip != null">
-                #{ip,jdbcType=VARCHAR},
-            </if>
-            <if test="macAddress != null">
-                #{macAddress,jdbcType=VARCHAR},
-            </if>
-            <if test="isValid != null">
-                #{isValid,jdbcType=TINYINT},
-            </if>
-            <if test="brand != null">
-                #{brand,jdbcType=VARCHAR},
-            </if>
-            <if test="model != null">
-                #{model,jdbcType=VARCHAR},
-            </if>
-            <if test="resolution != null">
-                #{resolution,jdbcType=VARCHAR},
-            </if>
-            <if test="connectStatus != null">
-                #{connectStatus,jdbcType=TINYINT},
-            </if>
-            <if test="useStatus != null">
-                #{useStatus,jdbcType=TINYINT},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=VARCHAR},
-            </if>
-            <if test="modifyTime != null">
-                #{modifyTime,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.DevicesDO">
         update devices
         <set>
@@ -182,9 +132,6 @@
             <if test="macAddress != null">
                 mac_address = #{macAddress,jdbcType=VARCHAR},
             </if>
-            <if test="isValid != null">
-                is_valid = #{isValid,jdbcType=TINYINT},
-            </if>
             <if test="brand != null">
                 brand = #{brand,jdbcType=VARCHAR},
             </if>
@@ -200,15 +147,13 @@
             <if test="useStatus != null">
                 use_status = #{useStatus,jdbcType=TINYINT},
             </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=VARCHAR},
-            </if>
             <if test="modifyTime != null">
                 modify_time = #{modifyTime,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="com.performance.pojo.DevicesDO">
     update devices
     set device_name = #{deviceName,jdbcType=VARCHAR},
@@ -219,14 +164,23 @@
       network = #{network,jdbcType=TINYINT},
       ip = #{ip,jdbcType=VARCHAR},
       mac_address = #{macAddress,jdbcType=VARCHAR},
-      is_valid = #{isValid,jdbcType=TINYINT},
       brand = #{brand,jdbcType=VARCHAR},
       model = #{model,jdbcType=VARCHAR},
       resolution = #{resolution,jdbcType=VARCHAR},
       connect_status = #{connectStatus,jdbcType=TINYINT},
       use_status = #{useStatus,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      modify_time = #{modifyTime,jdbcType=VARCHAR}
+      modify_time = NOW()
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        update devices
+        set is_value = 0,
+        modify_time = NOW()
+        where
+        id in
+        <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

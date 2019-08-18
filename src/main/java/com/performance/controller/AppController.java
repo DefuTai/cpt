@@ -2,7 +2,7 @@ package com.performance.controller;
 
 import com.performance.pojo.AppDO;
 import com.performance.services.IAppService;
-import com.performance.utils.BaseCPT;
+import com.performance.BaseCPT;
 import com.performance.utils.Result;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;

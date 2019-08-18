@@ -1,7 +1,7 @@
 package com.performance.dao;
 
 import com.performance.pojo.ProjectDO;
-import com.performance.vo.ProjectVO;
+import com.performance.query.ProjectQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -13,9 +13,9 @@ public interface ProjectDOMapper {
 
     ProjectDO selectByPrimaryKey(Long id);
 
-    List<ProjectDO> selectProject(ProjectVO projectVO);
+    List<ProjectDO> selectProject(ProjectQuery projectQuery);
 
-    int selectProjectCounr(ProjectVO projectVO);
+    int selectProjectCount(ProjectQuery projectQuery);
 
     int insertSelective(ProjectDO record);
 

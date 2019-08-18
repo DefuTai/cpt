@@ -12,7 +12,7 @@ public class Result<T> {
     private String msg;
     private T data;
 
-    Result() {
+    public Result() {
         super();
     }
 

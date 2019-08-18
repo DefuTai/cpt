@@ -1,7 +1,7 @@
 package com.performance.utils.adbtools;
 
 import com.performance.utils.CheckUtils;
-import com.performance.utils.OSInfo;
+import com.performance.utils.OSInfoUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class Adb {
     protected static final String ADB_PATH_FOR_WIN = "./src/main/resources/adb/Win/adb.exe ";
 
     private static String getAdbPath() {
-        switch (OSInfo.getOSName()) {
+        switch (OSInfoUtil.getOSName()) {
             case Digital_Unix:
                 return ADB_PATH_FOR_UNIX + "%s";
             case Mac_OS_X:

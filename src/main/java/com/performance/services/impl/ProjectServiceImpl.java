@@ -4,10 +4,10 @@ import com.performance.dao.ProjectDOMapper;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.ProjectDO;
 import com.performance.services.IProjectService;
-import com.performance.utils.BaseCPT;
+import com.performance.BaseCPT;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;
-import com.performance.vo.ProjectVO;
+import com.performance.query.ProjectQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +27,12 @@ public class ProjectServiceImpl extends BaseCPT implements IProjectService {
     private ProjectDOMapper projectDOMapper;
 
     @Override
-    public Result<PageBean<ProjectDO>> queryProjectList(ProjectVO projectVO) {
+    public Result<PageBean<ProjectDO>> queryProjectList(ProjectQuery projectQuery) {
         try {
-            List<ProjectDO> projectDOList = projectDOMapper.selectProject(projectVO);
+            List<ProjectDO> projectDOList = projectDOMapper.selectProject(projectQuery);
 
             if (!projectDOList.isEmpty()) {
-                int totalCount = projectDOMapper.selectProjectCounr(projectVO);
+                int totalCount = projectDOMapper.selectProjectCount(projectQuery);
                 PageBean<ProjectDO> pageBean = new PageBean<>(projectDOList, totalCount);
                 result.setData(pageBean);
             }

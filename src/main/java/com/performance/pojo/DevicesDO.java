@@ -19,8 +19,6 @@ public class DevicesDO {
 
     private String macAddress;
 
-    private int isValid;
-
     private String brand;
 
     private String model;
@@ -30,6 +28,8 @@ public class DevicesDO {
     private int connectStatus;
 
     private int useStatus;
+
+    private int isValid;
 
     private String createTime;
 
@@ -107,14 +107,6 @@ public class DevicesDO {
         this.macAddress = macAddress == null ? null : macAddress.trim();
     }
 
-    public int getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(int isValid) {
-        this.isValid = isValid;
-    }
-
     public String getBrand() {
         return brand;
     }
@@ -153,6 +145,14 @@ public class DevicesDO {
 
     public void setUseStatus(int useStatus) {
         this.useStatus = useStatus;
+    }
+
+    public int getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(int isValid) {
+        this.isValid = isValid;
     }
 
     public String getCreateTime() {

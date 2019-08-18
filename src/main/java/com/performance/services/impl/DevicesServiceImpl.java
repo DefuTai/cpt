@@ -1,14 +1,21 @@
 package com.performance.services.impl;
 
+import com.performance.BaseCPT;
 import com.performance.dao.DevicesDOMapper;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.DevicesDO;
+import com.performance.query.DeviceQuery;
 import com.performance.services.IDevicesService;
-import com.performance.utils.BaseCPT;
+import com.performance.utils.PageBean;
 import com.performance.utils.Result;
 import com.performance.utils.UuidUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 描述：
@@ -20,11 +27,44 @@ import org.springframework.stereotype.Service;
 @Service
 public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
 
+    private static Logger logger = LoggerFactory.getLogger(DevicesServiceImpl.class);
+
     @Autowired
     private DevicesDOMapper devicesDOMapper;
 
     @Override
-    public Result addDevices(DevicesDO devicesDO) {
+    public Result<DevicesDO> queryDeviceInfo(long devicesId) {
+        DevicesDO devicesDO = null;
+        try {
+            devicesDO = devicesDOMapper.selectByPrimaryKey(devicesId);
+        } catch (Exception e) {
+            logger.error("获取设备信息异常：", e);
+            return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
+        }
+        return resultUtil.success(devicesDO == null ? new DevicesDO() : devicesDO);
+    }
+
+    @Override
+    public Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query) {
+        PageBean<DevicesDO> page;
+        try {
+            DevicesDO devicesDO = new DevicesDO();
+            BeanUtils.copyProperties(query, devicesDO);
+
+            List<DevicesDO> list = devicesDOMapper.selectDeviceList(devicesDO);
+
+            int count = devicesDOMapper.selectDeviceListCount(devicesDO);
+
+            page = new PageBean<>(list, count);
+        } catch (Exception e) {
+            logger.error("获取设备列表异常：", e);
+            return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
+        }
+        return resultUtil.success(page);
+    }
+
+    @Override
+    public Result addDevice(DevicesDO devicesDO) {
         //TODO 添加属性校验
         try {
             devicesDO.setId(Long.valueOf(UuidUtil.getUuid()));
@@ -35,10 +75,53 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
                 result = resultUtil.success();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("添加设备信息异常：", e);
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
         return result;
     }
+
+    @Override
+    public Result modifyDevice(DevicesDO devicesDO) {
+        try {
+            int num = devicesDOMapper.updateByPrimaryKey(devicesDO);
+            if (num > 0) {
+                result = resultUtil.success();
+            }
+        } catch (Exception e) {
+            logger.error("修改设备信息异常：", e);
+            return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
+        }
+        return result;
+    }
+
+    @Override
+    public Result modifyDeviceelective(DevicesDO devicesDO) {
+        try {
+            int num = devicesDOMapper.updateByPrimaryKeySelective(devicesDO);
+            if (num > 0) {
+                result = resultUtil.success();
+            }
+        } catch (Exception e) {
+            logger.error("修改设备信息异常：", e);
+            return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
+        }
+        return result;
+    }
+
+    @Override
+    public Result removeDevice(List<Long> deviceIds) {
+        try {
+            int num = devicesDOMapper.deleteByPrimaryKey(deviceIds);
+            if (num > 0) {
+                result = resultUtil.success();
+            }
+        } catch (Exception e) {
+            logger.error("删除设备异常：", e);
+            return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
+        }
+        return result;
+    }
+
 
 }

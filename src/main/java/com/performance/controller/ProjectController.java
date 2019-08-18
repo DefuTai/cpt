@@ -1,9 +1,10 @@
 package com.performance.controller;
 
+import com.performance.BaseCPT;
 import com.performance.pojo.ProjectDO;
 import com.performance.services.IProjectService;
 import com.performance.utils.Result;
-import com.performance.vo.ProjectVO;
+import com.performance.query.ProjectQuery;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/cpt/project")
-public class ProjectController {
+public class ProjectController extends BaseCPT {
 
     @Autowired
     private IProjectService projectService;
 
     @PostMapping("/list")
-    public Result queryProject(ProjectVO projectVO) {
-        return projectService.queryProjectList(projectVO);
+    public Result queryProject(ProjectQuery projectQuery) {
+        return projectService.queryProjectList(projectQuery);
     }
 
     @PostMapping("/add")

@@ -1,4 +1,4 @@
-package com.performance.vo;
+package com.performance.query;
 
 /**
  * 创建时间: 2019/6/26 下午4:37
@@ -6,7 +6,7 @@ package com.performance.vo;
  *
  * @author lianyu
  */
-public class ProjectVO {
+public class ProjectQuery {
 
     private Long id;
 

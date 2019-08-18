@@ -1,5 +1,7 @@
 package com.performance.utils;
 
+import com.performance.enums.PlatformEnum;
+
 /**
  * 描述：
  *
@@ -7,37 +9,37 @@ package com.performance.utils;
  * @Data 2019-08-13 23:11
  * @Version 1.0
  **/
-public class OSInfo {
+public class OSInfoUtil {
 
     private static String OS = System.getProperty("os.name").toLowerCase();
-    private static OSInfo _instance = new OSInfo();
-    private EPlatform platform;
+    private static OSInfoUtil _instance = new OSInfoUtil();
+    private PlatformEnum platform;
 
-    public static boolean isLinux() {
+    private static boolean isLinux() {
         return OS.indexOf("linux") >= 0;
     }
 
-    public static boolean isDigitalUnix() {
+    private static boolean isDigitalUnix() {
         return OS.indexOf("digital") >= 0 && OS.indexOf("unix") > 0;
     }
 
-    public static boolean isMacOSX() {
+    private static boolean isMacOSX() {
         return OS.indexOf("mac") >= 0 && OS.indexOf("os") > 0 && OS.indexOf("x") > 0;
     }
 
-    public static boolean isWindows() {
+    private static boolean isWindows() {
         return OS.indexOf("windows") >= 0;
     }
 
-    public static EPlatform getOSName() {
+    public static PlatformEnum getOSName() {
         if (isLinux()) {
-            _instance.platform = EPlatform.Linux;
+            _instance.platform = PlatformEnum.Linux;
         } else if (isDigitalUnix()) {
-            _instance.platform = EPlatform.Digital_Unix;
+            _instance.platform = PlatformEnum.Digital_Unix;
         } else if (isMacOSX()) {
-            _instance.platform = EPlatform.Mac_OS_X;
+            _instance.platform = PlatformEnum.Mac_OS_X;
         } else if (isWindows()) {
-            _instance.platform = EPlatform.Windows;
+            _instance.platform = PlatformEnum.Windows;
         }
         return _instance.platform;
     }
