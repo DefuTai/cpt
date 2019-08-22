@@ -13,7 +13,7 @@ import com.performance.query.ProjectQuery;
  */
 public interface IProjectService {
 
-    Result<PageBean<ProjectDO>> queryProjectList(ProjectQuery projectQuery);
+    Result<PageBean<ProjectDO>> queryProjectList(ProjectQuery projectQuery, Integer index, Integer pageSize);
 
     Result addProject(ProjectDO projectDO);
 

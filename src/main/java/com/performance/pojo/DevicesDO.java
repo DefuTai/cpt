@@ -1,19 +1,19 @@
 package com.performance.pojo;
 
-public class DevicesDO {
+public class DevicesDO extends BaseObject {
     private Long id;
 
     private String deviceName;
 
-    private int systemType;
+    private Integer systemType;
 
     private String systemVersion;
 
-    private int core;
+    private Integer core;
 
     private String ram;
 
-    private int network;
+    private Integer network;
 
     private String ip;
 
@@ -25,11 +25,11 @@ public class DevicesDO {
 
     private String resolution;
 
-    private int connectStatus;
+    private Integer connectStatus;
 
-    private int useStatus;
+    private Integer useStatus;
 
-    private int isValid;
+    private Integer isValid;
 
     private String createTime;
 
@@ -51,11 +51,11 @@ public class DevicesDO {
         this.deviceName = deviceName == null ? null : deviceName.trim();
     }
 
-    public int getSystemType() {
+    public Integer getSystemType() {
         return systemType;
     }
 
-    public void setSystemType(int systemType) {
+    public void setSystemType(Integer systemType) {
         this.systemType = systemType;
     }
 
@@ -67,11 +67,11 @@ public class DevicesDO {
         this.systemVersion = systemVersion == null ? null : systemVersion.trim();
     }
 
-    public int getCore() {
+    public Integer getCore() {
         return core;
     }
 
-    public void setCore(int core) {
+    public void setCore(Integer core) {
         this.core = core;
     }
 
@@ -83,11 +83,11 @@ public class DevicesDO {
         this.ram = ram == null ? null : ram.trim();
     }
 
-    public int getNetwork() {
+    public Integer getNetwork() {
         return network;
     }
 
-    public void setNetwork(int network) {
+    public void setNetwork(Integer network) {
         this.network = network;
     }
 
@@ -131,27 +131,27 @@ public class DevicesDO {
         this.resolution = resolution == null ? null : resolution.trim();
     }
 
-    public int getConnectStatus() {
+    public Integer getConnectStatus() {
         return connectStatus;
     }
 
-    public void setConnectStatus(int connectStatus) {
+    public void setConnectStatus(Integer connectStatus) {
         this.connectStatus = connectStatus;
     }
 
-    public int getUseStatus() {
+    public Integer getUseStatus() {
         return useStatus;
     }
 
-    public void setUseStatus(int useStatus) {
+    public void setUseStatus(Integer useStatus) {
         this.useStatus = useStatus;
     }
 
-    public int getIsValid() {
+    public Integer getIsValid() {
         return isValid;
     }
 
-    public void setIsValid(int isValid) {
+    public void setIsValid(Integer isValid) {
         this.isValid = isValid;
     }
 

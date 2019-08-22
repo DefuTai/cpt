@@ -1,14 +1,15 @@
 package com.performance.services.impl;
 
+import com.performance.BaseCPT;
 import com.performance.dao.ProjectDOMapper;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.ProjectDO;
+import com.performance.query.ProjectQuery;
 import com.performance.services.IProjectService;
-import com.performance.BaseCPT;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;
-import com.performance.query.ProjectQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,20 +28,26 @@ public class ProjectServiceImpl extends BaseCPT implements IProjectService {
     private ProjectDOMapper projectDOMapper;
 
     @Override
-    public Result<PageBean<ProjectDO>> queryProjectList(ProjectQuery projectQuery) {
+    public Result<PageBean<ProjectDO>> queryProjectList(ProjectQuery projectQuery, Integer index, Integer pageSize) {
+        PageBean<ProjectDO> projectDOPageBean;
         try {
-            List<ProjectDO> projectDOList = projectDOMapper.selectProject(projectQuery);
+            ProjectDO projectDO = new ProjectDO();
+            BeanUtils.copyProperties(projectQuery, projectDO);
 
-            if (!projectDOList.isEmpty()) {
-                int totalCount = projectDOMapper.selectProjectCount(projectQuery);
-                PageBean<ProjectDO> pageBean = new PageBean<>(projectDOList, totalCount);
-                result.setData(pageBean);
-            }
+            PageBean pageBean = new PageBean();
+            projectDO.setPageSize((pageSize != null) ? pageSize : pageBean.getPageSize());
+            projectDO.setIndex((pageSize != null && index != null) ? pageSize * (index - 1) : pageBean.getPageSize() * (pageBean.getCurrentPage() - 1));
+
+            List<ProjectDO> projectDOList = projectDOMapper.selectProjectList(projectDO);
+
+            int totalCount = projectDOMapper.selectProjectListCount(projectDO);
+
+            projectDOPageBean = new PageBean<>(projectDOList, totalCount);
         } catch (Exception e) {
             e.printStackTrace();
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
-        return result;
+        return resultUtil.success(projectDOPageBean);
     }
 
     @Override

@@ -13,9 +13,9 @@ public interface ProjectDOMapper {
 
     ProjectDO selectByPrimaryKey(Long id);
 
-    List<ProjectDO> selectProject(ProjectQuery projectQuery);
+    List<ProjectDO> selectProjectList(ProjectDO projectDO);
 
-    int selectProjectCount(ProjectQuery projectQuery);
+    int selectProjectListCount(ProjectDO projectDO);
 
     int insertSelective(ProjectDO record);
 

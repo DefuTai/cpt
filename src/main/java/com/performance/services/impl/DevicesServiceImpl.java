@@ -45,22 +45,26 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     }
 
     @Override
-    public Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query) {
-        PageBean<DevicesDO> page;
+    public Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query, Integer index, Integer pageSize) {
+        PageBean<DevicesDO> devicesPageBean;
         try {
             DevicesDO devicesDO = new DevicesDO();
             BeanUtils.copyProperties(query, devicesDO);
+
+            PageBean pageBean = new PageBean();
+            devicesDO.setPageSize((pageSize != null) ? pageSize : pageBean.getPageSize());
+            devicesDO.setIndex((pageSize != null && index != null) ? pageSize * (index - 1) : pageBean.getPageSize() * (pageBean.getCurrentPage() - 1));
 
             List<DevicesDO> list = devicesDOMapper.selectDeviceList(devicesDO);
 
             int count = devicesDOMapper.selectDeviceListCount(devicesDO);
 
-            page = new PageBean<>(list, count);
+            devicesPageBean = new PageBean<>(list, count);
         } catch (Exception e) {
             logger.error("获取设备列表异常：", e);
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
-        return resultUtil.success(page);
+        return resultUtil.success(devicesPageBean);
     }
 
     @Override
@@ -122,6 +126,5 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
         }
         return result;
     }
-
 
 }

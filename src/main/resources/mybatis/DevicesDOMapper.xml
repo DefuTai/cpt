@@ -38,9 +38,9 @@
         select
         <include refid="column_list"/>
         from devices
-        when is_valid = 1
+        where is_valid = 1
         <if test="deviceName != null">
-            and device_name = #{deviceName,jdbcType=VARCHAR}
+            and device_name like concat(#{deviceName,jdbcType=VARCHAR},'%')
         </if>
         <if test="systemType != null">
             and system_type = #{systemType,jdbcType=TINYINT}
@@ -61,15 +61,18 @@
             and brand = #{brand,jdbcType=VARCHAR}
         </if>
         order by create_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index},#{pageSize};
+        </if>
     </select>
 
-    <select id="selectDeviceListCount" parameterType="com.performance.pojo.DevicesDO" resultMap="BaseResultMap">
+    <select id="selectDeviceListCount" parameterType="com.performance.pojo.DevicesDO" resultType="int">
         select
         count(1)
         from devices
-        when is_valid = 1
+        where is_valid = 1
         <if test="deviceName != null">
-            and device_name = #{deviceName,jdbcType=VARCHAR}
+            and device_name like concat(concat(#{deviceName,jdbcType=VARCHAR},'%'))
         </if>
         <if test="systemType != null">
             and system_type = #{systemType,jdbcType=TINYINT}

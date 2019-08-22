@@ -26,7 +26,7 @@
         and is_valid = 1
     </select>
 
-    <select id="selectProject" parameterType="com.performance.query.ProjectQuery" resultMap="BaseResultMap">
+    <select id="selectProjectList" parameterType="com.performance.pojo.ProjectDO" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from project
@@ -47,11 +47,14 @@
             and end_time &lt;= #{endTime,jdbcType=VARCHAR}
         </if>
         order by create_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index},#{pageSize};
+        </if>
     </select>
 
-    <select id="selectProjectCount" parameterType="com.performance.query.ProjectQuery" resultType="int">
+    <select id="selectProjectListCount" parameterType="com.performance.pojo.ProjectDO" resultType="int">
         select
-        COUNT (1)
+        COUNT(1)
         from project
         where is_valid = 1
         <if test="id != null">

@@ -36,6 +36,16 @@ public class DevicesController extends BaseCPT {
     @Autowired
     IDevicesService devicesService;
 
+    @PostMapping("/list")
+    public Result queryDeviceList(DeviceQuery query, @Param("index") Integer index, @Param("pageSize") Integer pageSize) {
+        return devicesService.queryDeviceList(query, index, pageSize);
+    }
+
+    @PostMapping("/info")
+    public Result queryDeviceInfo(@Param("id") long id) {
+        return devicesService.queryDeviceInfo(id);
+    }
+
     @PostMapping("/add")
     public Result addDevices(@Param("deviceName") String deviceName, @Param("ip") String ip) {
         if (StringUtils.isEmpty(deviceName) || StringUtils.isEmpty(ip)) {
@@ -65,16 +75,6 @@ public class DevicesController extends BaseCPT {
         devices.setModel(DeviceInfomation.getProductModel(ip));
 
         return devicesService.addDevice(devices);
-    }
-
-    @PostMapping("/query")
-    public Result queryDeviceInfo(@Param("id") long id) {
-        return devicesService.queryDeviceInfo(id);
-    }
-
-    @PostMapping("/list")
-    public Result queryDeviceList(DeviceQuery query) {
-        return devicesService.queryDeviceList(query);
     }
 
     @PostMapping("/modify")

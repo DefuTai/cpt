@@ -1,6 +1,6 @@
 package com.performance.pojo;
 
-public class ProjectDO {
+public class ProjectDO extends BaseObject {
     private Long id;
 
     private String name;

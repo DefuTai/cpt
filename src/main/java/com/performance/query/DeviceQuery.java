@@ -16,7 +16,7 @@ public class DeviceQuery {
     private String brand;
 
     //系统类型（1.Android  2.iOS）
-    private int systemType;
+    private Integer systemType;
 
     //系统版本
     private String systemVersion;
@@ -25,10 +25,10 @@ public class DeviceQuery {
     private String resolution;
 
     //ADB连接状态（1。device(设备已连接), 0.offline（表示设备未连接成功或无响应）, -1.no device（没有设备/模拟器连接））
-    private int connectStatus;
+    private Integer connectStatus;
 
     //使用状态（0.空闲, 1.使用中）
-    private int useStatus;
+    private Integer useStatus;
 
     public String getDeviceName() {
         return deviceName;
@@ -46,11 +46,11 @@ public class DeviceQuery {
         this.brand = brand;
     }
 
-    public int getSystemType() {
+    public Integer getSystemType() {
         return systemType;
     }
 
-    public void setSystemType(int systemType) {
+    public void setSystemType(Integer systemType) {
         this.systemType = systemType;
     }
 
@@ -70,19 +70,19 @@ public class DeviceQuery {
         this.resolution = resolution;
     }
 
-    public int getConnectStatus() {
+    public Integer getConnectStatus() {
         return connectStatus;
     }
 
-    public void setConnectStatus(int connectStatus) {
+    public void setConnectStatus(Integer connectStatus) {
         this.connectStatus = connectStatus;
     }
 
-    public int getUseStatus() {
+    public Integer getUseStatus() {
         return useStatus;
     }
 
-    public void setUseStatus(int useStatus) {
+    public void setUseStatus(Integer useStatus) {
         this.useStatus = useStatus;
     }
 }

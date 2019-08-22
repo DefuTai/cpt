@@ -12,7 +12,7 @@ public class PageBean<T> {
 
     private List<T> pageData;
     private Integer currentPage = Integer.valueOf(1);
-    private Integer pageSize = Integer.valueOf(2);
+    private Integer pageSize = Integer.valueOf(10);
     private Integer totalCount;
 
     public int getPageCount() {

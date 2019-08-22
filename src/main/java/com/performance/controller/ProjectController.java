@@ -26,8 +26,8 @@ public class ProjectController extends BaseCPT {
     private IProjectService projectService;
 
     @PostMapping("/list")
-    public Result queryProject(ProjectQuery projectQuery) {
-        return projectService.queryProjectList(projectQuery);
+    public Result queryProject(ProjectQuery projectQuery, @Param("index") Integer index, @Param("pageSize") Integer pageSize) {
+        return projectService.queryProjectList(projectQuery, index, pageSize);
     }
 
     @PostMapping("/add")

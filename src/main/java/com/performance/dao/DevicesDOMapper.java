@@ -26,6 +26,8 @@ public interface DevicesDOMapper {
      */
     List<DevicesDO> selectDeviceList(DevicesDO devicesDO);
 
+//    List<DevicesDO> selectDeviceList2(DevicesDO devicesDO);
+
     /**
      * 获取设备列表总记录数
      *
