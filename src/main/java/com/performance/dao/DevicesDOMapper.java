@@ -2,6 +2,7 @@ package com.performance.dao;
 
 import com.performance.pojo.DevicesDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,12 +12,37 @@ import java.util.List;
 public interface DevicesDOMapper {
 
     /**
-     * 获取设备信息
+     * 根据ID获取设备信息
      *
      * @param id
      * @return
      */
     DevicesDO selectByPrimaryKey(Long id);
+
+    /**
+     * 根据多个ID，获取多个设备信息
+     *
+     * @param ids
+     * @return
+     */
+    List<DevicesDO> selectDeviceByIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 根据多个IP，获取多个设备信息
+     *
+     * @param ips
+     * @return
+     */
+    List<DevicesDO> selectDeviceByIps(@Param("ips") List<String> ips);
+
+    /**
+     * 根据设备名称和IP地址查询是否已存在（去重）
+     *
+     * @param deviceName
+     * @param ip
+     * @return
+     */
+    List<DevicesDO> deduplication(String deviceName, String ip);
 
     /**
      * 获取设备列表
@@ -26,8 +52,6 @@ public interface DevicesDOMapper {
      */
     List<DevicesDO> selectDeviceList(DevicesDO devicesDO);
 
-//    List<DevicesDO> selectDeviceList2(DevicesDO devicesDO);
-
     /**
      * 获取设备列表总记录数
      *
@@ -35,6 +59,13 @@ public interface DevicesDOMapper {
      * @return
      */
     int selectDeviceListCount(DevicesDO devicesDO);
+
+    /**
+     * 获取所有设备信息
+     *
+     * @return
+     */
+    List<DevicesDO> selectDevices();
 
     /**
      * 添加设备
@@ -59,6 +90,15 @@ public interface DevicesDOMapper {
      * @return
      */
     int updateByPrimaryKeySelective(DevicesDO record);
+
+    /**
+     * 更新设备状态
+     *
+     * @param connectStatus
+     * @param ids
+     * @return
+     */
+    int updateConnectStatus(@Param("connectStatus") Integer connectStatus, @Param("ids") List<Long> ids);
 
     /**
      * 删除设备记录

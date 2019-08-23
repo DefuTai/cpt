@@ -119,7 +119,7 @@ public class Adb {
         } catch (IOException e) {
             logger.error("adb命令执行异常：", e);
         }
-        return sb.toString();
+        return sb.toString().replaceFirst("[\n\r]+$", "");
     }
 
     /**

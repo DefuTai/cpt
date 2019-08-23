@@ -34,7 +34,7 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
 
     @Override
     public Result<DevicesDO> queryDeviceInfo(long devicesId) {
-        DevicesDO devicesDO = null;
+        DevicesDO devicesDO;
         try {
             devicesDO = devicesDOMapper.selectByPrimaryKey(devicesId);
         } catch (Exception e) {
@@ -69,9 +69,14 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
 
     @Override
     public Result addDevice(DevicesDO devicesDO) {
-        //TODO 添加属性校验
         try {
+            List<DevicesDO> devices = devicesDOMapper.deduplication(devicesDO.getDeviceName(), devicesDO.getIp());
+            if (!devices.isEmpty()) {
+                return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "名称或IP相同的记录已存在，请确认后重试！");
+            }
+
             devicesDO.setId(Long.valueOf(UuidUtil.getUuid()));
+            devicesDO.setUseStatus(0);
 
             int num = devicesDOMapper.insert(devicesDO);
 
@@ -116,7 +121,17 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     @Override
     public Result removeDevice(List<Long> deviceIds) {
         try {
-            int num = devicesDOMapper.deleteByPrimaryKey(deviceIds);
+            List<DevicesDO> deviceList = devicesDOMapper.selectDeviceByIds(deviceIds);
+            List<Long> newDeviceIds = null;
+            if (deviceList.isEmpty()) {
+                return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "设备不存在或已删除，请刷新后重试！");
+            } else {
+                for (DevicesDO devices : deviceList) {
+                    newDeviceIds.add(devices.getId());
+                }
+            }
+
+            int num = devicesDOMapper.deleteByPrimaryKey(newDeviceIds);
             if (num > 0) {
                 result = resultUtil.success();
             }

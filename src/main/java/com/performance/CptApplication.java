@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 @MapperScan(basePackages = "com.performance.dao")
 public class CptApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CptApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CptApplication.class, args);
+    }
 
 }

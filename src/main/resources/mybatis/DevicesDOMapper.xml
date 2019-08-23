@@ -34,6 +34,46 @@
         and is_valid = 1
     </select>
 
+    <select id="deduplication" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="column_list"/>
+        from devices
+        where is_valid = 1
+        <if test="deviceName != null and ip != ''">
+            and device_name = #{deviceName,jdbcType=VARCHAR}
+        </if>
+        <if test="ip != null and ip != ''">
+            or ip = #{ip,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="selectDeviceByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="column_list"/>
+        from devices
+        where is_valid = 1
+        <if test="ids != null">
+            and id in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id,jdbcType=BIGINT}
+            </foreach>
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="selectDeviceByIps" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="column_list"/>
+        from devices
+        where is_valid = 1
+        <if test="ips != null">
+            and ip in
+            <foreach collection="ips" item="ip" index="index" open="(" separator="," close=")">
+                #{ip,jdbcType=VARCHAR}
+            </foreach>
+        </if>
+    </select>
+
     <select id="selectDeviceList" parameterType="com.performance.pojo.DevicesDO" resultMap="BaseResultMap">
         select
         <include refid="column_list"/>
@@ -92,6 +132,14 @@
         <if test="brand != null">
             and brand = #{brand,jdbcType=VARCHAR}
         </if>
+        order by create_time desc
+    </select>
+
+    <select id="selectDevices" resultMap="BaseResultMap">
+        select
+        <include refid="column_list"/>
+        from devices
+        where is_valid = 1
         order by create_time desc
     </select>
 
@@ -176,9 +224,20 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-    <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <update id="updateConnectStatus" parameterType="java.util.Map">
         update devices
-        set is_value = 0,
+        set connect_status = #{connectStatus,jdbcType=TINYINT},
+        modify_time = NOW()
+        where is_valid = 1
+        and id in
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="deleteByPrimaryKey" parameterType="java.util.List">
+        update devices
+        set is_valid = 0,
         modify_time = NOW()
         where
         id in

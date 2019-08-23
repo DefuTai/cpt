@@ -52,12 +52,12 @@ public class DeviceInfomation extends Adb {
      */
     public static int getSTATE(String sn) {
         String output = execCommand(STATE, sn);
-        if (output != null && output.contains("device")) {
-            return 1;
+        if (output != null && output.contains("no devices")) {
+            return -1;
         } else if (output != null && output.contains("offline")) {
             return 0;
         } else {
-            return -1;
+            return 1;
         }
     }
 

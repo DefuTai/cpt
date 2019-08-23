@@ -60,4 +60,5 @@ public class DevicesServiceImplTest {
     @Test
     public void testRemoveDevice() {
     }
+
 }
