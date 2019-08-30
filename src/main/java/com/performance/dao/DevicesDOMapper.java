@@ -65,7 +65,7 @@ public interface DevicesDOMapper {
      *
      * @return
      */
-    List<DevicesDO> selectDevices();
+    List<DevicesDO> selectAllDevices();
 
     /**
      * 添加设备

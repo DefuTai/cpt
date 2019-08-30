@@ -2,6 +2,9 @@ package com.performance.listener;
 
 import com.performance.dao.DevicesDOMapper;
 import com.performance.pojo.DevicesDO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.*;
 
@@ -12,24 +15,21 @@ import java.util.concurrent.*;
  * @Data 2019-08-23 16:29
  * @Version 1.0
  **/
+@Service
 public class ConnectService {
 
+    @Autowired
     private DevicesDOMapper devicesDOMapper;
 
-    private BlockingQueue<DevicesDO> devicesDOBlockingQueue;
-    private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(3);
-    private final ConnectDeviceExecutor connectDeviceExecutor;
-    private final GetDeviceExecutor getDeviceExecutor;
+    private BlockingQueue<DevicesDO> devicesDOBlockingQueue = new LinkedBlockingQueue<>(20);
+    private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
 
-    public ConnectService(DevicesDOMapper devicesDOMapper) {
-        this.devicesDOMapper = devicesDOMapper;
-        this.devicesDOBlockingQueue = new LinkedBlockingQueue<>(16);
-        this.connectDeviceExecutor = new ConnectDeviceExecutor(devicesDOMapper, devicesDOBlockingQueue);
-        this.getDeviceExecutor = new GetDeviceExecutor(devicesDOMapper, devicesDOBlockingQueue);
-    }
-
+    @Scheduled(fixedRate = 30 * 1000)
     public void start() {
-        executorService.scheduleWithFixedDelay(getDeviceExecutor, 0, 30, TimeUnit.SECONDS);
+        GetDeviceExecutor getDeviceExecutor = new GetDeviceExecutor(this.devicesDOMapper, devicesDOBlockingQueue);
+        ConnectDeviceExecutor connectDeviceExecutor = new ConnectDeviceExecutor(this.devicesDOMapper, devicesDOBlockingQueue);
+
+        executorService.scheduleWithFixedDelay(getDeviceExecutor, 0, 10, TimeUnit.SECONDS);
         executorService.scheduleAtFixedRate(connectDeviceExecutor, 0, 10, TimeUnit.SECONDS);
     }
 

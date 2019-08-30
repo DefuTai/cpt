@@ -34,7 +34,7 @@ public class DeviceInfomation extends Adb {
                     continue;
                 } else {
                     String[] var = Result.split("\\t");
-                    deviceMap.put(var[0], var[1]);
+                    deviceMap.put(var[0].split(":")[0], var[1]);
                 }
             }
         } catch (IOException e) {

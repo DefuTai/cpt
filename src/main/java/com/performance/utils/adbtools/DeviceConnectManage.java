@@ -5,8 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 描述：设备连接管理
@@ -18,14 +16,13 @@ import java.util.Map;
 public class DeviceConnectManage extends Adb {
 
     /**
-     * 重启adb服务
+     * 启动adb服务
      */
     public static void getStartServer() {
         try {
-            process = Runtime.getRuntime().exec(String.format(REBOOT, splitSerialNumber(START_SERVER)));
+            process = Runtime.getRuntime().exec(START_SERVER);
         } catch (IOException e) {
             logger.error("重启adb服务异常：", e);
-            e.printStackTrace();
         }
     }
 
@@ -34,10 +31,9 @@ public class DeviceConnectManage extends Adb {
      */
     public static void getKillServer() {
         try {
-            process = Runtime.getRuntime().exec(String.format(REBOOT, splitSerialNumber(KILL_SERVER)));
+            process = Runtime.getRuntime().exec(KILL_SERVER);
         } catch (IOException e) {
             logger.error("终止adb服务异常：", e);
-            e.printStackTrace();
         }
     }
 
@@ -51,7 +47,6 @@ public class DeviceConnectManage extends Adb {
             process = Runtime.getRuntime().exec(String.format(REBOOT, splitSerialNumber(sn)));
         } catch (IOException e) {
             logger.error("重启设备异常：", e);
-            e.printStackTrace();
         }
     }
 
@@ -61,7 +56,7 @@ public class DeviceConnectManage extends Adb {
      * @param ip
      * @return
      */
-    public static final String getConnect(String ip) {
+    public static String getConnect(String ip) {
         StringBuilder sb = new StringBuilder();
         try {
             process = Runtime.getRuntime().exec(String.format(CONNECT, "") + ip + ":5555");

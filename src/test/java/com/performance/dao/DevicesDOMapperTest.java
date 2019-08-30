@@ -33,7 +33,7 @@ public class DevicesDOMapperTest {
 
     @Test
     public void testSelectDevices() {
-        List<DevicesDO> list = devicesDOMapper.selectDevices();
+        List<DevicesDO> list = devicesDOMapper.selectAllDevices();
         logger.info("DAO层返回结果：" + JSON.toJSONString(list));
     }
 

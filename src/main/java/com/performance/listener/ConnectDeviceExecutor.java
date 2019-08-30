@@ -2,10 +2,12 @@ package com.performance.listener;
 
 import com.performance.dao.DevicesDOMapper;
 import com.performance.pojo.DevicesDO;
+import com.performance.utils.ConstantDevice;
 import com.performance.utils.adbtools.DeviceConnectManage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
@@ -39,24 +41,27 @@ public class ConnectDeviceExecutor implements Runnable {
     @Override
     public void run() {
         try {
-            List<Long> ids = null;
+            logger.info("ConnectDeviceExecutor.run() ---> " + queueDevices.size());
+            List<Long> deviceDevicesIdList = new ArrayList<>();
             for (DevicesDO devicesDO : queueDevices) {
-                logger.info("adb connect " + devicesDO.getIp() + ":5555 ...");
+                logger.info("adb connect " + devicesDO.getIp() + ":5555...");
                 String adbConn = DeviceConnectManage.getConnect(devicesDO.getIp());
-                if (adbConn.contains("connected to " + devicesDO.getIp() + ":5555")) {
+                if (!adbConn.isEmpty() && adbConn.contains("connected to " + devicesDO.getIp() + ":5555")) {
                     try {
                         //从队列中删除
                         queueDevices.take();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        logger.error("移除队列异常：", e);
                     }
-                    ids.add(devicesDO.getId());
+                    deviceDevicesIdList.add(devicesDO.getId());
                 } else {
-                    logger.warn(adbConn);
+                    logger.warn("adb connect 失败：" + adbConn);
                 }
             }
-            //更新设备记录adb连接状态为 1:devices
-            devicesDOMapper.updateConnectStatus(1, ids);
+            if (deviceDevicesIdList.size() > 0) {
+                //更新设备记录adb连接状态为 1:devices
+                devicesDOMapper.updateConnectStatus(ConstantDevice.CONNECT_STATUS_DEVICE, deviceDevicesIdList);
+            }
         } catch (Exception e) {
             logger.error("自动连接设备异常：", e);
         }

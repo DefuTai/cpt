@@ -62,4 +62,11 @@ public interface IDevicesService {
      */
     Result removeDevice(List<Long> deviceIds);
 
+    /**
+     * 重启ADB服务
+     *
+     * @return
+     */
+    Result restartAdb();
+
 }
