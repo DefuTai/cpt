@@ -2,6 +2,7 @@ package com.performance.services.impl;
 
 import com.performance.BaseCPT;
 import com.performance.dao.DevicesDOMapper;
+import com.performance.enums.ConnStatusEnum;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.DevicesDO;
 import com.performance.query.DeviceQuery;
@@ -11,6 +12,7 @@ import com.performance.utils.PageBean;
 import com.performance.utils.Result;
 import com.performance.utils.UuidUtil;
 import com.performance.utils.adbtools.DeviceConnectManage;
+import com.performance.utils.adbtools.DeviceInfomation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 描述：
@@ -127,7 +130,7 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     public Result removeDevice(List<Long> deviceIds) {
         try {
             List<DevicesDO> deviceList = devicesDOMapper.selectDeviceByIds(deviceIds);
-            List<Long> newDeviceIds = null;
+            List<Long> newDeviceIds = new ArrayList<>();
             if (deviceList.isEmpty()) {
                 return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "设备不存在或已删除，请刷新后重试！");
             } else {
@@ -154,22 +157,49 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
             DeviceConnectManage.getKillServer();
             DeviceConnectManage.getStartServer();
 
-            List<Long> deviceIpList = new ArrayList<>();
-
-            List<Long> offlineIpList = new ArrayList<>();
-
             //重新连接所有设备
             List<DevicesDO> devicesDOList = devicesDOMapper.selectAllDevices();
             for (DevicesDO devicesDO : devicesDOList) {
-                String connResult = DeviceConnectManage.getConnect(devicesDO.getIp());
-                if (!connResult.isEmpty() && connResult.contains("connected to " + devicesDO.getIp() + ":5555")) {
-                    deviceIpList.add(devicesDO.getId());
-                } else {
-                    offlineIpList.add(devicesDO.getId());
+                DeviceConnectManage.getConnect(devicesDO.getIp());
+            }
+
+            //ADB获取设备列表
+            Map<String, String> map = DeviceInfomation.getDevices();
+
+            List<String> deviceIps = new ArrayList<>();
+            List<String> offlineIps = new ArrayList<>();
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                if (ConnStatusEnum.DEVICE.getCode().equals(entry.getValue())) {
+                    deviceIps.add(entry.getKey());
+                }
+                if (ConnStatusEnum.OFFLINE.getCode().equals(entry.getValue())) {
+                    offlineIps.add(entry.getKey());
                 }
             }
-            devicesDOMapper.updateConnectStatus(ConstantDevice.CONNECT_STATUS_DEVICE, deviceIpList);
-            devicesDOMapper.updateConnectStatus(ConstantDevice.CONNECT_STATUS_OFFLINE, offlineIpList);
+
+            List<Long> deviceIdList = new ArrayList<>();
+            for (int i = 0; i < deviceIps.size(); i++) {
+                for (DevicesDO devicesDO : devicesDOList) {
+                    if (deviceIps.get(i).equals(devicesDO.getIp())) {
+                        deviceIdList.add(devicesDO.getId());
+                    }
+                }
+            }
+            List<Long> offlineIdList = new ArrayList<>();
+            for (int i = 0; i < offlineIps.size(); i++) {
+                for (DevicesDO devicesDO : devicesDOList) {
+                    if (offlineIps.get(i).equals(devicesDO.getIp())) {
+                        offlineIdList.add(devicesDO.getId());
+                    }
+                }
+            }
+
+            if (deviceIdList.size() > 0) {
+                devicesDOMapper.updateConnectStatus(ConstantDevice.CONNECT_STATUS_DEVICE, deviceIdList);
+            }
+            if (offlineIdList.size() > 0) {
+                devicesDOMapper.updateConnectStatus(ConstantDevice.CONNECT_STATUS_OFFLINE, offlineIdList);
+            }
         } catch (Exception e) {
             logger.error("重启ADB服务异常：", e);
             return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "重启ADB服务异常!");

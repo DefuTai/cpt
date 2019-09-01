@@ -1,6 +1,7 @@
 package com.performance.controller;
 
 import com.performance.BaseCPT;
+import com.performance.enums.ConnStatusEnum;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.DevicesDO;
 import com.performance.query.DeviceQuery;
@@ -57,17 +58,18 @@ public class DevicesController extends BaseCPT {
             return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "IP地址不合法");
         }
 
-        //通过adb connect ip连接设备
-        String adbConn = DeviceConnectManage.getConnect(ip);
-        if (adbConn.isEmpty() || !adbConn.contains("connected to " + ip + ":5555")) {
-            return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "ADB连接失败，请检查IP地址是否正确");
+        //adb connect 连接成功再继续添加
+        DeviceConnectManage.getConnect(ip);
+        Integer status = DeviceInfomation.getState(ip);
+        if (status == null || !ConnStatusEnum.DEVICE.getValue().equals(status)) {
+            return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "ADB CONNECT失败，请检查IP地址是否正确或是否在同一局域网");
         }
 
         DevicesDO devices = new DevicesDO();
         devices.setDeviceName(deviceName);
         devices.setSystemType(1);
         devices.setIp(ip);
-        devices.setConnectStatus(DeviceInfomation.getSTATE(ip));
+        devices.setConnectStatus(status);
         devices.setSystemVersion(DeviceInfomation.getProductSystemVersion(ip));
         devices.setMacAddress(DeviceInfomation.getMacAddress(ip));
         devices.setBrand(DeviceInfomation.getProductBrand(ip));
@@ -98,7 +100,7 @@ public class DevicesController extends BaseCPT {
     }
 
     @GetMapping("/restartAdb")
-    public Result restartAdb(){
+    public Result restartAdb() {
         return devicesService.restartAdb();
     }
 

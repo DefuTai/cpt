@@ -1,5 +1,6 @@
 package com.performance.utils.adbtools;
 
+import com.performance.enums.ConnStatusEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -50,15 +51,15 @@ public class DeviceInfomation extends Adb {
      *
      * @return 1.device    0.offline   -1.no device
      */
-    public static int getSTATE(String sn) {
+    public static Integer getState(String sn) {
         String output = execCommand(STATE, sn);
-        if (output != null && output.contains("no devices")) {
-            return -1;
-        } else if (output != null && output.contains("offline")) {
-            return 0;
-        } else {
-            return 1;
+
+        for (ConnStatusEnum status : ConnStatusEnum.values()) {
+            if (status.getCode().equals(output)) {
+                return status.getValue();
+            }
         }
+        return null;
     }
 
     /**

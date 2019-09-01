@@ -1,9 +1,11 @@
 package com.performance.listener;
 
 import com.performance.dao.DevicesDOMapper;
+import com.performance.enums.ConnStatusEnum;
 import com.performance.pojo.DevicesDO;
 import com.performance.utils.ConstantDevice;
 import com.performance.utils.adbtools.DeviceConnectManage;
+import com.performance.utils.adbtools.DeviceInfomation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,15 +20,15 @@ import java.util.concurrent.BlockingQueue;
  * @Data 2019-08-23 15:53
  * @Version 1.0
  **/
-public class ConnectDeviceExecutor implements Runnable {
+public class ConnectDevicesExecutor implements Runnable {
 
-    private static Logger logger = LoggerFactory.getLogger(ConnectDeviceExecutor.class);
+    private static Logger logger = LoggerFactory.getLogger(ConnectDevicesExecutor.class);
 
     private DevicesDOMapper devicesDOMapper;
 
     private BlockingQueue<DevicesDO> queueDevices;
 
-    public ConnectDeviceExecutor(DevicesDOMapper devicesDOMapper, BlockingQueue<DevicesDO> queueDevices) {
+    public ConnectDevicesExecutor(DevicesDOMapper devicesDOMapper, BlockingQueue<DevicesDO> queueDevices) {
         if (devicesDOMapper == null) {
             throw new IllegalArgumentException("DevicesDOMapper cannot be null...");
         }
@@ -41,12 +43,12 @@ public class ConnectDeviceExecutor implements Runnable {
     @Override
     public void run() {
         try {
-            logger.info("ConnectDeviceExecutor.run() ---> " + queueDevices.size());
             List<Long> deviceDevicesIdList = new ArrayList<>();
             for (DevicesDO devicesDO : queueDevices) {
                 logger.info("adb connect " + devicesDO.getIp() + ":5555...");
-                String adbConn = DeviceConnectManage.getConnect(devicesDO.getIp());
-                if (!adbConn.isEmpty() && adbConn.contains("connected to " + devicesDO.getIp() + ":5555")) {
+                DeviceConnectManage.getConnect(devicesDO.getIp());
+                Integer connStates = DeviceInfomation.getState(devicesDO.getIp());
+                if (connStates != null && ConnStatusEnum.DEVICE.getValue().equals(connStates)) {
                     try {
                         //从队列中删除
                         queueDevices.take();
@@ -55,7 +57,7 @@ public class ConnectDeviceExecutor implements Runnable {
                     }
                     deviceDevicesIdList.add(devicesDO.getId());
                 } else {
-                    logger.warn("adb connect 失败：" + adbConn);
+                    logger.warn("后台自动ADB CONNECT失败！");
                 }
             }
             if (deviceDevicesIdList.size() > 0) {

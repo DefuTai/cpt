@@ -26,11 +26,11 @@ public class ConnectService {
 
     @Scheduled(fixedRate = 30 * 1000)
     public void start() {
-        GetDeviceExecutor getDeviceExecutor = new GetDeviceExecutor(this.devicesDOMapper, devicesDOBlockingQueue);
-        ConnectDeviceExecutor connectDeviceExecutor = new ConnectDeviceExecutor(this.devicesDOMapper, devicesDOBlockingQueue);
+        GetDevicesExecutor getDevicesExecutor = new GetDevicesExecutor(this.devicesDOMapper, devicesDOBlockingQueue);
+        ConnectDevicesExecutor connectDevicesExecutor = new ConnectDevicesExecutor(this.devicesDOMapper, devicesDOBlockingQueue);
 
-        executorService.scheduleWithFixedDelay(getDeviceExecutor, 0, 10, TimeUnit.SECONDS);
-        executorService.scheduleAtFixedRate(connectDeviceExecutor, 0, 10, TimeUnit.SECONDS);
+        executorService.scheduleWithFixedDelay(getDevicesExecutor, 0, 15, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(connectDevicesExecutor, 0, 15, TimeUnit.SECONDS);
     }
 
     public void stop() {
