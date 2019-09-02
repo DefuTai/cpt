@@ -7,7 +7,7 @@ package com.performance.query;
  * @Data 2019-08-18 14:51
  * @Version 1.0
  **/
-public class DeviceQuery {
+public class DeviceQuery extends BaseQuery {
 
     //设备名称
     private String deviceName;

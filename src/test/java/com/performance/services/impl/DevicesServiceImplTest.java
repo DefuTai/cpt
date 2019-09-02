@@ -31,18 +31,11 @@ public class DevicesServiceImplTest {
     public void testQueryDeviceList() {
         DeviceQuery query = new DeviceQuery();
         query.setDeviceName("鲢鱼测试收银机");
+        query.setIndex(2);
+        query.setPageSize(10);
 
-        Result<PageBean<DevicesDO>> list1 = devicesService.queryDeviceList(query, 1, 2);
+        Result<PageBean<DevicesDO>> list1 = devicesService.queryDeviceList(query);
         logger.info("返回结果1：" + JSON.toJSONString(list1.getData()));
-
-        Result<PageBean<DevicesDO>> list2 = devicesService.queryDeviceList(query, 2, 2);
-        logger.info("返回结果2：" + JSON.toJSONString(list2.getData()));
-
-        Result<PageBean<DevicesDO>> list3 = devicesService.queryDeviceList(query, 3, 2);
-        logger.info("返回结果3：" + JSON.toJSONString(list3.getData()));
-
-        Result<PageBean<DevicesDO>> list4 = devicesService.queryDeviceList(query, null, null);
-        logger.info("返回结果4：" + JSON.toJSONString(list4.getData()));
     }
 
     @Test

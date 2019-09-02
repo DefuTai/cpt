@@ -9,7 +9,8 @@ import com.performance.services.IProjectService;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,27 +25,22 @@ import java.util.List;
 @Service
 public class ProjectServiceImpl extends BaseCPT implements IProjectService {
 
+    static Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
+
     @Autowired
     private ProjectDOMapper projectDOMapper;
 
     @Override
-    public Result<PageBean<ProjectDO>> queryProjectList(ProjectQuery projectQuery, Integer index, Integer pageSize) {
+    public Result<PageBean<ProjectDO>> queryProjectList(ProjectQuery projectQuery) {
         PageBean<ProjectDO> projectDOPageBean;
         try {
-            ProjectDO projectDO = new ProjectDO();
-            BeanUtils.copyProperties(projectQuery, projectDO);
+            List<ProjectDO> projectDOList = projectDOMapper.selectProjectList(projectQuery);
 
-            PageBean pageBean = new PageBean();
-            projectDO.setPageSize((pageSize != null) ? pageSize : pageBean.getPageSize());
-            projectDO.setIndex((pageSize != null && index != null) ? pageSize * (index - 1) : pageBean.getPageSize() * (pageBean.getCurrentPage() - 1));
-
-            List<ProjectDO> projectDOList = projectDOMapper.selectProjectList(projectDO);
-
-            int totalCount = projectDOMapper.selectProjectListCount(projectDO);
+            int totalCount = projectDOMapper.selectProjectListCount(projectQuery);
 
             projectDOPageBean = new PageBean<>(projectDOList, totalCount);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(ResultEnum.ERROR_UNKNOWN.getMsg(), e);
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
         return resultUtil.success(projectDOPageBean);
@@ -73,7 +69,7 @@ public class ProjectServiceImpl extends BaseCPT implements IProjectService {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(ResultEnum.ERROR_UNKNOWN.getMsg(), e);
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
         return result;
@@ -88,7 +84,7 @@ public class ProjectServiceImpl extends BaseCPT implements IProjectService {
                 result = resultUtil.success();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(ResultEnum.ERROR_UNKNOWN.getMsg(), e);
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
         return result;
@@ -116,7 +112,7 @@ public class ProjectServiceImpl extends BaseCPT implements IProjectService {
                 result = resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "指定APP记录不存在或已被删除，请刷新后重试！");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(ResultEnum.ERROR_UNKNOWN.getMsg(), e);
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
         return result;

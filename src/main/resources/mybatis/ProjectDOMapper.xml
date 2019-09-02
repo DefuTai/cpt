@@ -26,7 +26,7 @@
         and is_valid = 1
     </select>
 
-    <select id="selectProjectList" parameterType="com.performance.pojo.ProjectDO" resultMap="BaseResultMap">
+    <select id="selectProjectList" parameterType="com.performance.query.ProjectQuery" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from project
@@ -52,7 +52,7 @@
         </if>
     </select>
 
-    <select id="selectProjectListCount" parameterType="com.performance.pojo.ProjectDO" resultType="int">
+    <select id="selectProjectListCount" parameterType="com.performance.query.ProjectQuery" resultType="int">
         select
         COUNT(1)
         from project

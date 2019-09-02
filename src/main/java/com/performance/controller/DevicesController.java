@@ -40,8 +40,8 @@ public class DevicesController extends BaseCPT {
     IDevicesService devicesService;
 
     @PostMapping("/list")
-    public Result queryDeviceList(DeviceQuery query, @Param("index") Integer index, @Param("pageSize") Integer pageSize) {
-        return devicesService.queryDeviceList(query, index, pageSize);
+    public Result queryDeviceList(@Param("query") DeviceQuery query) {
+        return devicesService.queryDeviceList(query);
     }
 
     @PostMapping("/info")

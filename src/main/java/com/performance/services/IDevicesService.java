@@ -28,7 +28,7 @@ public interface IDevicesService {
      * @param query
      * @return
      */
-    Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query, Integer index, Integer pageSize);
+    Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query);
 
     /**
      * 添加设备

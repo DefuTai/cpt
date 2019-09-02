@@ -2,6 +2,7 @@ package com.performance.dao;
 
 import com.alibaba.fastjson.JSON;
 import com.performance.pojo.DevicesDO;
+import com.performance.query.DeviceQuery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -24,10 +25,13 @@ public class DevicesDOMapperTest {
 
     @Test
     public void testSelectDeviceList() {
-        DevicesDO devicesDO = new DevicesDO();
-        devicesDO.setDeviceName("鲢鱼测试收银机");
 
-        List<DevicesDO> list = devicesDOMapper.selectDeviceList(devicesDO);
+        DeviceQuery query = new DeviceQuery();
+        query.setDeviceName("鲢鱼测试收银机");
+        query.setIndex(1);
+        query.setPageSize(2);
+
+        List<DevicesDO> list = devicesDOMapper.selectDeviceList(query);
         logger.info("DAO层返回结果：" + JSON.toJSONString(list));
     }
 

@@ -74,7 +74,7 @@
         </if>
     </select>
 
-    <select id="selectDeviceList" parameterType="com.performance.pojo.DevicesDO" resultMap="BaseResultMap">
+    <select id="selectDeviceList" parameterType="com.performance.query.DeviceQuery" resultMap="BaseResultMap">
         select
         <include refid="column_list"/>
         from devices
@@ -106,7 +106,7 @@
         </if>
     </select>
 
-    <select id="selectDeviceListCount" parameterType="com.performance.pojo.DevicesDO" resultType="int">
+    <select id="selectDeviceListCount" parameterType="com.performance.query.DeviceQuery" resultType="int">
         select
         count(1)
         from devices

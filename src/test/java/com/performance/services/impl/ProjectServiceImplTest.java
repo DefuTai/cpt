@@ -27,7 +27,10 @@ public class ProjectServiceImplTest {
     public void testQueryProjectList() {
         ProjectQuery projectQuery = new ProjectQuery();
         projectQuery.setName("xxx");
-        Result<PageBean<ProjectDO>> projectList = projectService.queryProjectList(projectQuery, 1, 2);
+//        projectQuery.setIndex(1);
+//        projectQuery.setPageSize(2);
+
+        Result<PageBean<ProjectDO>> projectList = projectService.queryProjectList(projectQuery);
         logger.info("返回结果：" + JSON.toJSONString(projectList.getData()));
     }
 }

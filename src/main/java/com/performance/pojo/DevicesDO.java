@@ -1,6 +1,6 @@
 package com.performance.pojo;
 
-public class DevicesDO extends BaseObject {
+public class DevicesDO {
     private Long id;
 
     private String deviceName;

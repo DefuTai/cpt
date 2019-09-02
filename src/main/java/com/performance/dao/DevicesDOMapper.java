@@ -1,6 +1,7 @@
 package com.performance.dao;
 
 import com.performance.pojo.DevicesDO;
+import com.performance.query.DeviceQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -47,18 +48,18 @@ public interface DevicesDOMapper {
     /**
      * 获取设备列表
      *
-     * @param devicesDO
+     * @param query
      * @return
      */
-    List<DevicesDO> selectDeviceList(DevicesDO devicesDO);
+    List<DevicesDO> selectDeviceList(DeviceQuery query);
 
     /**
      * 获取设备列表总记录数
      *
-     * @param devicesDO
+     * @param query
      * @return
      */
-    int selectDeviceListCount(DevicesDO devicesDO);
+    int selectDeviceListCount(DeviceQuery query);
 
     /**
      * 获取所有设备信息

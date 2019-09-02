@@ -11,8 +11,8 @@ import java.util.List;
 public class PageBean<T> {
 
     private List<T> pageData;
-    private Integer currentPage = Integer.valueOf(1);
-    private Integer pageSize = Integer.valueOf(10);
+    private Integer currentPage = 1;
+    private Integer pageSize = 10;
     private Integer totalCount;
 
     public int getPageCount() {

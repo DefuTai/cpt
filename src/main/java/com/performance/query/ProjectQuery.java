@@ -6,7 +6,7 @@ package com.performance.query;
  *
  * @author lianyu
  */
-public class ProjectQuery {
+public class ProjectQuery extends BaseQuery {
 
     private Long id;
 

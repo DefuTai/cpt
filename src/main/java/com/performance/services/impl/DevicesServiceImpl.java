@@ -15,7 +15,6 @@ import com.performance.utils.adbtools.DeviceConnectManage;
 import com.performance.utils.adbtools.DeviceInfomation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,21 +50,16 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     }
 
     @Override
-    public Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query, Integer index, Integer pageSize) {
+    public Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query) {
         PageBean<DevicesDO> devicesPageBean;
         try {
-            DevicesDO devicesDO = new DevicesDO();
-            BeanUtils.copyProperties(query, devicesDO);
+            List<DevicesDO> list = devicesDOMapper.selectDeviceList(query);
 
-            PageBean pageBean = new PageBean();
-            devicesDO.setPageSize((pageSize != null) ? pageSize : pageBean.getPageSize());
-            devicesDO.setIndex((pageSize != null && index != null) ? pageSize * (index - 1) : pageBean.getPageSize() * (pageBean.getCurrentPage() - 1));
-
-            List<DevicesDO> list = devicesDOMapper.selectDeviceList(devicesDO);
-
-            int count = devicesDOMapper.selectDeviceListCount(devicesDO);
+            int count = devicesDOMapper.selectDeviceListCount(query);
 
             devicesPageBean = new PageBean<>(list, count);
+            devicesPageBean.setCurrentPage(query.getIndex());
+            devicesPageBean.setPageSize(query.getPageSize());
         } catch (Exception e) {
             logger.error("获取设备列表异常：", e);
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
