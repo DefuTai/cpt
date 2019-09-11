@@ -118,7 +118,7 @@ public class DeviceInfomation extends Adb {
      * @param sn
      * @return
      */
-    public static String getSERIALNO(String sn) {
+    public static String getSerialNo(String sn) {
         return execCommand(SERIALNO, sn);
     }
 

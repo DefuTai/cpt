@@ -69,6 +69,14 @@ public interface DevicesDOMapper {
     List<DevicesDO> selectAllDevices();
 
     /**
+     * 存在则更新，不存在则新增
+     *
+     * @param devicesDO
+     * @return
+     */
+    int insertOrUpdate(DevicesDO devicesDO);
+
+    /**
      * 添加设备
      *
      * @param record

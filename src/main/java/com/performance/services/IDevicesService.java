@@ -31,12 +31,36 @@ public interface IDevicesService {
     Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query);
 
     /**
+     * 获取所有设备信息
+     *
+     * @return
+     */
+    List<DevicesDO> queryAllDevices();
+
+    /**
+     * 存在则更新，不存在则新增
+     *
+     * @param devicesDO
+     * @return
+     */
+    Result addOrModifyDevice(DevicesDO devicesDO);
+
+    /**
      * 添加设备
      *
      * @param devicesDO
      * @return
      */
     Result addDevice(DevicesDO devicesDO);
+
+    /**
+     * 更新设备状态
+     *
+     * @param connectStatus
+     * @param ids
+     * @return
+     */
+    Result modifyConnectStatus(Integer connectStatus, List<Long> ids);
 
     /**
      * 修改设备信息

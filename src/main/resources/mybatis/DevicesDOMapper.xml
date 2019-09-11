@@ -10,6 +10,7 @@
         <result column="ram" jdbcType="VARCHAR" property="ram"/>
         <result column="network" jdbcType="TINYINT" property="network"/>
         <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber"/>
         <result column="mac_address" jdbcType="VARCHAR" property="macAddress"/>
         <result column="brand" jdbcType="VARCHAR" property="brand"/>
         <result column="model" jdbcType="VARCHAR" property="model"/>
@@ -22,7 +23,7 @@
     </resultMap>
 
     <sql id="column_list">
-    id, device_name, system_type, system_version, core, ram, network, ip, mac_address,
+    id, device_name, system_type, system_version, core, ram, network, ip, serial_number, mac_address,
     brand, model, resolution, connect_status, use_status, create_time, is_valid, modify_time
   </sql>
 
@@ -146,15 +147,73 @@
     <insert id="insert" parameterType="com.performance.pojo.DevicesDO">
     insert into devices (id, device_name, system_type, 
       system_version, core,
-      ram, network, ip, mac_address,
+      ram, network, ip, serial_number, mac_address,
       brand, model, resolution, connect_status,
       use_status, is_valid, create_time,
       modify_time)
     values (#{id,jdbcType=BIGINT}, #{deviceName,jdbcType=VARCHAR}, #{systemType,jdbcType=TINYINT},
       #{systemVersion,jdbcType=VARCHAR}, #{core,jdbcType=TINYINT}, #{ram,jdbcType=VARCHAR}, #{network,jdbcType=TINYINT},
-      #{ip,jdbcType=VARCHAR}, #{macAddress,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
-      #{resolution,jdbcType=VARCHAR}, #{connectStatus,jdbcType=TINYINT},#{useStatus,jdbcType=TINYINT}, 1, NOW(), NOW())
+      #{ip,jdbcType=VARCHAR}, #{serial_number,jdbcType=VARCHAR}, #{macAddress,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR},
+      #{model,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, #{connectStatus,jdbcType=TINYINT},
+      #{useStatus,jdbcType=TINYINT}, 1, NOW(), NOW())
   </insert>
+
+    <insert id="insertOrUpdate" parameterType="com.performance.pojo.DevicesDO">
+        <![CDATA[
+
+                INSERT INTO cpt.devices (
+                    id,
+                    device_name,
+                    system_type,
+                    system_version,
+                    core,
+                    ram,
+                    network,
+                    ip,
+                    serial_number,
+                    mac_address,
+                    brand,
+                    model,
+                    resolution,
+                    connect_status,
+                    use_status,
+                    is_valid,
+                    create_time,
+                    modify_time)
+                VALUES (
+                    #{id,jdbcType=BIGINT},
+                    #{deviceName,jdbcType=VARCHAR},
+                    #{systemType,jdbcType=TINYINT},
+                    #{systemVersion,jdbcType=VARCHAR},
+                    #{core,jdbcType=TINYINT},
+                    #{ram,jdbcType=VARCHAR},
+                    #{network,jdbcType=TINYINT},
+                    #{ip,jdbcType=VARCHAR},
+                    #{serialNumber,jdbcType=VARCHAR},
+                    #{macAddress,jdbcType=VARCHAR},
+                    #{brand,jdbcType=VARCHAR},
+                    #{model,jdbcType=VARCHAR},
+                    #{resolution,jdbcType=VARCHAR},
+                    #{connectStatus,jdbcType=TINYINT},
+                    #{useStatus,jdbcType=TINYINT},
+                    1,
+                    NOW(),
+                    NOW())
+                ON DUPLICATE KEY UPDATE
+                    system_version = values(system_version),
+                    core           = values(core),
+                    ram            = values(ram),
+                    network        = values(network),
+                    ip             = values(ip),
+                    mac_address    = values(mac_address),
+                    brand          = values(brand),
+                    model          = values(model),
+                    resolution     = values(resolution),
+                    connect_status = values(connect_status),
+                    modify_time    = values(modify_time)
+
+        ]]>
+    </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.DevicesDO">
         update devices

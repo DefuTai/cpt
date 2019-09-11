@@ -2,6 +2,7 @@ package com.performance.listener;
 
 import com.performance.dao.DevicesDOMapper;
 import com.performance.pojo.DevicesDO;
+import com.performance.services.IDevicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,17 +21,27 @@ public class ConnectService {
 
     @Autowired
     private DevicesDOMapper devicesDOMapper;
+    @Autowired
+    private IDevicesService devicesService;
 
     private BlockingQueue<DevicesDO> devicesDOBlockingQueue = new LinkedBlockingQueue<>(20);
     private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
 
-    @Scheduled(fixedRate = 30 * 1000)
-    public void start() {
+    public void $_start() {
         GetDevicesExecutor getDevicesExecutor = new GetDevicesExecutor(this.devicesDOMapper, devicesDOBlockingQueue);
         ConnectDevicesExecutor connectDevicesExecutor = new ConnectDevicesExecutor(this.devicesDOMapper, devicesDOBlockingQueue);
 
         executorService.scheduleWithFixedDelay(getDevicesExecutor, 0, 15, TimeUnit.SECONDS);
         executorService.scheduleAtFixedRate(connectDevicesExecutor, 0, 15, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 轮询扫描更新设备连接状态
+     */
+    @Scheduled(fixedRate = 30 * 1000)
+    public void start() {
+        GetDevicesExecutor getDevicesExecutor = new GetDevicesExecutor(this.devicesService);
+        executorService.scheduleWithFixedDelay(getDevicesExecutor, 0, 15, TimeUnit.SECONDS);
     }
 
     public void stop() {

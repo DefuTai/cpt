@@ -28,4 +28,13 @@ public enum ConnStatusEnum {
     public Integer getValue() {
         return value;
     }
+
+    public static Integer getValueByCode(String code) {
+        for (ConnStatusEnum connStatus : ConnStatusEnum.values()) {
+            if (code.equals(connStatus.getCode())) {
+                return connStatus.getValue();
+            }
+        }
+        return null;
+    }
 }

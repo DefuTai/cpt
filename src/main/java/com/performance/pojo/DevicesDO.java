@@ -17,6 +17,8 @@ public class DevicesDO {
 
     private String ip;
 
+    private String serialNumber;
+
     private String macAddress;
 
     private String brand;
@@ -97,6 +99,14 @@ public class DevicesDO {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String getMacAddress() {

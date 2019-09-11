@@ -70,6 +70,7 @@ public class DevicesController extends BaseCPT {
         devices.setSystemType(1);
         devices.setIp(ip);
         devices.setConnectStatus(status);
+        devices.setSerialNumber(DeviceInfomation.getSerialNo(ip));
         devices.setSystemVersion(DeviceInfomation.getProductSystemVersion(ip));
         devices.setMacAddress(DeviceInfomation.getMacAddress(ip));
         devices.setBrand(DeviceInfomation.getProductBrand(ip));
