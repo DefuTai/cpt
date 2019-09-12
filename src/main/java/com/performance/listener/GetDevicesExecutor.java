@@ -138,8 +138,9 @@ public class GetDevicesExecutor implements Runnable {
 
         //移除adb devices中已存在的设备记录
         for (Iterator<DevicesDO> it = devicesList.iterator(); it.hasNext(); ) {
+            DevicesDO devices = it.next();
             for (Map.Entry<String, String> deviceEntry : devicesMap.entrySet()) {
-                if (it.next().equals(deviceEntry.getKey())) {
+                if (devices.getSerialNumber().equals(deviceEntry.getKey())) {
                     it.remove();
                 }
             }
