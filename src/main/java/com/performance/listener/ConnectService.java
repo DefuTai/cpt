@@ -38,10 +38,10 @@ public class ConnectService {
     /**
      * 轮询扫描更新设备连接状态
      */
-    @Scheduled(fixedRate = 30 * 1000)
+    @Scheduled(fixedRate = 60 * 1000)
     public void start() {
         GetDevicesExecutor getDevicesExecutor = new GetDevicesExecutor(this.devicesService);
-        executorService.scheduleWithFixedDelay(getDevicesExecutor, 0, 15, TimeUnit.SECONDS);
+        executorService.scheduleWithFixedDelay(getDevicesExecutor, 0, 60, TimeUnit.SECONDS);
     }
 
     public void stop() {

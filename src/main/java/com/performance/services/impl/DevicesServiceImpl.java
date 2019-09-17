@@ -3,6 +3,7 @@ package com.performance.services.impl;
 import com.performance.BaseCPT;
 import com.performance.dao.DevicesDOMapper;
 import com.performance.enums.ResultEnum;
+import com.performance.interceptor.ServiceLog;
 import com.performance.pojo.DevicesDO;
 import com.performance.query.DeviceQuery;
 import com.performance.services.IDevicesService;
@@ -46,6 +47,7 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     }
 
     @Override
+    @ServiceLog(description = "获取设备列表")
     public Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query) {
         PageBean<DevicesDO> devicesPageBean;
         try {

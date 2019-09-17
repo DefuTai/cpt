@@ -3,6 +3,7 @@ package com.performance.controller;
 import com.performance.BaseCPT;
 import com.performance.enums.ConnStatusEnum;
 import com.performance.enums.ResultEnum;
+import com.performance.interceptor.ControllerLog;
 import com.performance.pojo.DevicesDO;
 import com.performance.query.DeviceQuery;
 import com.performance.services.IDevicesService;
@@ -40,6 +41,7 @@ public class DevicesController extends BaseCPT {
     IDevicesService devicesService;
 
     @PostMapping("/list")
+    @ControllerLog(description = "Controller获取设备列表")
     public Result queryDeviceList(@Param("query") DeviceQuery query) {
         return devicesService.queryDeviceList(query);
     }
