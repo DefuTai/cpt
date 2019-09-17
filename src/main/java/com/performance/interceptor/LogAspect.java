@@ -1,6 +1,8 @@
 package com.performance.interceptor;
 
 import com.alibaba.fastjson.JSON;
+import com.performance.annotation.ControllerLog;
+import com.performance.annotation.ServiceLog;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
@@ -26,11 +28,11 @@ public class LogAspect {
     private static Logger logger = LoggerFactory.getLogger(LogAspect.class);
     private ThreadLocal<Long> time = new ThreadLocal<>();
 
-    @Pointcut("@annotation(com.performance.interceptor.ControllerLog)")
+    @Pointcut("@annotation(com.performance.annotation.ControllerLog)")
     public void controllerPointCut() {
     }
 
-    @Pointcut("@annotation(com.performance.interceptor.ServiceLog)")
+    @Pointcut("@annotation(com.performance.annotation.ServiceLog)")
     public void servicePointCut() {
     }
 
@@ -46,7 +48,7 @@ public class LogAspect {
     @Before("servicePointCut()")
     public void serviceBefore(JoinPoint joinPoint) {
         try {
-            logger.info("Service方法备注：" + getControllerMethodDescription(joinPoint));
+            logger.info("Service方法备注：" + getServiceMthodDescription(joinPoint));
         } catch (Exception e) {
             e.printStackTrace();
         }
