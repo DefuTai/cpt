@@ -5,13 +5,14 @@
     <resultMap id="BaseResultMap" type="com.performance.pojo.CaseDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="project_id" jdbcType="BIGINT" property="projectId"/>
+        <result column="app_id" jdbcType="BIGINT" property="appId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="precondition" jdbcType="VARCHAR" property="precondition"/>
         <result column="step" jdbcType="VARCHAR" property="step"/>
         <result column="script_address" jdbcType="VARCHAR" property="scriptAddress"/>
         <result column="desired_result" jdbcType="VARCHAR" property="desiredResult"/>
         <result column="creator" jdbcType="VARCHAR" property="creator"/>
-        <result column="updater" jdbcType="VARCHAR" property="updater"/>
+        <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
         <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
         <result column="is_valid" jdbcType="TINYINT" property="isValid"/>
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
@@ -19,7 +20,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, project_id, name, precondition, step, script_address, desired_result, creator, updater, remarks,
+    id, project_id, app_id, name, precondition, step, script_address, desired_result, creator, modifier, remarks,
     is_valid, create_time, modify_time
   </sql>
 
@@ -49,8 +50,8 @@
         <if test="creator != null">
             and creator = #{creator,jdbcType=VARCHAR}
         </if>
-        <if test="updater != null">
-            and updater = #{updater,jdbcType=VARCHAR}
+        <if test="modifier != null">
+            and modifier = #{modifier,jdbcType=VARCHAR}
         </if>
         order by create_time desc
     </select>
@@ -73,8 +74,8 @@
         <if test="creator != null">
             and creator = #{creator,jdbcType=VARCHAR}
         </if>
-        <if test="updater != null">
-            and updater = #{updater,jdbcType=VARCHAR}
+        <if test="modifier != null">
+            and modifier = #{modifier,jdbcType=VARCHAR}
         </if>
         order by create_time desc
     </select>
@@ -82,11 +83,11 @@
     <insert id="insert" parameterType="com.performance.pojo.CaseDO">
     insert into cpt.`case` (id, project_id, name,
       precondition, step, script_address, 
-      desired_result, creator, updater, remarks,
+      desired_result, creator, modifier, remarks,
       is_valid, create_time, modify_time)
     values (#{id,jdbcType=BIGINT}, #{projectId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
       #{precondition,jdbcType=VARCHAR}, #{step,jdbcType=VARCHAR}, #{scriptAddress,jdbcType=VARCHAR}, 
-      #{desiredResult,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR},
+      #{desiredResult,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR},
       #{remarks,jdbcType=VARCHAR}, 1, NOW(), NOW())
   </insert>
 
@@ -117,8 +118,8 @@
             <if test="creator != null">
                 creator,
             </if>
-            <if test="updater != null">
-                updater,
+            <if test="modifier != null">
+                modifier,
             </if>
             <if test="remarks != null">
                 remarks,
@@ -158,8 +159,8 @@
             <if test="creator != null">
                 #{creator,jdbcType=VARCHAR},
             </if>
-            <if test="updater != null">
-                #{updater,jdbcType=VARCHAR},
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
             </if>
             <if test="remarks != null">
                 #{remarks,jdbcType=VARCHAR},
@@ -200,8 +201,8 @@
             <if test="creator != null">
                 creator = #{creator,jdbcType=VARCHAR},
             </if>
-            <if test="updater != null">
-                updater = #{updater,jdbcType=VARCHAR},
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
             </if>
             <if test="remarks != null">
                 remarks = #{remarks,jdbcType=VARCHAR},
@@ -222,7 +223,7 @@
       script_address = #{scriptAddress,jdbcType=VARCHAR},
       desired_result = #{desiredResult,jdbcType=VARCHAR},
       creator = #{creator, jdbcType=VARCHAR},
-      updater = #{updater, jdbcType=VARCHAR},
+      modifier = #{modifier, jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
       modify_time = NOW()
     where id = #{id,jdbcType=BIGINT}

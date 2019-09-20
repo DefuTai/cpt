@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -25,8 +26,8 @@ import java.lang.reflect.Method;
 @Configuration
 public class LogAspect {
 
-    private static Logger logger = LoggerFactory.getLogger(LogAspect.class);
-    private ThreadLocal<Long> time = new ThreadLocal<>();
+    private final static Logger logger = LoggerFactory.getLogger(LogAspect.class);
+    private final static ThreadLocal<Long> time = new NamedThreadLocal<>("ThreadLocal StartTime");
 
     @Pointcut("@annotation(com.performance.annotation.ControllerLog)")
     public void controllerPointCut() {

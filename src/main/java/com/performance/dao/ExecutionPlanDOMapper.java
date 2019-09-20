@@ -7,11 +7,7 @@ public interface ExecutionPlanDOMapper {
 
     int insert(ExecutionPlanDO record);
 
-    int insertSelective(ExecutionPlanDO record);
-
     ExecutionPlanDO selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(ExecutionPlanDO record);
-
-    int updateByPrimaryKey(ExecutionPlanDO record);
 }

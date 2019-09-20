@@ -98,7 +98,6 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!-- thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -111,7 +110,7 @@
             </exclusions>
         </dependency>
 
-        <!--commons-io  -->
+        <!-- commons-io -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

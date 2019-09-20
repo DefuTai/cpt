@@ -1,30 +1,34 @@
 package com.performance.pojo;
 
 public class CaseDO {
+
+    // 用例ID
     private Long id;
-
+    // 项目ID
     private Long projectId;
-
+    // 应用ID
+    private Long appId;
+    // 用例名称
     private String name;
-
+    // 前置条件
     private String precondition;
-
+    // 测试步骤
     private String step;
-
+    // 脚本地址
     private String scriptAddress;
-
+    // 期望结果
     private String desiredResult;
-
+    // 创建人
     private String creator;
-
-    private String updater;
-
+    // 修改人
+    private String modifier;
+    // 备注
     private String remarks;
-
+    // 是否有效（1，有效；0无效；默认有效）
     private Byte isValid;
-
+    // 创建时间
     private String createTime;
-
+    // 修改时间
     private String modifyTime;
 
     public Long getId() {
@@ -41,6 +45,14 @@ public class CaseDO {
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
+    }
+
+    public Long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Long appId) {
+        this.appId = appId;
     }
 
     public String getName() {
@@ -91,12 +103,12 @@ public class CaseDO {
         this.creator = creator;
     }
 
-    public String getUpdater() {
-        return updater;
+    public String getModifier() {
+        return modifier;
     }
 
-    public void setUpdater(String updater) {
-        this.updater = updater;
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
     }
 
     public String getRemarks() {
@@ -130,4 +142,5 @@ public class CaseDO {
     public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime == null ? null : modifyTime.trim();
     }
+
 }

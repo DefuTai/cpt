@@ -47,7 +47,6 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     }
 
     @Override
-    @ServiceLog(description = "Service-获取设备列表")
     public Result<PageBean<DevicesDO>> queryDeviceList(DeviceQuery query) {
         PageBean<DevicesDO> devicesPageBean;
         try {

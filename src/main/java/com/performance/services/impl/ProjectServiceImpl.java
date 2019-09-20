@@ -1,6 +1,7 @@
 package com.performance.services.impl;
 
 import com.performance.BaseCPT;
+import com.performance.annotation.ServiceLog;
 import com.performance.dao.ProjectDOMapper;
 import com.performance.enums.ResultEnum;
 import com.performance.pojo.ProjectDO;
@@ -44,6 +45,18 @@ public class ProjectServiceImpl extends BaseCPT implements IProjectService {
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
         return resultUtil.success(projectDOPageBean);
+    }
+
+    @Override
+    public Result<ProjectDO> queryProjectInfo(Long projectId) {
+        try {
+            ProjectDO projectDO = projectDOMapper.selectByPrimaryKey(projectId);
+            result = resultUtil.success(projectDO);
+        } catch (Exception e) {
+            logger.error(ResultEnum.ERROR_UNKNOWN.getMsg(), e);
+            return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
+        }
+        return result;
     }
 
     @Override
