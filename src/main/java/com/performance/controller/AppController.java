@@ -1,6 +1,6 @@
 package com.performance.controller;
 
-import com.performance.pojo.AppDO;
+import com.performance.po.AppDO;
 import com.performance.services.IAppService;
 import com.performance.BaseCPT;
 import com.performance.utils.Result;

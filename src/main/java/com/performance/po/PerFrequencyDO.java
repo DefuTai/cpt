@@ -1,25 +1,44 @@
-package com.performance.pojo;
+package com.performance.po;
 
-public class PerFrequencyDO {
+import com.performance.po.base.BaseDO;
+
+/**
+ * 性能获取频率
+ */
+public class PerFrequencyDO extends BaseDO {
+
+    private static final long serialVersionUID = -4261457739387737274L;
+
+    /**
+     * id
+     */
     private Long id;
 
-    private Long projectId;
-
+    /**
+     * 执行计划ID
+     */
     private Long planId;
 
+    /**
+     * 获取次数
+     */
     private String frequency;
 
+    /**
+     * 间隔时间
+     */
     private String interval;
 
+    /**
+     * 开始时间
+     */
     private String startTime;
 
+    /**
+     * 结束时间
+     */
     private String endTime;
 
-    private Byte isValid;
-
-    private String createTime;
-
-    private String modifyTime;
 
     public Long getId() {
         return id;
@@ -27,14 +46,6 @@ public class PerFrequencyDO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public Long getPlanId() {
@@ -77,27 +88,4 @@ public class PerFrequencyDO {
         this.endTime = endTime == null ? null : endTime.trim();
     }
 
-    public Byte getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Byte isValid) {
-        this.isValid = isValid;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    public String getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(String modifyTime) {
-        this.modifyTime = modifyTime == null ? null : modifyTime.trim();
-    }
 }

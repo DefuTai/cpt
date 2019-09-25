@@ -1,7 +1,7 @@
 package com.performance.services.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.performance.pojo.DevicesDO;
+import com.performance.po.DevicesDO;
 import com.performance.query.DeviceQuery;
 import com.performance.services.IDevicesService;
 import com.performance.utils.PageBean;

@@ -1,6 +1,7 @@
 package com.performance.dao;
 
-import com.performance.pojo.CaseDO;
+import com.performance.po.CaseDO;
+import com.performance.query.CaseQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -21,18 +22,18 @@ public interface CaseDOMapper {
     /**
      * Case列表查询
      *
-     * @param caseDO
+     * @param query
      * @return
      */
-    List<CaseDO> selectCase(CaseDO caseDO);
+    List<CaseDO> selectCase(CaseQuery query);
 
     /**
      * Case列表记录总数量
      *
-     * @param caseDO
+     * @param query
      * @return
      */
-    int selectCaseCount(CaseDO caseDO);
+    int selectCaseCount(CaseQuery query);
 
     /**
      * 添加Case
@@ -43,28 +44,12 @@ public interface CaseDOMapper {
     int insert(CaseDO record);
 
     /**
-     * 添加Case（高级版）
-     *
-     * @param record
-     * @return
-     */
-    int insertSelective(CaseDO record);
-
-    /**
      * 修改Case
      *
      * @param record
      * @return
      */
     int updateByPrimaryKeySelective(CaseDO record);
-
-    /**
-     * 修改Case（高级版）
-     *
-     * @param record
-     * @return
-     */
-    int updateByPrimaryKey(CaseDO record);
 
     /**
      * 删除Case

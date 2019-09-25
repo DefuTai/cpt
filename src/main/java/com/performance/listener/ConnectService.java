@@ -1,7 +1,7 @@
 package com.performance.listener;
 
 import com.performance.dao.DevicesDOMapper;
-import com.performance.pojo.DevicesDO;
+import com.performance.po.DevicesDO;
 import com.performance.services.IDevicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

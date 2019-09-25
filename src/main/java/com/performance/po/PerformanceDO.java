@@ -1,21 +1,39 @@
-package com.performance.pojo;
+package com.performance.po;
 
-public class PerformanceDO {
+import com.performance.po.base.BaseDO;
+
+/**
+ * 性能信息表
+ */
+public class PerformanceDO extends BaseDO {
+
+    private static final long serialVersionUID = 7510269081069829512L;
+
+    /**
+     * id
+     */
     private Long id;
 
+    /**
+     * 性能获取频率ID
+     */
     private Long frequencyId;
 
-    private String projectId;
-
+    /**
+     * 执行计划ID
+     */
     private Long executionPlanId;
 
+    /**
+     * 数据类型（1.CPU；2.内存；3.流量；4.电量；5.温度）
+     */
     private String type;
 
+    /**
+     * 值
+     */
     private String value;
 
-    private String createTime;
-
-    private String modifyTime;
 
     public Long getId() {
         return id;
@@ -31,14 +49,6 @@ public class PerformanceDO {
 
     public void setFrequencyId(Long frequencyId) {
         this.frequencyId = frequencyId;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(String projectId) {
-        this.projectId = projectId == null ? null : projectId.trim();
     }
 
     public Long getExecutionPlanId() {
@@ -62,22 +72,7 @@ public class PerformanceDO {
     }
 
     public void setValue(String value) {
-        this.value = value == null ? null : value.trim();
+        this.value = value;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    public String getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(String modifyTime) {
-        this.modifyTime = modifyTime == null ? null : modifyTime.trim();
-    }
 }

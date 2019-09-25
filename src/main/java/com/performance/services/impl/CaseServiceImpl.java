@@ -3,10 +3,12 @@ package com.performance.services.impl;
 import com.performance.BaseCPT;
 import com.performance.dao.CaseDOMapper;
 import com.performance.enums.ResultEnum;
-import com.performance.pojo.CaseDO;
+import com.performance.po.CaseDO;
+import com.performance.query.CaseQuery;
 import com.performance.services.ICaseService;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;
+import com.performance.utils.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,12 @@ public class CaseServiceImpl extends BaseCPT implements ICaseService {
     private CaseDOMapper caseDOMapper;
 
     @Override
-    public Result<PageBean<CaseDO>> queryCaseList(CaseDO caseDO) {
+    public Result<PageBean<CaseDO>> queryCaseList(CaseQuery query) {
         try {
             //获取列表数据
-            List<CaseDO> caseList = caseDOMapper.selectCase(caseDO);
+            List<CaseDO> caseList = caseDOMapper.selectCase(query);
             //获取列表总记录数
-            int count = caseDOMapper.selectCaseCount(caseDO);
+            int count = caseDOMapper.selectCaseCount(query);
             //分页
             PageBean<CaseDO> pageBean = new PageBean<>(caseList, count);
 
@@ -50,8 +52,9 @@ public class CaseServiceImpl extends BaseCPT implements ICaseService {
     public Result addCase(CaseDO caseDO) {
         try {
             //TODO 逻辑校验
+            caseDO.setId(Long.valueOf(UuidUtil.getUuid()));
 
-            int num = caseDOMapper.insertSelective(caseDO);
+            int num = caseDOMapper.insert(caseDO);
             if (num > 0) {
                 result = resultUtil.success();
             }
@@ -89,7 +92,7 @@ public class CaseServiceImpl extends BaseCPT implements ICaseService {
     @Override
     public Result modifyCase(CaseDO caseDO) {
         try {
-            int num = caseDOMapper.updateByPrimaryKey(caseDO);
+            int num = caseDOMapper.updateByPrimaryKeySelective(caseDO);
 
             if (num > 0) {
                 result = resultUtil.success();

@@ -1,6 +1,7 @@
 package com.performance.services;
 
-import com.performance.pojo.CaseDO;
+import com.performance.po.CaseDO;
+import com.performance.query.CaseQuery;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;
 
@@ -12,7 +13,7 @@ import com.performance.utils.Result;
  */
 public interface ICaseService {
 
-    Result<PageBean<CaseDO>> queryCaseList(CaseDO caseDO);
+    Result<PageBean<CaseDO>> queryCaseList(CaseQuery query);
 
     Result addCase(CaseDO caseDO);
 

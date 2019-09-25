@@ -1,6 +1,6 @@
 package com.performance.dao;
 
-import com.performance.pojo.DevicesDO;
+import com.performance.po.DevicesDO;
 import com.performance.query.DeviceQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

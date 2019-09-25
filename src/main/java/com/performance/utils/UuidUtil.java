@@ -18,7 +18,7 @@ public class UuidUtil {
     /**
      * 用户id和随机数总长度
      */
-    private static final int maxLength = 11;
+    private static final int maxLength = 18;
 
     /**
      * 更具id进行加密+加随机数组成固定长度编码

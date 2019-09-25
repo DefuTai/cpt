@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.performance.dao.DevicesDOMapper">
-    <resultMap id="BaseResultMap" type="com.performance.pojo.DevicesDO">
+    <resultMap id="BaseResultMap" type="com.performance.po.DevicesDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
         <result column="system_type" jdbcType="TINYINT" property="systemType"/>
@@ -144,7 +144,7 @@
         order by create_time desc
     </select>
 
-    <insert id="insert" parameterType="com.performance.pojo.DevicesDO">
+    <insert id="insert" parameterType="com.performance.po.DevicesDO">
     insert into devices (id, device_name, system_type, 
       system_version, core,
       ram, network, ip, serial_number, mac_address,
@@ -158,64 +158,66 @@
       #{useStatus,jdbcType=TINYINT}, 1, NOW(), NOW())
   </insert>
 
-    <insert id="insertOrUpdate" parameterType="com.performance.pojo.DevicesDO">
+    <insert id="insertOrUpdate" parameterType="com.performance.po.DevicesDO">
         <![CDATA[
 
-                INSERT INTO cpt.devices (
-                    id,
-                    device_name,
-                    system_type,
-                    system_version,
-                    core,
-                    ram,
-                    network,
-                    ip,
-                    serial_number,
-                    mac_address,
-                    brand,
-                    model,
-                    resolution,
-                    connect_status,
-                    use_status,
-                    is_valid,
-                    create_time,
-                    modify_time)
-                VALUES (
-                    #{id,jdbcType=BIGINT},
-                    #{deviceName,jdbcType=VARCHAR},
-                    #{systemType,jdbcType=TINYINT},
-                    #{systemVersion,jdbcType=VARCHAR},
-                    #{core,jdbcType=TINYINT},
-                    #{ram,jdbcType=VARCHAR},
-                    #{network,jdbcType=TINYINT},
-                    #{ip,jdbcType=VARCHAR},
-                    #{serialNumber,jdbcType=VARCHAR},
-                    #{macAddress,jdbcType=VARCHAR},
-                    #{brand,jdbcType=VARCHAR},
-                    #{model,jdbcType=VARCHAR},
-                    #{resolution,jdbcType=VARCHAR},
-                    #{connectStatus,jdbcType=TINYINT},
-                    #{useStatus,jdbcType=TINYINT},
-                    1,
-                    NOW(),
-                    NOW())
-                ON DUPLICATE KEY UPDATE
-                    system_version = values(system_version),
-                    core           = values(core),
-                    ram            = values(ram),
-                    network        = values(network),
-                    ip             = values(ip),
-                    mac_address    = values(mac_address),
-                    brand          = values(brand),
-                    model          = values(model),
-                    resolution     = values(resolution),
-                    connect_status = values(connect_status),
-                    modify_time    = values(modify_time)
+
+                        INSERT INTO cpt.devices (
+                            id,
+                            device_name,
+                            system_type,
+                            system_version,
+                            core,
+                            ram,
+                            network,
+                            ip,
+                            serial_number,
+                            mac_address,
+                            brand,
+                            model,
+                            resolution,
+                            connect_status,
+                            use_status,
+                            is_valid,
+                            create_time,
+                            modify_time)
+                        VALUES (
+                            #{id,jdbcType=BIGINT},
+                            #{deviceName,jdbcType=VARCHAR},
+                            #{systemType,jdbcType=TINYINT},
+                            #{systemVersion,jdbcType=VARCHAR},
+                            #{core,jdbcType=TINYINT},
+                            #{ram,jdbcType=VARCHAR},
+                            #{network,jdbcType=TINYINT},
+                            #{ip,jdbcType=VARCHAR},
+                            #{serialNumber,jdbcType=VARCHAR},
+                            #{macAddress,jdbcType=VARCHAR},
+                            #{brand,jdbcType=VARCHAR},
+                            #{model,jdbcType=VARCHAR},
+                            #{resolution,jdbcType=VARCHAR},
+                            #{connectStatus,jdbcType=TINYINT},
+                            #{useStatus,jdbcType=TINYINT},
+                            1,
+                            NOW(),
+                            NOW())
+                        ON DUPLICATE KEY UPDATE
+                            system_version = values(system_version),
+                            core           = values(core),
+                            ram            = values(ram),
+                            network        = values(network),
+                            ip             = values(ip),
+                            mac_address    = values(mac_address),
+                            brand          = values(brand),
+                            model          = values(model),
+                            resolution     = values(resolution),
+                            connect_status = values(connect_status),
+                            modify_time    = values(modify_time)
+
 
         ]]>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.DevicesDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.performance.po.DevicesDO">
         update devices
         <set>
             <if test="deviceName != null">
@@ -264,44 +266,52 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.performance.pojo.DevicesDO">
-    update devices
-    set device_name = #{deviceName,jdbcType=VARCHAR},
-      system_type = #{systemType,jdbcType=TINYINT},
-      system_version = #{systemVersion,jdbcType=VARCHAR},
-      core = #{core,jdbcType=TINYINT},
-      ram = #{ram,jdbcType=VARCHAR},
-      network = #{network,jdbcType=TINYINT},
-      ip = #{ip,jdbcType=VARCHAR},
-      mac_address = #{macAddress,jdbcType=VARCHAR},
-      brand = #{brand,jdbcType=VARCHAR},
-      model = #{model,jdbcType=VARCHAR},
-      resolution = #{resolution,jdbcType=VARCHAR},
-      connect_status = #{connectStatus,jdbcType=TINYINT},
-      use_status = #{useStatus,jdbcType=TINYINT},
-      modify_time = NOW()
-    where id = #{id,jdbcType=BIGINT}
+    <update id="updateByPrimaryKey" parameterType="com.performance.po.DevicesDO">
+    update
+        devices
+    set
+        device_name    = #{deviceName,jdbcType=VARCHAR},
+        system_type    = #{systemType,jdbcType=TINYINT},
+        system_version = #{systemVersion,jdbcType=VARCHAR},
+        core           = #{core,jdbcType=TINYINT},
+        ram            = #{ram,jdbcType=VARCHAR},
+        network        = #{network,jdbcType=TINYINT},
+        ip             = #{ip,jdbcType=VARCHAR},
+        mac_address    = #{macAddress,jdbcType=VARCHAR},
+        brand          = #{brand,jdbcType=VARCHAR},
+        model          = #{model,jdbcType=VARCHAR},
+        resolution     = #{resolution,jdbcType=VARCHAR},
+        connect_status = #{connectStatus,jdbcType=TINYINT},
+        use_status     = #{useStatus,jdbcType=TINYINT},
+        modify_time    = NOW()
+    where
+        id = #{id,jdbcType=BIGINT}
   </update>
 
     <update id="updateConnectStatus" parameterType="java.util.Map">
-        update devices
-        set connect_status = #{connectStatus,jdbcType=TINYINT},
-        modify_time = NOW()
-        where is_valid = 1
-        and id in
-        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
-            #{id}
-        </foreach>
+        update
+            devices
+        set
+            connect_status = #{connectStatus,jdbcType=TINYINT},
+            modify_time    = NOW()
+        where
+            is_valid = 1
+            and id in
+            <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+                #{id}
+            </foreach>
     </update>
 
     <update id="deleteByPrimaryKey" parameterType="java.util.List">
-        update devices
-        set is_valid = 0,
-        modify_time = NOW()
+        update
+            devices
+        set
+            is_valid = 0,
+            modify_time = NOW()
         where
-        id in
-        <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
-            #{id}
-        </foreach>
+            id in
+            <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+                #{id}
+            </foreach>
     </update>
 </mapper>

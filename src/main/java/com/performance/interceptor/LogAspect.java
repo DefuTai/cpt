@@ -64,18 +64,25 @@ public class LogAspect {
     public void doBefore(JoinPoint joinPoint) {
         try {
             time.set(System.currentTimeMillis());
-            logger.info(" ================> 前置通知开始 <================ ");
+            String params = "";
+            if (joinPoint.getArgs() != null && joinPoint.getArgs().length > 0) {
+                for (int i = 0; i < joinPoint.getArgs().length; i++) {
+                    params += JSON.toJSONString(joinPoint.getArgs()[i]) + ";";
+                }
+            }
+            logger.info("================> 前置通知开始 <================");
             logger.info("请求方法:" + (joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));
             logger.info("请求IP：" + getRemoteAddr());
-            logger.info(" ================> 前置通知结束 <================ ");
+            logger.info("请求参数：" + params);
+            logger.info("================> 前置通知结束 <================");
         } catch (Exception e) {
-            logger.error(" >>>>>>>>>>>>>>>> 前置通知异常：{}", e.getMessage());
+            logger.error(">>>>>>>>>>>>>>>> 前置通知异常：{}", e.getMessage());
         }
     }
 
     @AfterReturning("execution(* com.performance.services.impl.*.*(..))")
     public void doAfterReturning(JoinPoint joinPoint) {
-        logger.info(" ################ 方法执行完毕：{}, Time used {} ms.", joinPoint.getSignature(), System.currentTimeMillis() - time.get());
+        logger.info("################ 方法执行完毕：{}, Time used {} ms.", joinPoint.getSignature(), System.currentTimeMillis() - time.get());
     }
 
     /**
@@ -94,16 +101,16 @@ public class LogAspect {
                     params += JSON.toJSONString(joinPoint.getArgs()[i]) + ";";
                 }
             }
-            logger.error(" >>>>>>>>>>>>>>>> 异常通知开始 <<<<<<<<<<<<<<<< ");
+            logger.error(">>>>>>>>>>>>>>>> 异常通知开始 <<<<<<<<<<<<<<<<");
             logger.error("方法描述：" + getServiceMthodDescription(joinPoint));
             logger.error("请求IP：" + getRemoteAddr());
             logger.error("异常方法：" + (joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));
             logger.error("请求参数：" + params);
             logger.error("异常代码：" + ex.getClass().getName());
             logger.error("异常信息：" + ex.getMessage());
-            logger.error(" >>>>>>>>>>>>>>>> 异常通知结束 <<<<<<<<<<<<<<<< ");
+            logger.error(">>>>>>>>>>>>>>>> 异常通知结束 <<<<<<<<<<<<<<<<");
         } catch (Exception e) {
-            logger.error(" >>>>>>>>>>>>>>>> 后置通知异常：{}", e.getMessage());
+            logger.error(">>>>>>>>>>>>>>>> 后置通知异常：{}", e.getMessage());
         }
     }
 

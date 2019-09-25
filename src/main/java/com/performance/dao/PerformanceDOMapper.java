@@ -1,6 +1,6 @@
 package com.performance.dao;
 
-import com.performance.pojo.PerformanceDO;
+import com.performance.po.PerformanceDO;
 
 public interface PerformanceDOMapper {
     int deleteByPrimaryKey(Long id);

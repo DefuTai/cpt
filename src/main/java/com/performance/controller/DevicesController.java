@@ -4,7 +4,7 @@ import com.performance.BaseCPT;
 import com.performance.annotation.ControllerLog;
 import com.performance.enums.ConnStatusEnum;
 import com.performance.enums.ResultEnum;
-import com.performance.pojo.DevicesDO;
+import com.performance.po.DevicesDO;
 import com.performance.query.DeviceQuery;
 import com.performance.services.IDevicesService;
 import com.performance.utils.CheckUtils;

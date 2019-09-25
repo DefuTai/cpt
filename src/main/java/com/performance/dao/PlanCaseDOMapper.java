@@ -1,6 +1,6 @@
 package com.performance.dao;
 
-import com.performance.pojo.PlanCaseDO;
+import com.performance.po.PlanCaseDO;
 
 public interface PlanCaseDOMapper {
     int deleteByPrimaryKey(String id);

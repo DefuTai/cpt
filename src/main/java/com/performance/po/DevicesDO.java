@@ -1,41 +1,89 @@
-package com.performance.pojo;
+package com.performance.po;
 
-public class DevicesDO {
+import com.performance.po.base.BaseDO;
+
+/**
+ * 设备
+ */
+public class DevicesDO extends BaseDO {
+
+    private static final long serialVersionUID = 3920511850400251768L;
+
+    /**
+     * 设备ID
+     */
     private Long id;
 
+    /**
+     * 设备名称
+     */
     private String deviceName;
 
+    /**
+     * 系统类型(1.Android, 2.iOS)
+     */
     private Integer systemType;
 
+    /**
+     * 系统版本
+     */
     private String systemVersion;
 
+    /**
+     * 核心数
+     */
     private Integer core;
 
+    /**
+     * 内存大小
+     */
     private String ram;
 
+    /**
+     * 网络状态（0.有线, 1.Wi-Fi, 2.2G, 3.3G, 4.4G, 5.5G）
+     */
     private Integer network;
 
+    /**
+     * IP地址
+     */
     private String ip;
 
+    /**
+     * 序列号，简称SN
+     */
     private String serialNumber;
 
+    /**
+     * MAC地址
+     */
     private String macAddress;
 
+    /**
+     * 品牌
+     */
     private String brand;
 
+    /**
+     * 型号
+     */
     private String model;
 
+    /**
+     * 分辨率
+     */
     private String resolution;
 
+    /**
+     * ADB连接状态（1。device(设备已连接), 0.offline（表示设备未连接成功或无响应）, -1.no device（没有设备/模拟器连接））
+     */
     private Integer connectStatus;
 
+    /**
+     * 使用状态（0.空闲, 1.使用中）
+     */
     private Integer useStatus;
 
-    private Integer isValid;
-
-    private String createTime;
-
-    private String modifyTime;
 
     public Long getId() {
         return id;
@@ -155,29 +203,5 @@ public class DevicesDO {
 
     public void setUseStatus(Integer useStatus) {
         this.useStatus = useStatus;
-    }
-
-    public Integer getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Integer isValid) {
-        this.isValid = isValid;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    public String getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(String modifyTime) {
-        this.modifyTime = modifyTime == null ? null : modifyTime.trim();
     }
 }

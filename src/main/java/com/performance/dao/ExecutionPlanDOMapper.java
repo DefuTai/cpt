@@ -1,6 +1,6 @@
 package com.performance.dao;
 
-import com.performance.pojo.ExecutionPlanDO;
+import com.performance.po.ExecutionPlanDO;
 
 public interface ExecutionPlanDOMapper {
     int deleteByPrimaryKey(Long id);

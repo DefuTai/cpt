@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.performance.dao.ExecutionRecordDOMapper">
-  <resultMap id="BaseResultMap" type="com.performance.pojo.ExecutionRecordDO">
+  <resultMap id="BaseResultMap" type="com.performance.po.ExecutionRecordDO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="app_id" jdbcType="BIGINT" property="appId" />
     <result column="environment_id" jdbcType="BIGINT" property="environmentId" />
@@ -23,7 +23,7 @@
     delete from execution_record
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.performance.pojo.ExecutionRecordDO">
+  <insert id="insert" parameterType="com.performance.po.ExecutionRecordDO">
     insert into execution_record (id, app_id, environment_id, 
       task_id, is_valid, create_time, 
       modify_time)
@@ -31,7 +31,7 @@
       #{taskId,jdbcType=BIGINT}, #{isValid,jdbcType=TINYINT}, #{createTime,jdbcType=VARCHAR}, 
       #{modifyTime,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.performance.pojo.ExecutionRecordDO">
+  <insert id="insertSelective" parameterType="com.performance.po.ExecutionRecordDO">
     insert into execution_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.ExecutionRecordDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.performance.po.ExecutionRecordDO">
     update execution_record
     <set>
       <if test="appId != null">
@@ -104,7 +104,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.performance.pojo.ExecutionRecordDO">
+  <update id="updateByPrimaryKey" parameterType="com.performance.po.ExecutionRecordDO">
     update execution_record
     set app_id = #{appId,jdbcType=BIGINT},
       environment_id = #{environmentId,jdbcType=BIGINT},

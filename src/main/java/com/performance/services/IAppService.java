@@ -1,6 +1,6 @@
 package com.performance.services;
 
-import com.performance.pojo.AppDO;
+import com.performance.po.AppDO;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;
 

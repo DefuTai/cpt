@@ -2,12 +2,13 @@ package com.performance.listener;
 
 import com.performance.dao.DevicesDOMapper;
 import com.performance.enums.ConnStatusEnum;
-import com.performance.pojo.DevicesDO;
+import com.performance.po.DevicesDO;
 import com.performance.services.IDevicesService;
 import com.performance.utils.ConstantDevice;
 import com.performance.utils.adbtools.DeviceInfomation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,8 +56,10 @@ public class GetDevicesExecutor implements Runnable {
     public void run() {
         try {
             devicesScanning();
+        } catch (DataIntegrityViolationException e) {
+            logger.error("", e);
         } catch (Exception e) {
-            logger.error("检查离线设备异常：", e);
+            logger.error("定时任务出现未处理异常：", e);
         }
     }
 

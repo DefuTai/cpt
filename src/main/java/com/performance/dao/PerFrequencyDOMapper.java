@@ -1,6 +1,6 @@
 package com.performance.dao;
 
-import com.performance.pojo.PerFrequencyDO;
+import com.performance.po.PerFrequencyDO;
 
 public interface PerFrequencyDOMapper {
     int deleteByPrimaryKey(Long id);

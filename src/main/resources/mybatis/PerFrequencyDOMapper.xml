@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.performance.dao.PerFrequencyDOMapper">
-  <resultMap id="BaseResultMap" type="com.performance.pojo.PerFrequencyDO">
+  <resultMap id="BaseResultMap" type="com.performance.po.PerFrequencyDO">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="project_id" jdbcType="BIGINT" property="projectId" />
     <result column="plan_id" jdbcType="BIGINT" property="planId" />
     <result column="frequency" jdbcType="VARCHAR" property="frequency" />
     <result column="interval" jdbcType="VARCHAR" property="interval" />
@@ -14,7 +13,7 @@
     <result column="modify_time" jdbcType="VARCHAR" property="modifyTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, project_id, plan_id, frequency, interval, start_time, end_time, is_valid, create_time, 
+    id, plan_id, frequency, interval, start_time, end_time, is_valid, create_time,
     modify_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -27,24 +26,21 @@
     delete from per_frequency
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.performance.pojo.PerFrequencyDO">
-    insert into per_frequency (id, project_id, plan_id, 
+  <insert id="insert" parameterType="com.performance.po.PerFrequencyDO">
+    insert into per_frequency (id, plan_id,
       frequency, interval, start_time, 
       end_time, is_valid, create_time, 
       modify_time)
-    values (#{id,jdbcType=BIGINT}, #{projectId,jdbcType=BIGINT}, #{planId,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=BIGINT}, #{planId,jdbcType=BIGINT},
       #{frequency,jdbcType=VARCHAR}, #{interval,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
       #{endTime,jdbcType=VARCHAR}, #{isValid,jdbcType=TINYINT}, #{createTime,jdbcType=VARCHAR}, 
       #{modifyTime,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.performance.pojo.PerFrequencyDO">
+  <insert id="insertSelective" parameterType="com.performance.po.PerFrequencyDO">
     insert into per_frequency
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
-      </if>
-      <if test="projectId != null">
-        project_id,
       </if>
       <if test="planId != null">
         plan_id,
@@ -75,9 +71,6 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="projectId != null">
-        #{projectId,jdbcType=BIGINT},
-      </if>
       <if test="planId != null">
         #{planId,jdbcType=BIGINT},
       </if>
@@ -104,12 +97,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.PerFrequencyDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.performance.po.PerFrequencyDO">
     update per_frequency
     <set>
-      <if test="projectId != null">
-        project_id = #{projectId,jdbcType=BIGINT},
-      </if>
       <if test="planId != null">
         plan_id = #{planId,jdbcType=BIGINT},
       </if>
@@ -137,10 +127,9 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.performance.pojo.PerFrequencyDO">
+  <update id="updateByPrimaryKey" parameterType="com.performance.po.PerFrequencyDO">
     update per_frequency
-    set project_id = #{projectId,jdbcType=BIGINT},
-      plan_id = #{planId,jdbcType=BIGINT},
+    set plan_id = #{planId,jdbcType=BIGINT},
       frequency = #{frequency,jdbcType=VARCHAR},
       interval = #{interval,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=VARCHAR},

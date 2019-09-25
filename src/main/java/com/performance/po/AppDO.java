@@ -1,27 +1,54 @@
-package com.performance.pojo;
+package com.performance.po;
 
-public class AppDO {
+import com.performance.po.base.BaseDO;
+
+/**
+ * 应用
+ */
+public class AppDO extends BaseDO {
+
+    private static final long serialVersionUID = -6427806773962137420L;
+
+    /**
+     * ID
+     */
     private Long id;
 
+    /**
+     * 应用名称
+     */
     private String name;
 
+    /**
+     * 版本号
+     */
     private String version;
 
+    /**
+     * 应用包名
+     */
     private String packageName;
 
+    /**
+     * 应用类型
+     */
     private String type;
 
+    /**
+     * 上传人
+     */
     private String uploader;
 
+    /**
+     * 备注
+     */
     private String remarks;
 
-    private Byte isValid;
-
+    /**
+     * 安装包地址
+     */
     private String packageAddress;
 
-    private String createTime;
-
-    private String modifyTime;
 
     public Long getId() {
         return id;
@@ -87,27 +114,4 @@ public class AppDO {
         this.packageAddress = packageAddress;
     }
 
-    public Byte getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Byte isValid) {
-        this.isValid = isValid;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    public String getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(String modifyTime) {
-        this.modifyTime = modifyTime == null ? null : modifyTime.trim();
-    }
 }

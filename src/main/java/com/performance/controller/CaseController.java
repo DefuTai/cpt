@@ -1,7 +1,8 @@
 package com.performance.controller;
 
 import com.performance.BaseCPT;
-import com.performance.pojo.CaseDO;
+import com.performance.po.CaseDO;
+import com.performance.query.CaseQuery;
 import com.performance.services.ICaseService;
 import com.performance.utils.Result;
 import org.apache.ibatis.annotations.Param;
@@ -25,8 +26,8 @@ public class CaseController extends BaseCPT {
     ICaseService caseService;
 
     @PostMapping("/list")
-    public Result queryAppList(CaseDO caseDO) {
-        return caseService.queryCaseList(caseDO);
+    public Result queryAppList(CaseQuery query) {
+        return caseService.queryCaseList(query);
     }
 
     @PostMapping("/add")

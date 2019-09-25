@@ -1,35 +1,59 @@
-package com.performance.pojo;
+package com.performance.po;
 
-public class CaseDO {
+import com.performance.po.base.BaseDO;
 
-    // 用例ID
+/**
+ * 用例
+ */
+public class CaseDO extends BaseDO {
+
+    private static final long serialVersionUID = 5028660347781622598L;
+
+    /**
+     * 用例ID
+     */
     private Long id;
-    // 项目ID
-    private Long projectId;
-    // 应用ID
-    private Long appId;
-    // 用例名称
+
+    /**
+     * 用例名称
+     */
     private String name;
-    // 前置条件
+
+    /**
+     * 前置条件
+     */
     private String precondition;
-    // 测试步骤
+
+    /**
+     * 测试步骤
+     */
     private String step;
-    // 脚本地址
+
+    /**
+     * 脚本地址
+     */
     private String scriptAddress;
-    // 期望结果
+
+    /**
+     * 期望结果
+     */
     private String desiredResult;
-    // 创建人
+
+    /**
+     * 创建人
+     */
     private String creator;
-    // 修改人
+
+    /**
+     * 修改人
+     */
     private String modifier;
-    // 备注
+
+    /**
+     * 备注
+     */
     private String remarks;
-    // 是否有效（1，有效；0无效；默认有效）
-    private Byte isValid;
-    // 创建时间
-    private String createTime;
-    // 修改时间
-    private String modifyTime;
+
 
     public Long getId() {
         return id;
@@ -37,22 +61,6 @@ public class CaseDO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public Long getAppId() {
-        return appId;
-    }
-
-    public void setAppId(Long appId) {
-        this.appId = appId;
     }
 
     public String getName() {
@@ -117,30 +125,6 @@ public class CaseDO {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks == null ? null : remarks.trim();
-    }
-
-    public Byte getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Byte isValid) {
-        this.isValid = isValid;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    public String getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(String modifyTime) {
-        this.modifyTime = modifyTime == null ? null : modifyTime.trim();
     }
 
 }

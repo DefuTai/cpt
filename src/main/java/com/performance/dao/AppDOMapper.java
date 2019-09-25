@@ -1,6 +1,6 @@
 package com.performance.dao;
 
-import com.performance.pojo.AppDO;
+import com.performance.po.AppDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

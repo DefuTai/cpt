@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.performance.dao.PerformanceDOMapper">
-  <resultMap id="BaseResultMap" type="com.performance.pojo.PerformanceDO">
+  <resultMap id="BaseResultMap" type="com.performance.po.PerformanceDO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="frequency_id" jdbcType="BIGINT" property="frequencyId" />
-    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
     <result column="execution_plan_id" jdbcType="BIGINT" property="executionPlanId" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="value" jdbcType="VARCHAR" property="value" />
@@ -12,7 +11,7 @@
     <result column="modify_time" jdbcType="VARCHAR" property="modifyTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, frequency_id, project_id, execution_plan_id, type, value, create_time, modify_time
+    id, frequency_id, execution_plan_id, type, value, create_time, modify_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,15 +23,15 @@
     delete from performance
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.performance.pojo.PerformanceDO">
-    insert into performance (id, frequency_id, project_id, 
+  <insert id="insert" parameterType="com.performance.po.PerformanceDO">
+    insert into performance (id, frequency_id,
       execution_plan_id, type, value, 
       create_time, modify_time)
-    values (#{id,jdbcType=BIGINT}, #{frequencyId,jdbcType=BIGINT}, #{projectId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{frequencyId,jdbcType=BIGINT},
       #{executionPlanId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=VARCHAR}, #{modifyTime,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.performance.pojo.PerformanceDO">
+  <insert id="insertSelective" parameterType="com.performance.po.PerformanceDO">
     insert into performance
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -40,9 +39,6 @@
       </if>
       <if test="frequencyId != null">
         frequency_id,
-      </if>
-      <if test="projectId != null">
-        project_id,
       </if>
       <if test="executionPlanId != null">
         execution_plan_id,
@@ -67,9 +63,6 @@
       <if test="frequencyId != null">
         #{frequencyId,jdbcType=BIGINT},
       </if>
-      <if test="projectId != null">
-        #{projectId,jdbcType=VARCHAR},
-      </if>
       <if test="executionPlanId != null">
         #{executionPlanId,jdbcType=BIGINT},
       </if>
@@ -87,14 +80,11 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.PerformanceDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.performance.po.PerformanceDO">
     update performance
     <set>
       <if test="frequencyId != null">
         frequency_id = #{frequencyId,jdbcType=BIGINT},
-      </if>
-      <if test="projectId != null">
-        project_id = #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="executionPlanId != null">
         execution_plan_id = #{executionPlanId,jdbcType=BIGINT},
@@ -114,10 +104,9 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.performance.pojo.PerformanceDO">
+  <update id="updateByPrimaryKey" parameterType="com.performance.po.PerformanceDO">
     update performance
     set frequency_id = #{frequencyId,jdbcType=BIGINT},
-      project_id = #{projectId,jdbcType=VARCHAR},
       execution_plan_id = #{executionPlanId,jdbcType=BIGINT},
       type = #{type,jdbcType=VARCHAR},
       value = #{value,jdbcType=VARCHAR},

@@ -1,6 +1,6 @@
 package com.performance.dao;
 
-import com.performance.pojo.ExecutionRecordDO;
+import com.performance.po.ExecutionRecordDO;
 
 public interface ExecutionRecordDOMapper {
     int deleteByPrimaryKey(Long id);

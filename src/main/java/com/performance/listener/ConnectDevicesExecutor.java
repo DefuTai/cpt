@@ -2,7 +2,7 @@ package com.performance.listener;
 
 import com.performance.dao.DevicesDOMapper;
 import com.performance.enums.ConnStatusEnum;
-import com.performance.pojo.DevicesDO;
+import com.performance.po.DevicesDO;
 import com.performance.utils.ConstantDevice;
 import com.performance.utils.adbtools.DeviceConnectManage;
 import com.performance.utils.adbtools.DeviceInfomation;

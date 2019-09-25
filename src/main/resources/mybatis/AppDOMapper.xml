@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.performance.dao.AppDOMapper">
-    <resultMap id="BaseResultMap" type="com.performance.pojo.AppDO">
+
+    <resultMap id="BaseResultMap" type="com.performance.po.AppDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="version" jdbcType="VARCHAR" property="version"/>
@@ -27,7 +28,7 @@
         and is_valid = 1
     </select>
 
-    <select id="selectApp" parameterType="com.performance.pojo.AppDO" resultMap="BaseResultMap">
+    <select id="selectApp" parameterType="com.performance.po.AppDO" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from app
@@ -51,7 +52,7 @@
         order by create_time desc
     </select>
 
-    <select id="selectAppCount" parameterType="com.performance.pojo.AppDO" resultType="int">
+    <select id="selectAppCount" parameterType="com.performance.po.AppDO" resultType="int">
         select
         count(1)
         from app
@@ -75,7 +76,7 @@
         order by create_time desc
     </select>
 
-    <select id="checkRepeat" parameterType="com.performance.pojo.AppDO" resultMap="BaseResultMap">
+    <select id="checkRepeat" parameterType="com.performance.po.AppDO" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from app
@@ -98,14 +99,14 @@
         </if>ConnectionImpl
     </select>
 
-    <insert id="insert" parameterType="com.performance.pojo.AppDO">
+    <insert id="insert" parameterType="com.performance.po.AppDO">
     insert into app (id, name, version, package_name, type, uploader, remarks, package_address, is_valid, create_time, modify_time)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR},
     #{packageName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},#{uploader,jdbcType=VARCHAR},
     #{remarks,jdbcType=VARCHAR}, #{packageAddress,jdbcType=VARCHAR}, 1, NOW(), NOW())
   </insert>
 
-    <insert id="insertSelective" parameterType="com.performance.pojo.AppDO">
+    <insert id="insertSelective" parameterType="com.performance.po.AppDO">
         insert into app
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -179,7 +180,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.AppDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.performance.po.AppDO">
         update app
         <set>
             <if test="name != null">
@@ -207,7 +208,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.performance.pojo.AppDO">
+    <update id="updateByPrimaryKey" parameterType="com.performance.po.AppDO">
     update app
     set name = #{name,jdbcType=VARCHAR},
       version = #{version,jdbcType=VARCHAR},

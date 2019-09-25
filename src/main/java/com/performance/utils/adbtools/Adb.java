@@ -138,4 +138,18 @@ public class Adb {
         }
     }
 
+    /**
+     * 截取第一行
+     *
+     * @param content
+     * @return
+     */
+    protected static String interceptFirstLine(String content) {
+        if (content.isEmpty()) {
+            return "";
+        } else {
+            return content.split("\n")[0];
+        }
+    }
+
 }

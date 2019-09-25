@@ -35,11 +35,15 @@ public class DeviceInfomation extends Adb {
                     continue;
                 } else {
                     String[] var = Result.split("\\t");
-                    deviceMap.put(var[0].split(":")[0], var[1]);
+                    if (var.length > 0) {
+                        deviceMap.put(var[0].split(":")[0], var[1]);
+                    }
                 }
             }
         } catch (IOException e) {
             logger.error("adb命令执行异常：", e);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            logger.error("没有正常连接的设备：", e);
         } catch (Exception e) {
             logger.error("获取设备列表异常：", e);
         }
@@ -99,7 +103,8 @@ public class DeviceInfomation extends Adb {
      * @return
      */
     public static String getProductModel(String sn) {
-        return execCommand(PRODUCT_MODEL, sn);
+        String model = execCommand(PRODUCT_MODEL, sn);
+        return interceptFirstLine(model);
     }
 
     /**
@@ -129,7 +134,8 @@ public class DeviceInfomation extends Adb {
      * @return
      */
     public static String getMacAddress(String sn) {
-        return execCommand(MAC_ADDRESS, sn);
+        String macAddress = execCommand(MAC_ADDRESS, sn);
+        return interceptFirstLine(macAddress);
     }
 
     /**
@@ -139,7 +145,8 @@ public class DeviceInfomation extends Adb {
      * @return
      */
     public static String getIp(String sn) {
-        return execCommand(IP, sn);
+        String ip = execCommand(IP, sn);
+        return interceptFirstLine(ip);
     }
 
     /**

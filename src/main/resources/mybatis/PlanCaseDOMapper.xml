@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.performance.dao.PlanCaseDOMapper">
-  <resultMap id="BaseResultMap" type="com.performance.pojo.PlanCaseDO">
+  <resultMap id="BaseResultMap" type="com.performance.po.PlanCaseDO">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="plan_id" jdbcType="VARCHAR" property="planId" />
     <result column="case_id" jdbcType="VARCHAR" property="caseId" />
@@ -22,7 +22,7 @@
     delete from plan_case
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.performance.pojo.PlanCaseDO">
+  <insert id="insert" parameterType="com.performance.po.PlanCaseDO">
     insert into plan_case (id, plan_id, case_id, 
       is_valid, create_time, modify_time
       )
@@ -30,7 +30,7 @@
       #{isValid,jdbcType=TINYINT}, #{createTime,jdbcType=VARCHAR}, #{modifyTime,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.performance.pojo.PlanCaseDO">
+  <insert id="insertSelective" parameterType="com.performance.po.PlanCaseDO">
     insert into plan_case
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -73,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.performance.pojo.PlanCaseDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.performance.po.PlanCaseDO">
     update plan_case
     <set>
       <if test="planId != null">
@@ -94,7 +94,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.performance.pojo.PlanCaseDO">
+  <update id="updateByPrimaryKey" parameterType="com.performance.po.PlanCaseDO">
     update plan_case
     set plan_id = #{planId,jdbcType=VARCHAR},
       case_id = #{caseId,jdbcType=VARCHAR},

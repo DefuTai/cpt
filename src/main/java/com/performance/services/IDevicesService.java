@@ -1,6 +1,6 @@
 package com.performance.services;
 
-import com.performance.pojo.DevicesDO;
+import com.performance.po.DevicesDO;
 import com.performance.query.DeviceQuery;
 import com.performance.utils.PageBean;
 import com.performance.utils.Result;

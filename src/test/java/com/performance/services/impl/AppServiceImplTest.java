@@ -1,6 +1,6 @@
 package com.performance.services.impl;
 
-import com.performance.pojo.AppDO;
+import com.performance.po.AppDO;
 import com.performance.services.IAppService;
 import com.performance.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class AppServiceImplTest {
         appDO.setName("CashDesk");
         appDO.setVersion("5.8.5");
         appDO.setPackageName("com.zmsoft.eatery.cashdesk.activity");
-        appDO.setIsValid((byte) 1);
+        appDO.setIsValid(1);
         appDO.setType("1");
         appDO.setUploader("鲢鱼");
         appDO.setRemarks("测试数据");
