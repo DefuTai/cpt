@@ -14,6 +14,8 @@ public interface IAppService {
 
     Result<PageBean<AppDO>> queryAppList(AppDO appDO);
 
+    Result<AppDO> findAppById(Long appId);
+
     Result addApp(AppDO record);
 
     Result removeApp(Long id);

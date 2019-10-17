@@ -12,40 +12,40 @@ public class PlanCaseDO extends BaseDO {
     /**
      * id
      */
-    private String id;
+    private Long id;
 
     /**
      * 执行计划ID
      */
-    private String planId;
+    private Long planId;
 
     /**
      * 用例ID
      */
-    private String caseId;
+    private Long caseId;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getPlanId() {
+    public Long getPlanId() {
         return planId;
     }
 
-    public void setPlanId(String planId) {
-        this.planId = planId == null ? null : planId.trim();
+    public void setPlanId(Long planId) {
+        this.planId = planId;
     }
 
-    public String getCaseId() {
+    public Long getCaseId() {
         return caseId;
     }
 
-    public void setCaseId(String caseId) {
-        this.caseId = caseId == null ? null : caseId.trim();
+    public void setCaseId(Long caseId) {
+        this.caseId = caseId;
     }
 
 }

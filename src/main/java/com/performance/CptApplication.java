@@ -7,12 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(exclude = MongoAutoConfiguration.class, scanBasePackages = {"com.performance"})
 @MapperScan(basePackages = "com.performance.dao")
 @SpringBootConfiguration // 配置控制
 @EnableScheduling // 定时任务
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableTransactionManagement
 public class CptApplication {
 
     public static void main(String[] args) {

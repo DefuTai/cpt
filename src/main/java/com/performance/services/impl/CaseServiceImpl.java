@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class CaseServiceImpl extends BaseCPT implements ICaseService {
     private CaseDOMapper caseDOMapper;
 
     @Override
-    public Result<PageBean<CaseDO>> queryCaseList(CaseQuery query) {
+    public Result<PageBean<CaseDO>> queryCasePage(CaseQuery query) {
         try {
             //获取列表数据
             List<CaseDO> caseList = caseDOMapper.selectCase(query);
@@ -49,10 +50,23 @@ public class CaseServiceImpl extends BaseCPT implements ICaseService {
     }
 
     @Override
+    public List<CaseDO> findCaseListByIds(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return caseDOMapper.selectCaseListByIds(ids);
+    }
+
+    @Override
     public Result addCase(CaseDO caseDO) {
         try {
-            //TODO 逻辑校验
             caseDO.setId(Long.valueOf(UuidUtil.getUuid()));
+            if (caseDO.getName().isEmpty()) {
+                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "用例名称" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
+            }
+            if (caseDO.getScriptAddress().isEmpty()) {
+                return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "脚本地址" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
+            }
 
             int num = caseDOMapper.insert(caseDO);
             if (num > 0) {

@@ -26,7 +26,6 @@ public class AppServiceImpl extends BaseCPT implements IAppService {
     @Autowired
     private AppDOMapper appDOMapper;
 
-
     @Override
     public Result<PageBean<AppDO>> queryAppList(AppDO appDO) {
         PageBean<AppDO> page = null;
@@ -42,6 +41,15 @@ public class AppServiceImpl extends BaseCPT implements IAppService {
             return resultUtil.error(ResultEnum.ERROR_UNKNOWN.getCode(), ResultEnum.ERROR_UNKNOWN.getMsg());
         }
         return resultUtil.success(page);
+    }
+
+    @Override
+    public Result<AppDO> findAppById(Long appId) {
+        if (appId == null || appId == 0) {
+            return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "参数appId" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
+        }
+        AppDO appDO = appDOMapper.selectByPrimaryKey(appId);
+        return resultUtil.success(appDO);
     }
 
     @Override

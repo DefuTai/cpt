@@ -20,7 +20,7 @@ public interface IDevicesService {
      * @param devicesId
      * @return
      */
-    Result queryDeviceInfo(long devicesId);
+    Result<DevicesDO> findDeviceById(Long devicesId);
 
     /**
      * 获取设备列表

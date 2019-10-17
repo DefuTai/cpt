@@ -34,7 +34,7 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     private DevicesDOMapper devicesDOMapper;
 
     @Override
-    public Result<DevicesDO> queryDeviceInfo(long devicesId) {
+    public Result<DevicesDO> findDeviceById(Long devicesId) {
         DevicesDO devicesDO;
         try {
             devicesDO = devicesDOMapper.selectByPrimaryKey(devicesId);

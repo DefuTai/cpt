@@ -3,6 +3,7 @@ package com.performance.dao;
 import com.performance.po.CaseDO;
 import com.performance.query.CaseQuery;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,6 +35,14 @@ public interface CaseDOMapper {
      * @return
      */
     int selectCaseCount(CaseQuery query);
+
+    /**
+     * 通过ids获取caseList
+     *
+     * @param ids
+     * @return
+     */
+    List<CaseDO> selectCaseListByIds(@Param("ids") List<Long> ids);
 
     /**
      * 添加Case

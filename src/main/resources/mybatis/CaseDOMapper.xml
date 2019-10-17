@@ -69,6 +69,20 @@
         order by create_time desc
     </select>
 
+    <select id="selectCaseListByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cpt.`case`
+        where
+        is_valid = 1
+        <if test="!ids.isEmpty()">
+            and id in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id,jdbcType=BIGINT}
+            </foreach>
+        </if>
+    </select>
+
     <insert id="insert" parameterType="com.performance.po.CaseDO">
     insert into cpt.`case` (id, name,
       precondition, step, script_address, 

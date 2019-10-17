@@ -1,106 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.performance.dao.PlanCaseDOMapper">
-  <resultMap id="BaseResultMap" type="com.performance.po.PlanCaseDO">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="plan_id" jdbcType="VARCHAR" property="planId" />
-    <result column="case_id" jdbcType="VARCHAR" property="caseId" />
-    <result column="is_valid" jdbcType="TINYINT" property="isValid" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="modify_time" jdbcType="VARCHAR" property="modifyTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, plan_id, case_id, is_valid, create_time, modify_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from plan_case
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from plan_case
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.performance.po.PlanCaseDO">
-    insert into plan_case (id, plan_id, case_id, 
-      is_valid, create_time, modify_time
-      )
-    values (#{id,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{caseId,jdbcType=VARCHAR}, 
-      #{isValid,jdbcType=TINYINT}, #{createTime,jdbcType=VARCHAR}, #{modifyTime,jdbcType=VARCHAR}
-      )
+
+    <resultMap id="BaseResultMap" type="com.performance.po.PlanCaseDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="plan_id" jdbcType="BIGINT" property="planId"/>
+        <result column="case_id" jdbcType="BIGINT" property="caseId"/>
+        <result column="is_valid" jdbcType="TINYINT" property="isValid"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="modify_time" jdbcType="VARCHAR" property="modifyTime"/>
+    </resultMap>
+
+    <select id="selectCaseIdListByPlanId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select case_id
+        from plan_case
+        where is_valid = 1
+        <if test="planId != null and planId != 0">
+            and plan_id = #{planId,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <select id="selectPlanIdListByCaseId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select case_id
+        from plan_case
+        where is_valid = 1
+        <if test="caseId != null and caseId != 0">
+            and case_id = #{caseId,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <insert id="insertPlanCase" parameterType="com.performance.po.PlanCaseDO">
+    insert into plan_case (id, plan_id, case_id, is_valid, create_time, modify_time)
+    values (#{id,jdbcType=BIGINT}, #{planId,jdbcType=BIGINT}, #{caseId,jdbcType=BIGINT}, 1, NOW(), NOW())
   </insert>
-  <insert id="insertSelective" parameterType="com.performance.po.PlanCaseDO">
-    insert into plan_case
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="planId != null">
-        plan_id,
-      </if>
-      <if test="caseId != null">
-        case_id,
-      </if>
-      <if test="isValid != null">
-        is_valid,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="planId != null">
-        #{planId,jdbcType=VARCHAR},
-      </if>
-      <if test="caseId != null">
-        #{caseId,jdbcType=VARCHAR},
-      </if>
-      <if test="isValid != null">
-        #{isValid,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.performance.po.PlanCaseDO">
-    update plan_case
-    <set>
-      <if test="planId != null">
-        plan_id = #{planId,jdbcType=VARCHAR},
-      </if>
-      <if test="caseId != null">
-        case_id = #{caseId,jdbcType=VARCHAR},
-      </if>
-      <if test="isValid != null">
-        is_valid = #{isValid,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.performance.po.PlanCaseDO">
-    update plan_case
-    set plan_id = #{planId,jdbcType=VARCHAR},
-      case_id = #{caseId,jdbcType=VARCHAR},
-      is_valid = #{isValid,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      modify_time = #{modifyTime,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
+
+    <update id="deleteByPlanIds" parameterType="java.util.List">
+        update plan_case
+        set is_valid = 0,
+        modify_time = NOW()
+        where plan_id in
+        <foreach collection="planIds" item="planId" index="index" open="(" separator="," close=")">
+            #{planId,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <update id="deleteByPlanIdAndCaseIds">
+        update plan_case
+        set is_valid = 0,
+        modify_time = NOW()
+        where plan_id = #{planId,jdbcType=TINYINT}
+        and case_id in
+        <foreach collection="caseIds" item="caseId" index="index" open="(" separator="," close=")">
+            #{caseId,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
 </mapper>

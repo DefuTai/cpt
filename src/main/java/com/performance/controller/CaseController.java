@@ -27,7 +27,7 @@ public class CaseController extends BaseCPT {
 
     @PostMapping("/list")
     public Result queryAppList(CaseQuery query) {
-        return caseService.queryCaseList(query);
+        return caseService.queryCasePage(query);
     }
 
     @PostMapping("/add")

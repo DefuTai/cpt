@@ -24,22 +24,101 @@
         select
         <include refid="Base_Column_List"/>
         from execution_plan
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT} and is_valid = 1
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from execution_plan
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+    <select id="selectExecutionPlanList" parameterType="com.performance.query.ExecutionPlanQuery"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM execution_plan
+        WHERE is_valid = 1
+        <if test="planName != null and planName != ''">
+            AND plan_name = #{planName,jdbcType=VARCHAR}
+        </if>
+        <if test="tester != null and tester != ''">
+            AND tester = #{tester,jdbcType=VARCHAR}
+        </if>
+        <if test="appId != null">
+            AND app_id = #{appId,jdbcType=BIGINT}
+        </if>
+        <if test="devicesId != null">
+            AND devices_id = #{devicesId,jdbcType=BIGINT}
+        </if>
+        order by create_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index},#{pageSize};
+        </if>
+    </select>
 
-    <insert id="insert" parameterType="com.performance.po.ExecutionPlanDO">
+    <select id="selectExecutionPlanListCount" parameterType="com.performance.query.ExecutionPlanQuery" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM execution_plan
+        WHERE is_valid = 1
+        <if test="planName != null and planName != ''">
+            AND plan_name = #{planName,jdbcType=VARCHAR}
+        </if>
+        <if test="tester != null and tester != ''">
+            AND tester = #{tester,jdbcType=VARCHAR}
+        </if>
+        <if test="appId != null">
+            AND app_id = #{appId,jdbcType=BIGINT}
+        </if>
+        <if test="devicesId != null">
+            AND devices_id = #{devicesId,jdbcType=BIGINT}
+        </if>
+        order by create_time desc
+    </select>
+
+    <insert id="insertExecutionPlan" parameterType="com.performance.po.ExecutionPlanDO">
     insert into execution_plan (id, app_id, devices_id, plan_name, description, tester, start_time, end_time,
       is_valid, create_time, modify_time)
     values (#{id,jdbcType=BIGINT}, #{appId,jdbcType=BIGINT}, #{devicesId,jdbcType=BIGINT},
     #{planName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{tester,jdbcType=VARCHAR},
-    #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{isValid,jdbcType=TINYINT},
-    #{createTime,jdbcType=VARCHAR}, #{modifyTime,jdbcType=VARCHAR})
+    #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, 1,
+    NOW(), NOW())
   </insert>
+
+    <insert id="insertOrUpdateExecutionPlan" parameterType="com.performance.po.ExecutionPlanDO">
+        <![CDATA[
+
+                INSERT INTO cpt.execution_plan (
+                  id,
+                  app_id,
+                  devices_id,
+                  plan_name,
+                  description,
+                  tester,
+                  start_time,
+                  end_time,
+                  is_valid,
+                  create_time,
+                  modify_time)
+                VALUES (
+                  #{id,jdbcType=BIGINT},
+                  #{appId,jdbcType=BIGINT},
+                  #{devicesId,jdbcType=BIGINT},
+                  #{planName,jdbcType=VARCHAR},
+                  #{description,jdbcType=VARCHAR},
+                  #{tester,jdbcType=VARCHAR},
+                  #{startTime,jdbcType=VARCHAR},
+                  #{endTime,jdbcType=VARCHAR},
+                  1,
+                  NOW(),
+                  NOW())
+                ON DUPLICATE KEY UPDATE
+                  app_id      = if(VALUES(app_id) != app_id, values(app_id), app_id),
+                  devices_id  = if(values(devices_id) != devices_id, values(devices_id), devices_id),
+                  plan_name   = if(values(plan_name) != plan_name, values(plan_name), plan_name),
+                  description = if(values(description) != description, values(description), description),
+                  tester      = if(values(tester) != tester, values(tester), tester),
+                  start_time  = if(values(start_time) != start_time, values(start_time), start_time),
+                  end_time    = if(values(end_time) != end_time, values(end_time), end_time),
+                  modify_time = if(VALUES(modify_time) > modify_time, VALUES(modify_time), modify_time)
+
+        ]]>
+    </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.performance.po.ExecutionPlanDO">
         update execution_plan
@@ -65,14 +144,18 @@
             <if test="endTime != null">
                 end_time = #{endTime,jdbcType=VARCHAR},
             </if>
-            <if test="isValid != null">
-                is_valid = #{isValid,jdbcType=TINYINT},
-            </if>
             <if test="modifyTime != null">
                 modify_time = NOW(),
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        UPDATE execution_plan
+        SET is_valid = 0,
+        modify_time = NOW()
+        WHERE id = #{id,jdbcType=BIGINT}
+  </update>
 
 </mapper>

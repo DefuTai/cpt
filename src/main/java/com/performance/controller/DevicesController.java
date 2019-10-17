@@ -48,7 +48,7 @@ public class DevicesController extends BaseCPT {
 
     @PostMapping("/info")
     public Result queryDeviceInfo(@Param("id") long id) {
-        return devicesService.queryDeviceInfo(id);
+        return devicesService.findDeviceById(id);
     }
 
     @PostMapping("/add")

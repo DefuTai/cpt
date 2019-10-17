@@ -14,7 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 描述：
+ * 描述：阿里云 - 对象存储 OSS > SDK 参考 > Java > 上传文件 > 表单上传
+ * https://help.aliyun.com/document_detail/84788.html
  *
  * @Author 鲢鱼
  * @Data 2019-09-25 15:03
