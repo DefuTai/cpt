@@ -41,7 +41,10 @@ public class ConnectService {
     @Scheduled(fixedRate = 60 * 1000)
     public void start() {
         GetDevicesExecutor getDevicesExecutor = new GetDevicesExecutor(this.devicesService);
-        executorService.scheduleWithFixedDelay(getDevicesExecutor, 0, 60, TimeUnit.SECONDS);
+        // Spring Task
+        getDevicesExecutor.devicesScanning();
+        // ScheduledExecutorService
+//        executorService.schedule(getDevicesExecutor, 60, TimeUnit.SECONDS);
     }
 
     public void stop() {

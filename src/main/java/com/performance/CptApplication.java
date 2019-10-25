@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(exclude = MongoAutoConfiguration.class, scanBasePackages = {"com.performance"})
 @MapperScan(basePackages = "com.performance.dao")
-@SpringBootConfiguration // 配置控制
-@EnableScheduling // 定时任务
-@EnableAspectJAutoProxy(proxyTargetClass = true)
-@EnableTransactionManagement
+@SpringBootConfiguration    // 配置控制
+@EnableScheduling   // 启用定时任务
+@EnableAspectJAutoProxy(proxyTargetClass = true)    // 启用AOP
+@EnableTransactionManagement    // 启用事务管理
 public class CptApplication {
 
     public static void main(String[] args) {

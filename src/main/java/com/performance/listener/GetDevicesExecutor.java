@@ -109,7 +109,7 @@ public class GetDevicesExecutor implements Runnable {
     /**
      * 扫描设备状态
      */
-    private void devicesScanning() {
+    public void devicesScanning() {
         //获取DB内所有已记录设备
         List<DevicesDO> devicesList = devicesService.queryAllDevices();
         //当前已连接设备
