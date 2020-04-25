@@ -38,7 +38,7 @@ public class ConnectService {
     /**
      * 轮询扫描更新设备连接状态
      */
-    @Scheduled(fixedRate = 60 * 1000)
+    @Scheduled(fixedRate = 10 * 60 * 1000)
     public void start() {
         GetDevicesExecutor getDevicesExecutor = new GetDevicesExecutor(this.devicesService);
         // Spring Task

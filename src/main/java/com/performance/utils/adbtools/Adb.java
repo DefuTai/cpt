@@ -42,6 +42,8 @@ public class Adb {
         }
     }
 
+    //所连设备端口尽量保持一致，默认端口"5555"
+    private static final String ADB_PORT = "5555";
     //重启adb服务进程
     protected static final String START_SERVER = getAdbPath() + "start-server";
     //终止adb服务进程
@@ -132,7 +134,7 @@ public class Adb {
         if (sn.isEmpty()) {
             return "";
         } else if (CheckUtils.ipCheck(sn)) {
-            return String.format("-s %s:5555 ", sn);
+            return String.format("-s %s:" + ADB_PORT + " ", sn);
         } else {
             return String.format("-s %s ", sn);
         }

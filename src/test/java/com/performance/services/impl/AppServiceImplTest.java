@@ -50,4 +50,24 @@ public class AppServiceImplTest {
         Result result = appService.queryAppList(appDO);
         Assert.assertNotNull(result.getData(), "查询失败，结果为空！");
     }
+
+    public static void main(String[] args) {
+        String s = "abc123";
+        char[] ch = s.toCharArray();
+        String str = "";
+
+        for (int i = ch.length - 1; i >= 0; i--) {
+            str += ch[i];
+        }
+
+        System.out.println(str);
+//        System.out.println("----------------");
+//        for (int i = s.length() - 1; i >= 0; i--) {
+//            System.out.print(s.charAt(i));
+//        }
+//        System.out.println("----------------");
+//
+//        System.out.println("变换前: " + s);
+    }
+
 }
