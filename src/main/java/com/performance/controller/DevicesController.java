@@ -42,17 +42,17 @@ public class DevicesController extends BaseCPT {
 
     @PostMapping("/list")
     @ControllerLog(description = "Controller-获取设备列表")
-    public Result<?> queryDeviceList(@Param("query") DeviceQuery query) {
+    public Result queryDeviceList(@Param("query") DeviceQuery query) {
         return devicesService.queryDeviceList(query);
     }
 
     @PostMapping("/info")
-    public Result<?> queryDeviceInfo(@Param("id") long id) {
+    public Result queryDeviceInfo(@Param("id") long id) {
         return devicesService.findDeviceById(id);
     }
 
     @PostMapping("/add")
-    public Result<?> addDevices(@Param("deviceName") String deviceName, @Param("ip") String ip) {
+    public Result addDevices(@Param("deviceName") String deviceName, @Param("ip") String ip) {
         if (StringUtils.isEmpty(deviceName) || StringUtils.isEmpty(ip)) {
             return resultUtil.error(ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getCode(), "设备名称或IP" + ResultEnum.ERROR_LACK_BUSINESS_PARAMETERS.getMsg());
         }
@@ -85,12 +85,12 @@ public class DevicesController extends BaseCPT {
     }
 
     @PostMapping("/modify")
-    public Result<?> modifyDevice(DevicesDO devicesDO) {
+    public Result modifyDevice(DevicesDO devicesDO) {
         return devicesService.modifyDevice(devicesDO);
     }
 
     @PostMapping("/remove")
-    public Result<?> removeDevices(@Param("deviceIds") String deviceIds) {
+    public Result removeDevices(@Param("deviceIds") String deviceIds) {
         if (deviceIds.isEmpty()) {
             return resultUtil.error(ResultEnum.ERROR_CUSTOM.getCode(), "请指定需要删除的设备");
         }
@@ -103,7 +103,7 @@ public class DevicesController extends BaseCPT {
     }
 
     @GetMapping("/restartAdb")
-    public Result<?> restartAdb() {
+    public Result restartAdb() {
         return devicesService.restartAdb();
     }
 

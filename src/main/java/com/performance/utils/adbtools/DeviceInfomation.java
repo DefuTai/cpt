@@ -135,7 +135,7 @@ public class DeviceInfomation extends Adb {
      */
     public static String getMacAddress(String sn) {
         String macAddress = execCommand(MAC_ADDRESS, sn);
-        return interceptFirstLine(macAddress);
+        return macAddress.length() > 17 ? null : interceptFirstLine(macAddress);
     }
 
     /**
