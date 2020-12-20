@@ -196,13 +196,6 @@
             <version>1.2.47</version>
         </dependency>
 
-        <!-- Network -->
-        <dependency>
-            <groupId>com.dfire.mobile.network</groupId>
-            <artifactId>network-core</artifactId>
-            <version>2.4.3</version>
-        </dependency>
-
         <!-- Android -->
         <dependency>
             <groupId>com.google.android</groupId>
