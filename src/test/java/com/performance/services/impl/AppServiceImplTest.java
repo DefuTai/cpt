@@ -3,9 +3,12 @@ package com.performance.services.impl;
 import com.performance.po.AppDO;
 import com.performance.services.IAppService;
 import com.performance.utils.Result;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  * 创建时间: 2019/6/17 上午10:59
@@ -13,6 +16,8 @@ import org.testng.annotations.Test;
  *
  * @author lianyu
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class AppServiceImplTest {
 
     @Autowired
@@ -34,7 +39,7 @@ public class AppServiceImplTest {
 
         Result result = appService.addApp(appDO);
 
-        Assert.assertTrue(result.getCode().equals("1000"), "添加App失败！");
+        Assert.assertTrue(result.getCode().equals("2000"), "添加App失败！");
     }
 
     @Test
@@ -49,25 +54,6 @@ public class AppServiceImplTest {
 
         Result result = appService.queryAppList(appDO);
         Assert.assertNotNull(result.getData(), "查询失败，结果为空！");
-    }
-
-    public static void main(String[] args) {
-        String s = "abc123";
-        char[] ch = s.toCharArray();
-        String str = "";
-
-        for (int i = ch.length - 1; i >= 0; i--) {
-            str += ch[i];
-        }
-
-        System.out.println(str);
-//        System.out.println("----------------");
-//        for (int i = s.length() - 1; i >= 0; i--) {
-//            System.out.print(s.charAt(i));
-//        }
-//        System.out.println("----------------");
-//
-//        System.out.println("变换前: " + s);
     }
 
 }

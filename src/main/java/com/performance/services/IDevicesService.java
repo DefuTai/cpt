@@ -76,7 +76,7 @@ public interface IDevicesService {
      * @param devicesDO
      * @return
      */
-    Result modifyDeviceelective(DevicesDO devicesDO);
+    Result modifyDeviceElective(DevicesDO devicesDO);
 
     /**
      * 删除设备

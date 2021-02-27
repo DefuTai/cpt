@@ -10,6 +10,8 @@ import com.performance.vo.AppVO;
 import com.performance.vo.CaseVO;
 import com.performance.vo.DevicesVO;
 import com.performance.vo.ExecutionPlanVO;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -36,14 +39,18 @@ public class ExecutionPlanServiceImplTest {
         query.setPageSize(50);
 
         Result<PageBean<ExecutionPlanDO>> executionPlanPage = executionPlanService.queryExecutionPlanPage(query);
-        System.out.println("执行计划分页结果：" + JSON.toJSONString(executionPlanPage));
+
+        log.info("ExecutionPlanServiceImplTest#testQueryExecutionPlanPage test result is {}", JSON.toJSONString(executionPlanPage));
+        Assert.assertEquals("返回状态码有误！", executionPlanPage.getCode(), "2000");
     }
 
     @Test
     public void testFindExecutionPlanDetail() {
         Long id = 555514330801852458L;
         Result<ExecutionPlanVO> result = executionPlanService.queryExecutionPlanInfo(id);
-        System.out.println("获取执行计划及已关联用例集合：" + JSON.toJSONString(result.getData()));
+
+        log.info("ExecutionPlanServiceImplTest#testFindExecutionPlanDetail test result is {}", JSON.toJSONString(result));
+        Assert.assertEquals("返回状态码有误！", result.getCode(), "2000");
     }
 
     @Test
@@ -76,7 +83,9 @@ public class ExecutionPlanServiceImplTest {
         executionPlanVO.setCaseVOList(caseVOList);
 
         Result result = executionPlanService.addExecutionPlan(executionPlanVO);
-        System.out.println("返回结果：" + JSON.toJSONString(result));
+
+        log.info("ExecutionPlanServiceImplTest#testAddExecutionPlan test result is {}", JSON.toJSONString(result));
+        Assert.assertEquals("返回状态码有误！", result.getCode(), "2000");
     }
 
     @Test
@@ -112,7 +121,9 @@ public class ExecutionPlanServiceImplTest {
         executionPlanVO.setCaseVOList(caseVOList);
 
         Result result = executionPlanService.addOrModifyExecutionPlan(executionPlanVO);
-        System.out.println("返回结果：" + JSON.toJSONString(result));
+
+        log.info("ExecutionPlanServiceImplTest#testAddOrModifyExecutionPlan test result is {}", JSON.toJSONString(result));
+        Assert.assertEquals("返回状态码有误！", result.getCode(), "2000");
     }
 
 }

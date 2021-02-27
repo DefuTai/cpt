@@ -138,7 +138,7 @@ public class DevicesServiceImpl extends BaseCPT implements IDevicesService {
     }
 
     @Override
-    public Result modifyDeviceelective(DevicesDO devicesDO) {
+    public Result modifyDeviceElective(DevicesDO devicesDO) {
         try {
             int num = devicesDOMapper.updateByPrimaryKeySelective(devicesDO);
             if (num > 0) {
