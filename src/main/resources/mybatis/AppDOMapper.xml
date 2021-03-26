@@ -96,7 +96,7 @@
         </if>
         <if test="type != null">
             and type = #{type,jdbcType=VARCHAR}
-        </if>ConnectionImpl
+        </if>
     </select>
 
     <insert id="insert" parameterType="com.performance.po.AppDO">
